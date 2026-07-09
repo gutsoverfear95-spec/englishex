@@ -10,7 +10,9 @@ const navLinkClass = ({ isActive }) =>
 
 export default function Navbar() {
   const { user, signOut } = useAuth()
-  const displayName = user?.user_metadata?.display_name || user?.email
+  // display_name (đăng ký email) hoặc full_name (đăng nhập Google)
+  const displayName =
+    user?.user_metadata?.display_name || user?.user_metadata?.full_name || user?.email
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-10">

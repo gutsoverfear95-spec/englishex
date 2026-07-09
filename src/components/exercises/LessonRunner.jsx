@@ -15,7 +15,7 @@ import { useProgress } from '../../hooks/useProgress'
 // Mỗi module có thể:
 //   - truyền `header` (đoạn văn cho Đọc, player audio cho Nghe...)
 //   - đăng ký thêm exercise component qua prop `components`
-//   - bật `showScore` để feedback hiện % chính xác (Nói, chép chính tả)
+// (FeedbackPanel tự hiện % chính xác cho loại dictation/pronunciation)
 // ============================================================
 
 const BASE_COMPONENTS = {
@@ -23,7 +23,7 @@ const BASE_COMPONENTS = {
   true_false: TrueFalse,
 }
 
-export default function LessonRunner({ lesson, exercises, header, components = {}, showScore = false }) {
+export default function LessonRunner({ lesson, exercises, header, components = {} }) {
   const registry = { ...BASE_COMPONENTS, ...components }
 
   const [idx, setIdx] = useState(0)          // câu hiện tại
@@ -110,7 +110,6 @@ export default function LessonRunner({ lesson, exercises, header, components = {
           exercise={current}
           isLast={idx + 1 === total}
           onNext={handleNext}
-          showScore={showScore}
         />
       )}
     </div>

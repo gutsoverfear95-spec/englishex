@@ -35,7 +35,11 @@ export default function Dashboard() {
     load()
   }, [])
 
-  const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0]
+  // display_name (đăng ký email) hoặc full_name (đăng nhập Google)
+  const displayName =
+    user?.user_metadata?.display_name ||
+    user?.user_metadata?.full_name ||
+    user?.email?.split('@')[0]
 
   if (loading) {
     return (

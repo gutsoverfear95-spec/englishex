@@ -1,8 +1,16 @@
 -- ============================================================================
 -- SEED DATA (tuỳ chọn) — chạy SAU schema.sql
 -- 1 bài học + bài tập mẫu cho mỗi kỹ năng để test app ngay từ Giai đoạn 3-4.
--- Dùng UUID cố định để dễ tham chiếu / chạy lại (xoá bảng trước nếu chạy lại).
+-- CÓ THỂ CHẠY LẠI NHIỀU LẦN: khối delete bên dưới xoá 4 bài mẫu cũ trước khi
+-- chèn lại (cascade xoá luôn bài tập + tiến độ/attempts liên quan của chúng).
 -- ============================================================================
+
+delete from public.lessons where id in (
+  '11111111-1111-4111-8111-111111111111',
+  '22222222-2222-4222-8222-222222222222',
+  '33333333-3333-4333-8333-333333333333',
+  '44444444-4444-4444-8444-444444444444'
+);
 
 -- ---------- READING ----------
 insert into public.lessons (id, skill, title, description, level, content, order_index) values

@@ -38,6 +38,14 @@ export function AuthProvider({ children }) {
       }),
     signIn: (email, password) =>
       supabase.auth.signInWithPassword({ email, password }),
+    // Đăng nhập Google (OAuth): chuyển hướng sang Google rồi quay về app.
+    // Yêu cầu: bật provider Google trong Supabase Dashboard + origin hiện tại
+    // nằm trong Redirect URLs (Authentication → URL Configuration).
+    signInWithGoogle: () =>
+      supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin },
+      }),
     signOut: () => supabase.auth.signOut(),
   }
 

@@ -7,9 +7,13 @@ export function answerLabel(exercise, value) {
   return value
 }
 
+// Các loại bài tập chấm theo % độ giống → hiện thêm điểm bên cạnh đúng/sai
+const SCORED_TYPES = ['dictation', 'pronunciation']
+
 // Panel hiện ngay sau khi trả lời: đúng/sai + đáp án + giải thích + nút đi tiếp
-export default function FeedbackPanel({ result, exercise, isLast, onNext, showScore = false }) {
+export default function FeedbackPanel({ result, exercise, isLast, onNext }) {
   const { isCorrect, score } = result
+  const showScore = SCORED_TYPES.includes(exercise.type) && typeof score === 'number'
 
   return (
     <div

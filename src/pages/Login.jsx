@@ -6,9 +6,10 @@ import { translateAuthError } from '../utils/authErrors'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
 import Card from '../components/ui/Card'
+import GoogleIcon from '../components/ui/GoogleIcon'
 
 export default function Login() {
-  const { session, signIn } = useAuth()
+  const { session, signIn, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -26,6 +27,13 @@ export default function Login() {
     setSubmitting(false)
     if (error) setError(translateAuthError(error))
     else navigate('/')
+  }
+
+  async function handleGoogle() {
+    setError('')
+    // Thành công thì trình duyệt tự chuyển sang trang Google → không cần navigate
+    const { error } = await signInWithGoogle()
+    if (error) setError(translateAuthError(error))
   }
 
   return (
@@ -67,6 +75,16 @@ export default function Login() {
             {submitting ? 'Đang đăng nhập…' : 'Đăng nhập'}
           </Button>
         </form>
+
+        <div className="flex items-center gap-3">
+          <div className="h-px flex-1 bg-slate-200" />
+          <span className="text-xs text-slate-400">hoặc</span>
+          <div className="h-px flex-1 bg-slate-200" />
+        </div>
+
+        <Button type="button" variant="secondary" className="w-full" onClick={handleGoogle}>
+          <GoogleIcon /> Tiếp tục với Google
+        </Button>
 
         <p className="text-sm text-center text-slate-500">
           Chưa có tài khoản?{' '}

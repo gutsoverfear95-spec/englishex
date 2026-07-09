@@ -6,9 +6,10 @@ import { translateAuthError } from '../utils/authErrors'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
 import Card from '../components/ui/Card'
+import GoogleIcon from '../components/ui/GoogleIcon'
 
 export default function Register() {
-  const { session, signUp } = useAuth()
+  const { session, signUp, signInWithGoogle } = useAuth()
   const navigate = useNavigate()
   const [form, setForm] = useState({ displayName: '', email: '', password: '', confirm: '' })
   const [error, setError] = useState('')
@@ -41,6 +42,13 @@ export default function Register() {
     } else {
       setInfo('Đăng ký thành công! Hãy kiểm tra email để xác nhận tài khoản, sau đó đăng nhập.')
     }
+  }
+
+  async function handleGoogle() {
+    setError('')
+    // Google vừa là đăng ký vừa là đăng nhập — tài khoản tự tạo lần đầu
+    const { error } = await signInWithGoogle()
+    if (error) setError(translateAuthError(error))
   }
 
   return (
@@ -105,6 +113,16 @@ export default function Register() {
             {submitting ? 'Đang tạo tài khoản…' : 'Đăng ký'}
           </Button>
         </form>
+
+        <div className="flex items-center gap-3">
+          <div className="h-px flex-1 bg-slate-200" />
+          <span className="text-xs text-slate-400">hoặc</span>
+          <div className="h-px flex-1 bg-slate-200" />
+        </div>
+
+        <Button type="button" variant="secondary" className="w-full" onClick={handleGoogle}>
+          <GoogleIcon /> Đăng ký với Google
+        </Button>
 
         <p className="text-sm text-center text-slate-500">
           Đã có tài khoản?{' '}

@@ -6,14 +6,19 @@ import { skillByKey } from '../../utils/constants'
 import Card from '../../components/ui/Card'
 import Spinner from '../../components/ui/Spinner'
 import ReadingLesson from './ReadingLesson'
+import WritingLesson from './WritingLesson'
+import ListeningLesson from './ListeningLesson'
+import SpeakingLesson from './SpeakingLesson'
 
 // ============================================================
 // DISPATCHER: fetch bài học + bài tập 1 lần duy nhất tại đây,
 // rồi render module tương ứng với kỹ năng trong URL.
-// Các module còn lại sẽ được thêm dần: writing → listening → speaking
 // ============================================================
 const MODULES = {
   reading: ReadingLesson,
+  writing: WritingLesson,
+  listening: ListeningLesson,
+  speaking: SpeakingLesson,
 }
 
 export default function LessonPage() {
@@ -76,7 +81,7 @@ export default function LessonPage() {
       ) : (
         <Card className="p-10 text-center space-y-2">
           <Construction className="h-10 w-10 text-amber-500 mx-auto" />
-          <p className="text-slate-600">Module {meta.label} sẽ được xây dựng ngay sau module Đọc.</p>
+          <p className="text-slate-600">Module {meta.label} sẽ được xây dựng ở bước tiếp theo.</p>
         </Card>
       )}
     </div>
