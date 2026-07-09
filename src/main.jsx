@@ -1,11 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import './index.css'
+import { AuthProvider } from './context/AuthContext'
 import App from './App.jsx'
 
-// Giai đoạn 3 sẽ bọc thêm <BrowserRouter> và <AuthProvider> tại đây
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      {/* AuthProvider nằm trong Router để các trang auth dùng được navigate */}
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </BrowserRouter>
   </StrictMode>,
 )

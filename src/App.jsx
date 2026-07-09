@@ -1,26 +1,30 @@
-// ============================================================
-// PLACEHOLDER Giai đoạn 2 — dùng để kiểm tra cài đặt.
-// Giai đoạn 3 sẽ thay toàn bộ bằng Router + Layout + Auth.
-// ============================================================
-export default function App() {
-  // Kiểm tra nhanh biến môi trường đã được nạp chưa
-  const envOk = Boolean(
-    import.meta.env.VITE_SUPABASE_URL &&
-    import.meta.env.VITE_SUPABASE_ANON_KEY &&
-    !import.meta.env.VITE_SUPABASE_URL.includes('your-project-id')
-  )
+import { Routes, Route, Navigate } from 'react-router-dom'
+import ProtectedRoute from './components/layout/ProtectedRoute'
+import AppLayout from './components/layout/AppLayout'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Dashboard from './pages/Dashboard'
+import LessonList from './pages/LessonList'
+import LessonPage from './pages/lesson/LessonPage'
 
+export default function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <div className="bg-white rounded-xl shadow-lg p-8 text-center space-y-3 max-w-md">
-        <h1 className="text-2xl font-bold text-slate-800">English Learning App</h1>
-        <p className="text-slate-500">Vite + React + Tailwind đã chạy thành công.</p>
-        <p className={`text-sm font-medium ${envOk ? 'text-green-600' : 'text-red-500'}`}>
-          {envOk
-            ? 'Biến môi trường Supabase: OK'
-            : 'Chưa cấu hình .env.local (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY)'}
-        </p>
-      </div>
-    </div>
+    <Routes>
+      {/* Public: chưa đăng nhập vẫn vào được */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      {/* Protected: bắt buộc đăng nhập, bọc trong layout chung có Navbar */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/skill/:skill" element={<LessonList />} />
+          <Route path="/skill/:skill/lesson/:lessonId" element={<LessonPage />} />
+        </Route>
+      </Route>
+
+      {/* Route lạ → về Dashboard */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
