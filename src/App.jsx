@@ -6,6 +6,9 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import LessonList from './pages/LessonList'
 import LessonPage from './pages/lesson/LessonPage'
+import CourseList from './pages/vocab/CourseList'
+import TopicList from './pages/vocab/TopicList'
+import StudySession from './pages/vocab/StudySession'
 
 export default function App() {
   return (
@@ -20,6 +23,10 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/skill/:skill" element={<LessonList />} />
           <Route path="/skill/:skill/lesson/:lessonId" element={<LessonPage />} />
+          {/* Từ vựng v2: Chương trình học → Chủ đề → Phiên học SRS */}
+          <Route path="/vocab" element={<CourseList />} />
+          <Route path="/vocab/course/:courseId" element={<TopicList />} />
+          <Route path="/vocab/study/:topicId" element={<StudySession />} />
         </Route>
       </Route>
 
