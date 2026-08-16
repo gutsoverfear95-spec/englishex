@@ -38,7 +38,7 @@ function HighlightedExample({ sentence, target }) {
 //   [backface-visibility:hidden]  → ẩn mặt đang quay lưng về người xem
 //   mặt sau đặt sẵn rotateY(180deg), cả cụm xoay 180deg khi flipped
 // ============================================================
-export default function Flashcard({ word, flipped, onFlip }) {
+export default function Flashcard({ word, examples = [], flipped, onFlip }) {
   const { speak } = useSpeechSynthesis()
 
   // Ưu tiên file audio thật (audio_url); không có → đọc bằng Web Speech API
@@ -51,6 +51,19 @@ export default function Flashcard({ word, flipped, onFlip }) {
     }
   }
 
+  function playSentence(e, sentence) {
+    e.stopPropagation()
+    speak(sentence)
+  }
+
+  // Từ chưa được bổ sung ví dụ mới thì quay về câu ví dụ cũ trong bảng words,
+  // nhờ vậy thẻ không bao giờ trống dù dữ liệu đang nạp dở.
+  const exampleList = examples.length
+    ? examples
+    : word.example_sentence
+      ? [{ sentence_en: word.example_sentence, sentence_vi: null }]
+      : []
+
   return (
     <div
       className="[perspective:1200px] cursor-pointer select-none"
@@ -58,7 +71,7 @@ export default function Flashcard({ word, flipped, onFlip }) {
       title="Bấm để lật thẻ"
     >
       <div
-        className={`relative h-72 sm:h-80 md:h-96 transition-transform duration-500 [transform-style:preserve-3d] ${
+        className={`relative h-[26rem] sm:h-[28rem] md:h-[30rem] transition-transform duration-500 [transform-style:preserve-3d] ${
           flipped ? '[transform:rotateY(180deg)]' : ''
         }`}
       >
@@ -87,14 +100,39 @@ export default function Flashcard({ word, flipped, onFlip }) {
           </p>
         </div>
 
-        {/* ---------- MẶT SAU: nghĩa + ví dụ + ảnh ---------- */}
-        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-700 text-white shadow-lg p-4 sm:p-6 overflow-y-auto">
-          <div className="h-full flex flex-col items-center justify-center text-center gap-2 sm:gap-3">
-            {word.phonetic && <p className="text-violet-200 text-sm">{word.phonetic}</p>}
-            <p className="text-2xl sm:text-3xl font-bold">{word.meaning}</p>
+        {/* ---------- MẶT SAU: nghĩa + các câu ví dụ kèm bản dịch ---------- */}
+        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-700 text-white shadow-lg overflow-y-auto">
+          <div className="min-h-full p-4 sm:p-5 flex flex-col gap-3">
+            <div className="text-center space-y-0.5 shrink-0">
+              {word.phonetic && <p className="text-violet-200 text-sm">{word.phonetic}</p>}
+              <p className="text-2xl sm:text-3xl font-bold">{word.meaning}</p>
+            </div>
 
-            {word.example_sentence && (
-              <HighlightedExample sentence={word.example_sentence} target={word.word} />
+            {/* Mỗi ví dụ: câu tiếng Anh (bôi đậm từ đang học) + nghĩa tiếng Việt */}
+            {exampleList.length > 0 && (
+              <ul className="space-y-2 text-left">
+                {exampleList.map((ex, i) => (
+                  <li key={i} className="rounded-xl bg-white/10 px-3 py-2 flex items-start gap-2">
+                    <span className="mt-0.5 h-5 w-5 shrink-0 grid place-items-center rounded-full bg-white/20 text-[11px] font-bold">
+                      {i + 1}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <HighlightedExample sentence={ex.sentence_en} target={word.word} />
+                      {ex.sentence_vi && (
+                        <p className="text-xs sm:text-sm text-violet-200 mt-0.5">{ex.sentence_vi}</p>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => playSentence(e, ex.sentence_en)}
+                      title="Nghe câu này"
+                      className="mt-0.5 shrink-0 p-1 rounded-lg text-violet-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                    >
+                      <Volume2 className="h-3.5 w-3.5" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
             )}
 
             {/* Khung ảnh minh hoạ — chỉ hiện khi có image_url */}
@@ -102,7 +140,7 @@ export default function Flashcard({ word, flipped, onFlip }) {
               <img
                 src={word.image_url}
                 alt={word.word}
-                className="max-h-24 sm:max-h-32 rounded-xl object-cover shadow-md"
+                className="mx-auto max-h-24 sm:max-h-28 rounded-xl object-cover shadow-md"
                 onError={(e) => (e.target.style.display = 'none')}
               />
             )}
@@ -110,9 +148,9 @@ export default function Flashcard({ word, flipped, onFlip }) {
             <button
               type="button"
               onClick={playAudio}
-              className="inline-flex items-center gap-1.5 text-sm text-violet-200 hover:text-white transition-colors cursor-pointer"
+              className="mx-auto mt-auto inline-flex items-center gap-1.5 text-sm text-violet-200 hover:text-white transition-colors cursor-pointer"
             >
-              <Volume2 className="h-4 w-4" /> Nghe lại
+              <Volume2 className="h-4 w-4" /> Nghe lại từ
             </button>
           </div>
         </div>

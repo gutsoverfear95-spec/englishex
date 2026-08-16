@@ -52,6 +52,7 @@ export default function StudySession() {
   const [relearnCount, setRelearnCount] = useState({}) // { word_id: số lần đã lặp trong phiên }
   const [saveError, setSaveError] = useState(null)   // lỗi ghi tiến độ xuống Supabase
   const [allWords, setAllWords] = useState([])
+  const [examplesByWord, setExamplesByWord] = useState({}) // { word_id: [câu ví dụ...] }
   const [flipped, setFlipped] = useState(false)
   const [counts, setCounts] = useState({ hard: 0, good: 0, easy: 0 })
   const [loading, setLoading] = useState(true)
@@ -68,6 +69,19 @@ export default function StudySession() {
     const pm = {}
     for (const row of progressRes.data ?? []) pm[row.word_id] = row
 
+    // Câu ví dụ kèm bản dịch (bảng word_examples). Từ nào chưa có thì Flashcard
+    // tự dùng lại words.example_sentence nên không cần xử lý gì thêm ở đây.
+    const wordIds = words.map((w) => w.id)
+    const examplesRes = wordIds.length
+      ? await supabase
+          .from('word_examples')
+          .select('word_id, sentence_en, sentence_vi, order_index')
+          .in('word_id', wordIds)
+          .order('order_index')
+      : { data: [] }
+    const exByWord = {}
+    for (const ex of examplesRes.data ?? []) (exByWord[ex.word_id] ??= []).push(ex)
+
     // Hàng đợi = từ mới + từ đến hạn (giữ nguyên thứ tự trong chủ đề)
     const now = new Date()
     const sessionQueue = words.filter(
@@ -76,6 +90,7 @@ export default function StudySession() {
 
     setTopic(topicRes.data)
     setAllWords(words)
+    setExamplesByWord(exByWord)
     setProgressMap(pm)
     setQueue(sessionQueue)
     setInitialCount(sessionQueue.length)
@@ -245,7 +260,12 @@ export default function StudySession() {
           <span className="text-sm text-slate-500 whitespace-nowrap">Còn {queue.length} thẻ</span>
         </div>
 
-        <Flashcard word={current} flipped={flipped} onFlip={() => setFlipped(!flipped)} />
+        <Flashcard
+          word={current}
+          examples={examplesByWord[current.id] ?? []}
+          flipped={flipped}
+          onFlip={() => setFlipped(!flipped)}
+        />
 
         {/* Chưa lật: nút hiện nghĩa. Đã lật: 3 nút chấm SRS */}
         {!flipped ? (
