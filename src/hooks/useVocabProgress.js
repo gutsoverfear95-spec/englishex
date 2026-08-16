@@ -9,9 +9,10 @@ export function useVocabProgress() {
 
   // Chấm 1 thẻ: tính interval/ease/next_review_date mới rồi upsert.
   // existingRow = null nếu từ chưa từng học (upsert sẽ INSERT).
+  // Luôn trả về { error } để nơi gọi biết tiến độ có thực sự được lưu hay không.
   const gradeWord = useCallback(
     (wordId, existingRow, grade) => {
-      if (!user) return
+      if (!user) return { error: { message: 'Phiên đăng nhập đã hết hạn — hãy đăng nhập lại.' } }
       const next = gradeCard(existingRow, grade)
       return supabase.from('user_progress').upsert(
         {

@@ -29,11 +29,16 @@ const GRADE_BUTTONS = [
   },
 ]
 
+// Số lần TỐI ĐA một thẻ được lặp lại trong CÙNG một phiên khi bấm "Khó".
+// Hết hạn mức, thẻ rời hàng đợi (vẫn quay lại ở phiên sau theo lịch SRS).
+// Không có mức trần thì bấm "Khó" mãi sẽ khiến phiên không bao giờ kết thúc.
+const MAX_RELEARN = 2
+
 // ============================================================
 // PHIÊN HỌC (Study Session) của 1 chủ đề:
 //   Hàng đợi = từ MỚI (chưa có progress) + từ ĐẾN HẠN ôn (SRS).
 //   Luồng mỗi thẻ: xem mặt trước → lật thẻ → chấm Khó/Tốt/Dễ.
-//   - "Khó": từ bị đẩy xuống CUỐI hàng đợi → gặp lại ngay trong phiên
+//   - "Khó": từ quay lại CUỐI hàng đợi, tối đa MAX_RELEARN lần mỗi phiên
 //   - "Tốt"/"Dễ": rời hàng đợi, hẹn gặp lại theo lịch SRS
 // ============================================================
 export default function StudySession() {
@@ -44,6 +49,8 @@ export default function StudySession() {
   const [queue, setQueue] = useState(null)          // hàng đợi thẻ của phiên
   const [initialCount, setInitialCount] = useState(0)
   const [progressMap, setProgressMap] = useState({}) // { word_id: row } — cập nhật cục bộ khi chấm
+  const [relearnCount, setRelearnCount] = useState({}) // { word_id: số lần đã lặp trong phiên }
+  const [saveError, setSaveError] = useState(null)   // lỗi ghi tiến độ xuống Supabase
   const [allWords, setAllWords] = useState([])
   const [flipped, setFlipped] = useState(false)
   const [counts, setCounts] = useState({ hard: 0, good: 0, easy: 0 })
@@ -73,6 +80,8 @@ export default function StudySession() {
     setQueue(sessionQueue)
     setInitialCount(sessionQueue.length)
     setCounts({ hard: 0, good: 0, easy: 0 })
+    setRelearnCount({})
+    setSaveError(null)
     setFlipped(false)
     setLoading(false)
   }, [topicId])
@@ -104,18 +113,28 @@ export default function StudySession() {
   const current = queue[0]
 
   // Chấm thẻ hiện tại rồi chuyển thẻ kế tiếp
-  function handleGrade(grade) {
-    const row = progressMap[current.id] ?? null
-    gradeWord(current.id, row, grade) // ghi DB chạy nền
+  async function handleGrade(grade) {
+    const card = current
+    const row = progressMap[card.id] ?? null
 
     // Cập nhật progress cục bộ để previewInterval của lần gặp lại chính xác
-    setProgressMap({ ...progressMap, [current.id]: { ...row, ...gradeCard(row, grade) } })
+    setProgressMap({ ...progressMap, [card.id]: { ...row, ...gradeCard(row, grade) } })
     setCounts({ ...counts, [grade]: counts[grade] + 1 })
     setFlipped(false)
 
+    // "Khó" → gặp lại cuối phiên, nhưng chỉ tối đa MAX_RELEARN lần để phiên
+    // luôn kết thúc được. "Tốt"/"Dễ" → rời hàng đợi, hẹn theo lịch SRS.
+    const seen = relearnCount[card.id] ?? 0
+    const repeat = grade === 'hard' && seen < MAX_RELEARN
+    if (repeat) setRelearnCount({ ...relearnCount, [card.id]: seen + 1 })
+
     const rest = queue.slice(1)
-    // "Khó" → gặp lại cuối phiên; "Tốt"/"Dễ" → xong, hẹn theo lịch SRS
-    setQueue(grade === 'hard' ? [...rest, current] : rest)
+    setQueue(repeat ? [...rest, card] : rest)
+
+    // Ghi DB: lỗi ở đây từng bị nuốt im lặng — tiến độ không lưu nên chủ đề
+    // không bao giờ đủ điều kiện mở khoá. Giờ báo thẳng cho người học.
+    const { error } = (await gradeWord(card.id, row, grade)) ?? {}
+    if (error) setSaveError(error.message)
   }
 
   // Header dùng chung cho các màn bên dưới
@@ -128,6 +147,18 @@ export default function StudySession() {
         <ArrowLeft className="h-4 w-4" /> {topic.courses?.title ?? 'Chủ đề'}
       </Link>
       <h1 className="text-xl sm:text-2xl font-bold text-slate-800 mt-1">{topic.name}</h1>
+    </div>
+  )
+
+  // Cảnh báo khi Supabase từ chối ghi tiến độ — không có nó thì người học
+  // tưởng đã lưu xong, nhưng chủ đề vẫn hiện "chưa hoàn thành".
+  const errorBanner = saveError && (
+    <div className="rounded-xl border-2 border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <p className="font-semibold">Không lưu được tiến độ lên máy chủ</p>
+      <p className="mt-0.5 break-words">{saveError}</p>
+      <p className="mt-1 text-xs text-red-600">
+        Kết quả phiên này sẽ không được ghi nhận và chủ đề sẽ không mở khoá.
+      </p>
     </div>
   )
 
@@ -170,6 +201,7 @@ export default function StudySession() {
       <div className="space-y-6">
         {header}
         <div className="max-w-md mx-auto space-y-4">
+          {errorBanner}
           <Card className="p-8 text-center space-y-3">
             <PartyPopper className="h-10 w-10 text-violet-500 mx-auto" />
             <p className="text-3xl font-bold text-violet-600">{initialCount} thẻ</p>
@@ -207,6 +239,7 @@ export default function StudySession() {
       {header}
 
       <div className="max-w-md md:max-w-lg mx-auto space-y-4">
+        {errorBanner}
         <div className="flex items-center gap-3">
           <ProgressBar value={donePct} barClass="bg-violet-500" />
           <span className="text-sm text-slate-500 whitespace-nowrap">Còn {queue.length} thẻ</span>

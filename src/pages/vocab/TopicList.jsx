@@ -105,8 +105,11 @@ export default function TopicList() {
       <div className="space-y-3">
         {topicStats.map((stat, i) => {
           const { topic, total, learned, due, completed } = stat
-          // Khoá nếu không phải chủ đề đầu và chủ đề trước chưa completed
-          const locked = i > 0 && !topicStats[i - 1].completed
+          // Khoá nếu không phải chủ đề đầu và chủ đề trước chưa completed.
+          // Chủ đề trước RỖNG (chưa seed từ) thì không bao giờ completed được
+          // → bỏ qua, nếu không cả phần còn lại của chương trình bị khoá vĩnh viễn.
+          const prev = topicStats[i - 1]
+          const locked = i > 0 && prev.total > 0 && !prev.completed
           const learning = !completed && learned > 0
           const pct = total > 0 ? (learned / total) * 100 : 0
 
