@@ -236,8 +236,14 @@ def write_sql(cache, items):
         "-- ============================================================================",
         f"-- ẢNH MINH HOẠ CHO {len(rows)} TỪ VỰNG (nguồn: Unsplash)",
         "-- File này do scripts/fetch_images.py sinh ra — đừng sửa tay.",
-        "-- Chạy SAU vocab_images_schema.sql. Chạy lại nhiều lần đều an toàn.",
+        "-- Chạy thẳng file này là đủ, không cần chạy file nào trước.",
+        "-- An toàn chạy lại nhiều lần.",
         "-- ============================================================================",
+        "",
+        "-- Tạo sẵn 2 cột ghi nguồn ảnh (Unsplash yêu cầu hiển thị tên tác giả).",
+        "-- Gộp vào đây để khỏi phải nhớ thứ tự chạy file.",
+        "alter table public.words add column if not exists image_credit     text;",
+        "alter table public.words add column if not exists image_credit_url text;",
         "",
     ]
     open(OUT_SQL, "w", encoding="utf-8").write("\n".join(head + rows) + "\n")

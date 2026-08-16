@@ -1,8 +1,14 @@
 -- ============================================================================
 -- ẢNH MINH HOẠ CHO 40 TỪ VỰNG (nguồn: Unsplash)
 -- File này do scripts/fetch_images.py sinh ra — đừng sửa tay.
--- Chạy SAU vocab_images_schema.sql. Chạy lại nhiều lần đều an toàn.
+-- Chạy thẳng file này là đủ, không cần chạy file nào trước.
+-- An toàn chạy lại nhiều lần.
 -- ============================================================================
+
+-- Tạo sẵn 2 cột ghi nguồn ảnh (Unsplash yêu cầu hiển thị tên tác giả).
+-- Gộp vào đây để khỏi phải nhớ thứ tự chạy file.
+alter table public.words add column if not exists image_credit     text;
+alter table public.words add column if not exists image_credit_url text;
 
 update public.words set image_url = 'https://images.unsplash.com/photo-1561037404-61cd46aa615b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDMyMjM0fDB8MXxzZWFyY2h8MXx8ZG9nfGVufDF8MHx8fDE3ODY5MDAzODB8MA&ixlib=rb-4.1.0&q=80&w=400', image_credit = 'Victor G', image_credit_url = 'https://unsplash.com/@victor_vector' where id = '00000301-0000-4000-8000-000000000301';
 update public.words set image_url = 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDMyMjM0fDB8MXxzZWFyY2h8MXx8Y2F0fGVufDF8MHx8fDE3ODY5MDAzODF8MA&ixlib=rb-4.1.0&q=80&w=400', image_credit = 'Manja Vitolic', image_credit_url = 'https://unsplash.com/@madhatterzone' where id = '00000302-0000-4000-8000-000000000302';
