@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Lock, CheckCircle2, PlayCircle, Clock, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Lock, LockOpen, CheckCircle2, PlayCircle, Clock, ChevronRight } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import Card from '../../components/ui/Card'
 import ProgressBar from '../../components/ui/ProgressBar'
 import Spinner from '../../components/ui/Spinner'
+
+// Bật cờ này thì mọi chủ đề đều mở, bỏ qua thứ tự tuần tự — tiện khi muốn
+// xem trước nội dung hoặc nhảy tới chủ đề bất kỳ. Lưu theo trình duyệt.
+const UNLOCK_ALL_KEY = 'englishex_unlock_all'
 
 // ============================================================
 // DANH SÁCH CHỦ ĐỀ của 1 chương trình học.
@@ -12,7 +16,7 @@ import Spinner from '../../components/ui/Spinner'
 //   - completed : đã học 100% số từ (icon ✓ xanh)
 //   - learning  : đã học >0 từ (icon ▶ vàng)
 //   - unlocked  : chưa học nhưng được mở (chủ đề đầu, hoặc chủ đề trước
-//                 đã completed)
+//                 đã completed, hoặc đang bật "mở khoá tất cả")
 //   - locked    : bị khoá — phải hoàn thành chủ đề trước đó
 // Badge "N cần ôn" hiện khi chủ đề có từ đến hạn SRS.
 // ============================================================
@@ -23,6 +27,16 @@ export default function TopicList() {
   const [wordsByTopic, setWordsByTopic] = useState({}) // { topic_id: [word_id,...] }
   const [progressMap, setProgressMap] = useState({})   // { word_id: row }
   const [loading, setLoading] = useState(true)
+  const [unlockAll, setUnlockAll] = useState(
+    () => localStorage.getItem(UNLOCK_ALL_KEY) === '1',
+  )
+
+  function toggleUnlockAll() {
+    const next = !unlockAll
+    setUnlockAll(next)
+    if (next) localStorage.setItem(UNLOCK_ALL_KEY, '1')
+    else localStorage.removeItem(UNLOCK_ALL_KEY)
+  }
 
   useEffect(() => {
     async function load() {
@@ -91,15 +105,36 @@ export default function TopicList() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <Link
-          to="/vocab"
-          className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <Link
+            to="/vocab"
+            className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
+          >
+            <ArrowLeft className="h-4 w-4" /> Chương trình học
+          </Link>
+          <h1 className="text-2xl font-bold text-slate-800 mt-1">{course.title}</h1>
+          <p className="text-slate-500 text-sm sm:text-base">{course.description}</p>
+        </div>
+
+        {/* Cho phép bỏ qua thứ tự tuần tự để xem trước / kiểm tra chủ đề bất kỳ */}
+        <button
+          type="button"
+          onClick={toggleUnlockAll}
+          title={
+            unlockAll
+              ? 'Đang mở tất cả chủ đề — bấm để quay lại học tuần tự'
+              : 'Mở khoá tất cả chủ đề để xem trước'
+          }
+          className={`inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
+            unlockAll
+              ? 'border-violet-200 bg-violet-50 text-violet-700 hover:bg-violet-100'
+              : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+          }`}
         >
-          <ArrowLeft className="h-4 w-4" /> Chương trình học
-        </Link>
-        <h1 className="text-2xl font-bold text-slate-800 mt-1">{course.title}</h1>
-        <p className="text-slate-500 text-sm sm:text-base">{course.description}</p>
+          {unlockAll ? <LockOpen className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
+          {unlockAll ? 'Đang mở tất cả' : 'Mở khoá tất cả'}
+        </button>
       </div>
 
       <div className="space-y-3">
@@ -109,7 +144,7 @@ export default function TopicList() {
           // Chủ đề trước RỖNG (chưa seed từ) thì không bao giờ completed được
           // → bỏ qua, nếu không cả phần còn lại của chương trình bị khoá vĩnh viễn.
           const prev = topicStats[i - 1]
-          const locked = i > 0 && prev.total > 0 && !prev.completed
+          const locked = !unlockAll && i > 0 && prev.total > 0 && !prev.completed
           const learning = !completed && learned > 0
           const pct = total > 0 ? (learned / total) * 100 : 0
 
