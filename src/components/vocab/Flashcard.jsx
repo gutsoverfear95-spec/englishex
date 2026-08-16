@@ -108,6 +108,37 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
               <p className="text-2xl sm:text-3xl font-bold">{word.meaning}</p>
             </div>
 
+            {/* Ảnh minh hoạ đặt ngay dưới nghĩa để gắn hình với từ.
+                Unsplash yêu cầu ghi tên tác giả kèm link khi dùng ảnh. */}
+            {word.image_url && (
+              <figure className="shrink-0">
+                {/* Không dùng loading="lazy": mặt sau thẻ bị backface-visibility
+                    ẩn đi nên trình duyệt có thể hoãn tải, lật thẻ xong ảnh mới
+                    hiện. Ảnh chỉ ~12KB nên tải thẳng là gọn nhất. */}
+                <img
+                  src={word.image_url}
+                  alt={word.word}
+                  className="mx-auto h-24 sm:h-28 w-full max-w-xs rounded-xl object-cover shadow-md"
+                  onError={(e) => (e.target.closest('figure').style.display = 'none')}
+                />
+                {word.image_credit && (
+                  <figcaption className="mt-1 text-center text-[10px] text-violet-300">
+                    Ảnh:{' '}
+                    <a
+                      href={word.image_credit_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="underline hover:text-white"
+                    >
+                      {word.image_credit}
+                    </a>{' '}
+                    / Unsplash
+                  </figcaption>
+                )}
+              </figure>
+            )}
+
             {/* Mỗi ví dụ: câu tiếng Anh (bôi đậm từ đang học) + nghĩa tiếng Việt */}
             {exampleList.length > 0 && (
               <ul className="space-y-2 text-left">
@@ -133,16 +164,6 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
                   </li>
                 ))}
               </ul>
-            )}
-
-            {/* Khung ảnh minh hoạ — chỉ hiện khi có image_url */}
-            {word.image_url && (
-              <img
-                src={word.image_url}
-                alt={word.word}
-                className="mx-auto max-h-24 sm:max-h-28 rounded-xl object-cover shadow-md"
-                onError={(e) => (e.target.style.display = 'none')}
-              />
             )}
 
             <button

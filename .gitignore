@@ -6,3 +6,5 @@ dist
 
 .vercel
 .env*
+
+scripts/.image_cache.json.bak
