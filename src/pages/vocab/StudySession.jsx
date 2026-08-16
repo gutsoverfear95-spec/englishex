@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Eye, PartyPopper, RotateCcw } from 'lucide-react'
+import { ArrowLeft, Eye, PartyPopper, RotateCcw, Check, X, Keyboard, Layers } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { useVocabProgress } from '../../hooks/useVocabProgress'
 import { gradeCard, previewInterval } from '../../utils/srs'
+import { checkAnswer, similarity, editDistance } from '../../utils/textCompare'
 import Flashcard from '../../components/vocab/Flashcard'
+import TypeAnswer from '../../components/vocab/TypeAnswer'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import ProgressBar from '../../components/ui/ProgressBar'
@@ -34,6 +36,13 @@ const GRADE_BUTTONS = [
 // Không có mức trần thì bấm "Khó" mãi sẽ khiến phiên không bao giờ kết thúc.
 const MAX_RELEARN = 2
 
+// Kiểu ôn: 'flip' = lật thẻ tự chấm, 'type' = gõ lại từ tiếng Anh.
+// Gõ từ bắt não SẢN SINH thay vì chỉ nhận diện nên nhớ lâu hơn.
+const MODE_KEY = 'englishex_study_mode'
+
+// Gõ sai vài ký tự (chính tả) vẫn tính là "gần đúng" thay vì sai hẳn
+const CLOSE_ENOUGH = 80
+
 // ============================================================
 // PHIÊN HỌC (Study Session) của 1 chủ đề:
 //   Hàng đợi = từ MỚI (chưa có progress) + từ ĐẾN HẠN ôn (SRS).
@@ -56,6 +65,19 @@ export default function StudySession() {
   const [flipped, setFlipped] = useState(false)
   const [counts, setCounts] = useState({ hard: 0, good: 0, easy: 0 })
   const [loading, setLoading] = useState(true)
+  const [mode, setMode] = useState(() =>
+    localStorage.getItem(MODE_KEY) === 'type' ? 'type' : 'flip',
+  )
+  const [typed, setTyped] = useState('')
+  const [result, setResult] = useState(null) // { correct, close } sau khi chấm
+
+  function switchMode(next) {
+    setMode(next)
+    localStorage.setItem(MODE_KEY, next)
+    setTyped('')
+    setResult(null)
+    setFlipped(false)
+  }
 
   // Nạp dữ liệu + dựng hàng đợi (tách hàm để nút "Học lại" dùng lại được)
   const loadSession = useCallback(async () => {
@@ -98,6 +120,8 @@ export default function StudySession() {
     setRelearnCount({})
     setSaveError(null)
     setFlipped(false)
+    setTyped('')
+    setResult(null)
     setLoading(false)
   }, [topicId])
 
@@ -136,6 +160,8 @@ export default function StudySession() {
     setProgressMap({ ...progressMap, [card.id]: { ...row, ...gradeCard(row, grade) } })
     setCounts({ ...counts, [grade]: counts[grade] + 1 })
     setFlipped(false)
+    setTyped('')
+    setResult(null)
 
     // "Khó" → gặp lại cuối phiên, nhưng chỉ tối đa MAX_RELEARN lần để phiên
     // luôn kết thúc được. "Tốt"/"Dễ" → rời hàng đợi, hẹn theo lịch SRS.
@@ -152,16 +178,54 @@ export default function StudySession() {
     if (error) setSaveError(error.message)
   }
 
+  // Chấm câu trả lời gõ tay rồi lật thẻ để đối chiếu
+  function handleCheck(e) {
+    e.preventDefault()
+    const answer = current.word
+    const correct = checkAnswer(typed, [answer])
+    // "Gần đúng" = lệch đúng 1 ký tự (công bằng cho từ ngắn) hoặc giống >= 80%
+    // (cho từ/cụm dài). Lệch từ 2 ký tự trở lên coi là sai, để không nhầm lẫn
+    // các từ khác nghĩa nhưng viết na ná nhau như receipt / recipe.
+    const close =
+      !correct &&
+      (editDistance(typed, answer) <= 1 || similarity(typed, answer) >= CLOSE_ENOUGH)
+    setResult({ correct, close })
+    setFlipped(true)
+  }
+
   // Header dùng chung cho các màn bên dưới
   const header = (
-    <div>
-      <Link
-        to={backLink}
-        className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
-      >
-        <ArrowLeft className="h-4 w-4" /> {topic.courses?.title ?? 'Chủ đề'}
-      </Link>
-      <h1 className="text-xl sm:text-2xl font-bold text-slate-800 mt-1">{topic.name}</h1>
+    <div className="flex items-start justify-between gap-3 flex-wrap">
+      <div>
+        <Link
+          to={backLink}
+          className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
+        >
+          <ArrowLeft className="h-4 w-4" /> {topic.courses?.title ?? 'Chủ đề'}
+        </Link>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-800 mt-1">{topic.name}</h1>
+      </div>
+
+      {/* Chọn kiểu ôn — nhớ theo trình duyệt */}
+      <div className="inline-flex rounded-lg border border-slate-200 bg-white p-0.5 shrink-0">
+        {[
+          { key: 'flip', label: 'Lật thẻ', Icon: Layers },
+          { key: 'type', label: 'Gõ từ', Icon: Keyboard },
+        ].map(({ key, label, Icon }) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => switchMode(key)}
+            className={`inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
+              mode === key
+                ? 'bg-violet-600 text-white'
+                : 'text-slate-600 hover:bg-slate-100'
+            }`}
+          >
+            <Icon className="h-4 w-4" /> {label}
+          </button>
+        ))}
+      </div>
     </div>
   )
 
@@ -260,18 +324,62 @@ export default function StudySession() {
           <span className="text-sm text-slate-500 whitespace-nowrap">Còn {queue.length} thẻ</span>
         </div>
 
-        <Flashcard
-          word={current}
-          examples={examplesByWord[current.id] ?? []}
-          flipped={flipped}
-          onFlip={() => setFlipped(!flipped)}
-        />
+        {/* Chế độ gõ từ: hỏi trước, chỉ lật thẻ sau khi đã trả lời */}
+        {mode === 'type' && !flipped ? (
+          <TypeAnswer word={current} value={typed} onChange={setTyped} onSubmit={handleCheck} />
+        ) : (
+          <>
+            {result && (
+              <div
+                className={`flex items-start gap-2 rounded-xl border-2 px-3 py-2 text-sm ${
+                  result.correct
+                    ? 'border-green-200 bg-green-50 text-green-700'
+                    : result.close
+                      ? 'border-amber-200 bg-amber-50 text-amber-700'
+                      : 'border-red-200 bg-red-50 text-red-700'
+                }`}
+              >
+                {result.correct ? (
+                  <Check className="h-4 w-4 mt-0.5 shrink-0" />
+                ) : (
+                  <X className="h-4 w-4 mt-0.5 shrink-0" />
+                )}
+                <div className="min-w-0">
+                  <p className="font-semibold">
+                    {/* Không khẳng định "sai chính tả": lệch 1 ký tự cũng có thể
+                        là từ khác hẳn (fine/wine, save/safe) — cứ đưa đáp án
+                        ra để người học tự đối chiếu. */}
+                    {result.correct
+                      ? 'Chính xác!'
+                      : result.close
+                        ? 'Suýt đúng — đối chiếu lại từng chữ'
+                        : 'Chưa đúng'}
+                  </p>
+                  {!result.correct && (
+                    <p className="mt-0.5 break-words">
+                      Bạn viết “{typed}” · Đáp án: <strong>{current.word}</strong>
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
 
-        {/* Chưa lật: nút hiện nghĩa. Đã lật: 3 nút chấm SRS */}
+            <Flashcard
+              word={current}
+              examples={examplesByWord[current.id] ?? []}
+              flipped={flipped}
+              onFlip={() => setFlipped(!flipped)}
+            />
+          </>
+        )}
+
+        {/* Chưa lật: nút hiện nghĩa (chỉ chế độ lật thẻ). Đã lật: 3 nút chấm SRS */}
         {!flipped ? (
-          <Button className="w-full bg-violet-600 hover:bg-violet-700" onClick={() => setFlipped(true)}>
-            <Eye className="h-4 w-4" /> Hiện nghĩa
-          </Button>
+          mode === 'flip' && (
+            <Button className="w-full bg-violet-600 hover:bg-violet-700" onClick={() => setFlipped(true)}>
+              <Eye className="h-4 w-4" /> Hiện nghĩa
+            </Button>
+          )
         ) : (
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {GRADE_BUTTONS.map(({ grade, label, cls }) => (

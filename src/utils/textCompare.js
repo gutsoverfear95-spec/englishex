@@ -44,6 +44,13 @@ function levenshtein(a, b) {
   return prev[n]
 }
 
+// Số ký tự sai lệch giữa 2 chuỗi (sau chuẩn hoá).
+// Dùng cho từ NGẮN: 1 lỗi chính tả trong từ 4-5 chữ làm điểm % tụt rất sâu,
+// nên xét thẳng số ký tự sai sẽ công bằng hơn là xét tỉ lệ phần trăm.
+export function editDistance(a, b) {
+  return levenshtein(normalize(a), normalize(b))
+}
+
 // Độ giống nhau 0-100 giữa 2 câu (sau chuẩn hoá)
 export function similarity(a, b) {
   const na = normalize(a)
