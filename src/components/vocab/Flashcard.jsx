@@ -7,10 +7,15 @@ function escapeRegex(str) {
 }
 
 // Bôi đậm từ mục tiêu trong câu ví dụ.
-// Regex `từ + \w*` bắt được cả dạng biến thể (vegetable → vegetables).
+//   - Từ dài  : cho phép đuôi biến thể (vegetable → vegetables) nhưng phải
+//                đứng trọn vẹn, nhờ \b nên "the" không ăn vào "there".
+//   - Từ ngắn : khớp chính xác, không cho đuôi. Từ chức năng như "a", "I",
+//                "of" mà cho \w* thì sẽ bôi đậm cả câu.
 function HighlightedExample({ sentence, target }) {
-  const parts = sentence.split(new RegExp(`(${escapeRegex(target)}\\w*)`, 'gi'))
-  const matcher = new RegExp(`^${escapeRegex(target)}`, 'i')
+  const esc = escapeRegex(target)
+  const body = target.length <= 3 ? esc : `${esc}\\w*`
+  const parts = sentence.split(new RegExp(`\\b(${body})\\b`, 'gi'))
+  const matcher = new RegExp(`^${body}$`, 'i')
   return (
     <p className="text-sm sm:text-base text-violet-100 italic leading-relaxed">
       “
