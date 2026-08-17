@@ -16,7 +16,10 @@ OUT = r"D:\CODE\english\supabase\vocab_1000_core.sql"
 
 COURSE_ID = "c1111111-1111-4111-8111-111111111111"   # khoa "1000 Tu vung co ban" co san
 def topic_id(i): return f"e2000000-0000-4000-8000-{i:012d}"
-def word_id(n):  return f"10000{n:03d}-0000-4000-8000-{n:012d}"
+# Nhom dau cua UUID phai dung 8 ky tu. Cach cu "10000" + 3 chu so bi tran o
+# tu thu 1000 (thanh 9 ky tu) khien ca file khong chay duoc.
+# Cach nay luon ra 8 ky tu va giu nguyen ID cua tu 1-999.
+def word_id(n):  return f"1{n:07d}-0000-4000-8000-{n:012d}"
 
 
 def load():
