@@ -43,8 +43,16 @@ export const SKILLS = [
 
 export const skillByKey = (key) => SKILLS.find((s) => s.key === key)
 
+// Bài học cũ dùng 3 mức beginner/intermediate/advanced; bài mới dùng thang
+// CEFR A1–C2 cho khớp với cấp độ của từ vựng. Giữ cả hai để bài cũ không vỡ.
 export const LEVEL_LABELS = {
   beginner: 'Cơ bản',
   intermediate: 'Trung cấp',
   advanced: 'Nâng cao',
+  A1: 'A1 · Mới bắt đầu',
+  A2: 'A2 · Sơ cấp',
+  B1: 'B1 · Trung cấp',
+  B2: 'B2 · Trung cấp trên',
+  C1: 'C1 · Cao cấp',
+  C2: 'C2 · Thành thạo',
 }
