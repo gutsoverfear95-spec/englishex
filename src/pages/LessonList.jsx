@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Plus } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { skillByKey, LEVEL_LABELS } from '../utils/constants'
 import Card from '../components/ui/Card'
@@ -27,6 +27,12 @@ export default function LessonList() {
   const [lessons, setLessons] = useState([])
   const [progress, setProgress] = useState({}) // { [lesson_id]: {status, best_score} }
   const [loading, setLoading] = useState(true)
+  // Chỉ tài khoản admin mới thấy nút soạn bài (quyền ghi cũng do RLS chặn ở DB)
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    supabase.rpc('is_admin').then(({ data }) => setIsAdmin(data === true))
+  }, [])
 
   useEffect(() => {
     if (!meta) return // skill không hợp lệ → phía dưới sẽ redirect
@@ -58,7 +64,7 @@ export default function LessonList() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
         <span className={`p-3 rounded-xl ${meta.bg}`}>
           <Icon className={`h-6 w-6 ${meta.text}`} />
         </span>
@@ -66,6 +72,14 @@ export default function LessonList() {
           <h1 className="text-2xl font-bold text-slate-800">Luyện {meta.label}</h1>
           <p className="text-slate-500 text-sm">{meta.desc}</p>
         </div>
+        {skill === 'reading' && isAdmin && (
+          <Link
+            to="/skill/reading/new"
+            className="ml-auto inline-flex items-center gap-1.5 text-sm px-3 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
+          >
+            <Plus className="h-4 w-4" /> Soạn bài đọc
+          </Link>
+        )}
       </div>
 
       {loading ? (

@@ -6,9 +6,12 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import LessonList from './pages/LessonList'
 import LessonPage from './pages/lesson/LessonPage'
+import LessonEditor from './pages/lesson/LessonEditor'
 import CourseList from './pages/vocab/CourseList'
 import TopicList from './pages/vocab/TopicList'
 import StudySession from './pages/vocab/StudySession'
+import DailyReview from './pages/vocab/DailyReview'
+import WordList from './pages/vocab/WordList'
 
 export default function App() {
   return (
@@ -22,11 +25,15 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/skill/:skill" element={<LessonList />} />
+          <Route path="/skill/reading/new" element={<LessonEditor />} />
           <Route path="/skill/:skill/lesson/:lessonId" element={<LessonPage />} />
           {/* Từ vựng v2: Chương trình học → Chủ đề → Phiên học SRS */}
           <Route path="/vocab" element={<CourseList />} />
           <Route path="/vocab/course/:courseId" element={<TopicList />} />
           <Route path="/vocab/study/:topicId" element={<StudySession />} />
+          {/* Ôn tổng hợp mọi chủ đề + trang tra cứu toàn bộ từ vựng */}
+          <Route path="/vocab/review" element={<DailyReview />} />
+          <Route path="/vocab/words" element={<WordList />} />
         </Route>
       </Route>
 
