@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Plus, Trash2, AlertTriangle, Save } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
+import Spinner from '../../components/ui/Spinner'
 
 // Khoảng độ dài đoạn văn theo cấp độ — dùng để nhắc, không chặn cứng
 const WORD_RANGE = {
@@ -28,6 +29,11 @@ const emptyTf = () => ({ kind: 'tf', prompt: '', options: null, answer: 'true', 
 // ============================================================
 export default function LessonEditor() {
   const navigate = useNavigate()
+  const { lessonId } = useParams()
+  const editing = Boolean(lessonId)
+  const [loading, setLoading] = useState(editing)
+  const [deleting, setDeleting] = useState(false)
+  const [notFound, setNotFound] = useState(false)
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
   const [level, setLevel] = useState('B1')
@@ -36,6 +42,53 @@ export default function LessonEditor() {
   const [questions, setQuestions] = useState([emptyMc()])
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState(null)
+
+  // Chế độ sửa: nạp bài + câu hỏi rồi đổ vào form
+  useEffect(() => {
+    if (!editing) return
+    async function load() {
+      const [lRes, eRes] = await Promise.all([
+        supabase.from('lessons').select('*').eq('id', lessonId).maybeSingle(),
+        supabase.from('exercises').select('*').eq('lesson_id', lessonId).order('order_index'),
+      ])
+      const L = lRes.data
+      if (!L) {
+        // Id sai hoặc bài đã bị xoá — dừng lại thay vì hiện form trống rồi
+        // lưu vào hư không
+        setNotFound(true)
+        setLoading(false)
+        return
+      }
+      {
+        setTitle(L.title ?? '')
+        setDesc(L.description ?? '')
+        setLevel(WORD_RANGE[L.level] ? L.level : 'B1')
+        setPassage(L.content ?? '')
+        const g = Array.isArray(L.glossary) ? L.glossary : []
+        setGloss(g.length ? g.map((x) => ({ term: x.term, vi: x.vi })) : [{ term: '', vi: '' }])
+      }
+      const qs = (eRes.data ?? []).map((e) => {
+        if (e.type === 'multiple_choice') {
+          const opts = Array.isArray(e.options) ? e.options.slice(0, 4) : ['', '', '', '']
+          while (opts.length < 4) opts.push('')
+          const ans = e.accepted_answers?.[0] ?? ''
+          const idx = opts.indexOf(ans)
+          return {
+            kind: 'mc', prompt: e.prompt ?? '', options: opts,
+            answerIdx: idx >= 0 ? idx : null, explanation: e.explanation ?? '',
+          }
+        }
+        return {
+          kind: 'tf', prompt: e.prompt ?? '', options: null,
+          answer: e.accepted_answers?.[0] === 'false' ? 'false' : 'true',
+          explanation: e.explanation ?? '',
+        }
+      })
+      if (qs.length) setQuestions(qs)
+      setLoading(false)
+    }
+    load()
+  }, [editing, lessonId])
 
   const words = passage.trim() ? passage.trim().split(/\s+/).length : 0
   const [lo, hi] = WORD_RANGE[level]
@@ -75,12 +128,74 @@ export default function LessonEditor() {
     setQuestions((qs) => qs.map((q, k) => (k === i ? { ...q, ...patch } : q)))
   }
 
+  function buildRows(id) {
+    return questions.map((q, i) => ({
+      lesson_id: id,
+      type: q.kind === 'mc' ? 'multiple_choice' : 'true_false',
+      prompt: q.prompt.trim(),
+      options: q.kind === 'mc' ? q.options.map((o) => o.trim()) : null,
+      accepted_answers: [q.kind === 'mc' ? q.options[q.answerIdx].trim() : q.answer],
+      explanation: q.explanation.trim() || null,
+      order_index: i + 1,
+    }))
+  }
+
+  async function handleDelete() {
+    // Xoá bài kéo theo cả câu hỏi và điểm đã đạt của bài đó (khoá ngoại cascade)
+    if (!window.confirm('Xoá hẳn bài đọc này? Câu hỏi và điểm bạn đã đạt ở bài này cũng mất theo.'))
+      return
+    setDeleting(true)
+    const { error } = await supabase.from('lessons').delete().eq('id', lessonId)
+    if (error) {
+      setSaveError(error.message)
+      setDeleting(false)
+      return
+    }
+    navigate('/skill/reading')
+  }
+
   async function handleSave() {
     setSaving(true)
     setSaveError(null)
     const cleanGloss = gloss
       .filter((g) => g.term.trim() && g.vi.trim())
       .map((g) => ({ term: g.term.trim(), vi: g.vi.trim() }))
+
+    // ---------- SỬA BÀI ĐÃ CÓ ----------
+    if (editing) {
+      const { error: ue } = await supabase
+        .from('lessons')
+        .update({
+          title: title.trim(),
+          description: desc.trim() || null,
+          level,
+          content: passage.trim(),
+          glossary: cleanGloss.length ? cleanGloss : null,
+        })
+        .eq('id', lessonId)
+      if (ue) {
+        setSaveError(ue.message)
+        setSaving(false)
+        return
+      }
+      // Thay toàn bộ câu hỏi: xoá hết rồi chèn lại theo thứ tự mới.
+      // Đơn giản hơn nhiều so với dò từng câu xem cái nào đổi, và tiến độ học
+      // nằm ở bảng lesson_progress nên không bị ảnh hưởng.
+      const { error: de } = await supabase.from('exercises').delete().eq('lesson_id', lessonId)
+      if (de) {
+        setSaveError(de.message)
+        setSaving(false)
+        return
+      }
+      const { error: ie } = await supabase.from('exercises').insert(buildRows(lessonId))
+      if (ie) {
+        setSaveError(`Bài đã lưu nhưng câu hỏi lỗi: ${ie.message}`)
+        setSaving(false)
+        return
+      }
+      navigate('/skill/reading')
+      return
+    }
 
     // Xếp bài mới xuống cuối nhóm cấp độ của nó
     const { data: last } = await supabase
@@ -112,16 +227,7 @@ export default function LessonEditor() {
       return
     }
 
-    const rows = questions.map((q, i) => ({
-      lesson_id: lesson.id,
-      type: q.kind === 'mc' ? 'multiple_choice' : 'true_false',
-      prompt: q.prompt.trim(),
-      options: q.kind === 'mc' ? q.options.map((o) => o.trim()) : null,
-      accepted_answers: [q.kind === 'mc' ? q.options[q.answerIdx].trim() : q.answer],
-      explanation: q.explanation.trim() || null,
-      order_index: i + 1,
-    }))
-    const { error: ee } = await supabase.from('exercises').insert(rows)
+    const { error: ee } = await supabase.from('exercises').insert(buildRows(lesson.id))
 
     if (ee) {
       // Bài đã tạo nhưng câu hỏi lỗi → xoá bài để không để lại bài rỗng
@@ -133,6 +239,25 @@ export default function LessonEditor() {
     navigate('/skill/reading')
   }
 
+  if (loading) {
+    return (
+      <div className="py-16 grid place-items-center">
+        <Spinner />
+      </div>
+    )
+  }
+
+  if (notFound) {
+    return (
+      <Card className="p-10 text-center space-y-2">
+        <p className="text-slate-600">Không tìm thấy bài đọc này.</p>
+        <Link to="/skill/reading" className="text-emerald-600 font-medium hover:underline">
+          Về danh sách bài đọc
+        </Link>
+      </Card>
+    )
+  }
+
   return (
     <div className="space-y-5">
       <div>
@@ -142,7 +267,9 @@ export default function LessonEditor() {
         >
           <ArrowLeft className="h-4 w-4" /> Bài đọc
         </Link>
-        <h1 className="text-2xl font-bold text-slate-800 mt-1">Soạn bài đọc mới</h1>
+        <h1 className="text-2xl font-bold text-slate-800 mt-1">
+          {editing ? 'Sửa bài đọc' : 'Soạn bài đọc mới'}
+        </h1>
       </div>
 
       {/* ---------- Thông tin chung ---------- */}
@@ -365,11 +492,21 @@ export default function LessonEditor() {
           disabled={errors.length > 0 || saving}
           className="bg-emerald-600 hover:bg-emerald-700"
         >
-          <Save className="h-4 w-4" /> {saving ? 'Đang lưu...' : 'Lưu bài đọc'}
+          <Save className="h-4 w-4" /> {saving ? 'Đang lưu...' : editing ? 'Lưu thay đổi' : 'Lưu bài đọc'}
         </Button>
         <Link to="/skill/reading">
           <Button variant="secondary">Huỷ</Button>
         </Link>
+        {editing && (
+          <Button
+            variant="secondary"
+            onClick={handleDelete}
+            disabled={deleting}
+            className="ml-auto border-red-200 text-red-600 hover:bg-red-50"
+          >
+            <Trash2 className="h-4 w-4" /> {deleting ? 'Đang xoá...' : 'Xoá bài'}
+          </Button>
+        )}
       </div>
     </div>
   )

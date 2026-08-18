@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { ChevronRight, Plus } from 'lucide-react'
+import { ChevronRight, Plus, Pencil } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { skillByKey, LEVEL_LABELS } from '../utils/constants'
 import Card from '../components/ui/Card'
@@ -93,7 +93,16 @@ export default function LessonList() {
       ) : (
         <div className="space-y-3">
           {lessons.map((lesson, i) => (
-            <Card key={lesson.id} className="hover:shadow-md transition-shadow">
+            <Card key={lesson.id} className="hover:shadow-md transition-shadow relative">
+              {skill === 'reading' && isAdmin && (
+                <Link
+                  to={`/skill/reading/${lesson.id}/edit`}
+                  title="Sửa bài đọc"
+                  className="absolute right-2 top-2 z-10 p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+                >
+                  <Pencil className="h-4 w-4" />
+                </Link>
+              )}
               <Link
                 to={`/skill/${skill}/lesson/${lesson.id}`}
                 className="flex items-center gap-4 p-4 group"

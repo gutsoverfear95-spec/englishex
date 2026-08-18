@@ -26,6 +26,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/skill/:skill" element={<LessonList />} />
           <Route path="/skill/reading/new" element={<LessonEditor />} />
+          <Route path="/skill/reading/:lessonId/edit" element={<LessonEditor />} />
           <Route path="/skill/:skill/lesson/:lessonId" element={<LessonPage />} />
           {/* Từ vựng v2: Chương trình học → Chủ đề → Phiên học SRS */}
           <Route path="/vocab" element={<CourseList />} />
