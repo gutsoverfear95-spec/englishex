@@ -49,6 +49,15 @@ def jsonarr(items):
     return q("[" + inner + "]")
 
 
+def glossjson(pairs):
+    """Cot glossary dang jsonb: [{"term": ..., "vi": ...}]"""
+    if not pairs:
+        return "null"
+    esc = lambda x: x.replace("\\", "\\\\").replace('"', '\\"')
+    body = ", ".join('{"term": "%s", "vi": "%s"}' % (esc(t), esc(v)) for t, v in pairs)
+    return q("[" + body + "]")
+
+
 def pgarr(items):
     return "array[" + ", ".join(q(i) for i in items) + "]"
 
@@ -76,6 +85,11 @@ def main():
             nwords = len(L["passage"].split())
             if not (lo <= nwords <= hi):
                 problems.append(f"{title}: doan van {nwords} tu, ngoai khoang {lo}-{hi} cua {m.LEVEL}")
+            for term, vi in L.get("gloss", []):
+                if term.lower() not in L["passage"].lower():
+                    problems.append(f"{title}: cum '{term}' khong co trong doan van")
+                if not vi.strip():
+                    problems.append(f"{title}: cum '{term}' thieu nghia tieng Viet")
             if len(L["questions"]) < 4:
                 problems.append(f"{title}: chi co {len(L['questions'])} cau hoi, can >= 4")
 
@@ -124,19 +138,25 @@ def main():
     out.append("alter table public.lessons add constraint lessons_level_check")
     out.append("  check (level in ('beginner','intermediate','advanced','A1','A2','B1','B2','C1','C2'));")
     out.append("")
-    out.append("-- 2. XOA BAI CU CUNG ID roi chen lai (de chay lai file nay luon cap nhat)")
+    out.append("-- 2. CHU THICH CUM TU RIENG CUA TUNG BAI (hover ra nghia)")
+    out.append("--    Tu don da duoc tra tu dong tu kho tu vung; cot nay chi danh cho")
+    out.append("--    cum tu va thuat ngu ma tu dien khong co.")
+    out.append("alter table public.lessons add column if not exists glossary jsonb;")
+    out.append("")
+    out.append("-- 3. XOA BAI CU CUNG ID roi chen lai (de chay lai file nay luon cap nhat)")
     ids = ", ".join("'" + lesson_id(lv_, n) + "'" for lv_, n, _, _ in lessons)
     out.append(f"delete from public.lessons where id in ({ids});")
     out.append("")
-    out.append("-- 3. BAI DOC")
-    out.append("insert into public.lessons (id, skill, title, description, level, content, order_index) values")
+    out.append("-- 4. BAI DOC")
+    out.append("insert into public.lessons (id, skill, title, description, level, content, glossary, order_index) values")
     rows = []
     for lv_, n, L, _ in lessons:
         rows.append(f"('{lesson_id(lv_, n)}', 'reading', {q(L['title'])}, {q(L['desc'])}, "
-                    f"'{lv_}', {q(L['passage'])}, {LEVEL_ORDER[lv_]*100 + n})")
+                    f"'{lv_}', {q(L['passage'])}, {glossjson(L.get('gloss', []))}, "
+                    f"{LEVEL_ORDER[lv_]*100 + n})")
     out.append(",\n".join(rows) + ";")
     out.append("")
-    out.append("-- 4. CAU HOI")
+    out.append("-- 5. CAU HOI")
     out.append("insert into public.exercises (lesson_id, type, prompt, options, accepted_answers, explanation, order_index) values")
     erows = []
     for lv_, n, L, _ in lessons:

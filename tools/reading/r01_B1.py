@@ -4,6 +4,11 @@ START = 1
 LESSONS = [
 dict(
  title="Working from Home",
+ gloss=[
+ ("work from home","làm việc tại nhà"),
+ ("commute","đi lại giữa nhà và nơi làm"),
+ ("face to face","gặp trực tiếp"),
+ ("fixed working hours","giờ làm cố định")],
  desc="Lợi ích và mặt trái của việc làm việc tại nhà",
  passage="""Ten years ago, most people travelled to an office every morning. Today, millions of people work from home instead. The change happened quickly, and many companies now let their staff choose where they work.
 
@@ -35,6 +40,11 @@ Experts suggest a few simple rules. Set fixed working hours and stop when they e
 
 dict(
  title="Learning a Language as an Adult",
+ gloss=[
+ ("pick up","tiếp thu, học được (một cách tự nhiên)"),
+ ("no matter how long","dù có bao lâu đi nữa"),
+ ("steady work","làm đều đặn"),
+ ("keeps new words alive","giữ cho từ mới không bị quên")],
  desc="Vì sao người lớn vẫn học ngoại ngữ tốt",
  passage="""Many adults believe they are too old to learn a new language. They remember how easily children pick up words and think the chance has passed. Research suggests this belief is only half true.
 
@@ -68,6 +78,11 @@ So age is not the main problem. Habit is.""",
 
 dict(
  title="Street Food Culture",
+ gloss=[
+ ("street food","đồ ăn đường phố"),
+ ("low stools","ghế nhựa thấp"),
+ ("two generations","hai đời, hai thế hệ"),
+ ("fresh ingredients","nguyên liệu tươi")],
  desc="Văn hoá ẩm thực đường phố và sức hút của nó",
  passage="""In many Asian cities, the best food is not found in expensive restaurants. It is sold on the pavement, from small carts and plastic tables. Street food is cheap, fast and, for many people, part of daily life.
 
@@ -101,6 +116,11 @@ For visitors, street food offers something a restaurant cannot: the taste of ord
 
 dict(
  title="Why Sleep Matters",
+ gloss=[
+ ("long-term memory","trí nhớ dài hạn"),
+ ("stay awake","thức, không ngủ"),
+ ("weight gain","tăng cân"),
+ ("slightly cool","hơi mát")],
  desc="Giấc ngủ ảnh hưởng thế nào tới trí nhớ và sức khoẻ",
  passage="""Most adults need between seven and nine hours of sleep, but many get far less. People often treat sleep as time that could be used for something more useful. Scientists disagree.
 
@@ -134,6 +154,11 @@ Sleep is not lost time. It is when the body prepares for tomorrow.""",
 
 dict(
  title="Phones and Attention",
+ gloss=[
+ ("a few seconds","vài giây"),
+ ("endless lists","danh sách bất tận"),
+ ("out of sight","khuất tầm mắt"),
+ ("face down","úp mặt xuống")],
  desc="Điện thoại ảnh hưởng tới khả năng tập trung",
  passage="""The average person checks their phone more than a hundred times a day. Most of these checks last only a few seconds, so they feel harmless. Researchers say the cost is higher than it looks.
 
@@ -167,6 +192,11 @@ Nobody needs to give up their phone. The aim is to decide when it speaks to you.
 
 dict(
  title="Getting Around a Big City",
+ gloss=[
+ ("public transport","giao thông công cộng"),
+ ("bike lanes","làn đường xe đạp"),
+ ("a fraction of","một phần nhỏ của"),
+ ("real choice","lựa chọn thật sự")],
  desc="Các cách di chuyển trong thành phố lớn",
  passage="""Every large city faces the same question: how should millions of people move around each day? The answers are different, but the problems are similar.
 
@@ -200,6 +230,11 @@ There is no perfect system. The best cities simply give people a real choice, so
 
 dict(
  title="Small Habits, Big Savings",
+ gloss=[
+ ("add up to","cộng dồn thành"),
+ ("on sale","đang giảm giá"),
+ ("save first","tiết kiệm trước, tiêu sau"),
+ ("payday","ngày lĩnh lương")],
  desc="Thói quen nhỏ giúp tiết kiệm tiền",
  passage="""People often believe that saving money requires a large salary. In fact, what matters more is the pattern of small daily decisions.
 
@@ -233,6 +268,11 @@ None of this is complicated. The difficulty is that small habits feel unimportan
 
 dict(
  title="The Weather Is Changing",
+ gloss=[
+ ("wet season","mùa mưa"),
+ ("washed away","bị cuốn trôi"),
+ ("outdoor workers","người lao động ngoài trời"),
+ ("keep water stored","trữ nước")],
  desc="Biến đổi thời tiết ảnh hưởng tới đời sống hằng ngày",
  passage="""Farmers are often the first to notice that the weather is changing. They do not read reports; they simply see that the rain no longer arrives when it used to.
 
@@ -266,6 +306,11 @@ Ordinary people are adapting too. Farmers plant different varieties, shops open 
 
 dict(
  title="Making Friends After Thirty",
+ gloss=[
+ ("by accident","một cách tình cờ"),
+ ("share the same timetable","dùng chung thời khoá biểu"),
+ ("without a clear purpose","không có mục đích rõ ràng"),
+ ("repeated contact","gặp lại nhiều lần")],
  desc="Vì sao kết bạn khi trưởng thành lại khó hơn",
  passage="""At school and university, friendship happens almost by accident. You see the same people every day, you share the same timetable, and there is plenty of free time. After thirty, all three of these conditions usually disappear.
 
@@ -299,6 +344,11 @@ Friendship after thirty rarely happens by accident. It has to be arranged.""",
 
 dict(
  title="Reading More Books",
+ gloss=[
+ ("turning pages","lật hết trang này tới trang khác"),
+ ("free periods","khoảng thời gian rảnh"),
+ ("force themselves through","ép mình đọc cho hết"),
+ ("small obstacles","những trở ngại nhỏ")],
  desc="Cách xây dựng thói quen đọc sách",
  passage="""Many people say they want to read more but finish only two or three books a year. They rarely lack interest. What they lack is a system.
 

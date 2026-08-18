@@ -10,18 +10,23 @@ alter table public.lessons drop constraint if exists lessons_level_check;
 alter table public.lessons add constraint lessons_level_check
   check (level in ('beginner','intermediate','advanced','A1','A2','B1','B2','C1','C2'));
 
--- 2. XOA BAI CU CUNG ID roi chen lai (de chay lai file nay luon cap nhat)
+-- 2. CHU THICH CUM TU RIENG CUA TUNG BAI (hover ra nghia)
+--    Tu don da duoc tra tu dong tu kho tu vung; cot nay chi danh cho
+--    cum tu va thuat ngu ma tu dien khong co.
+alter table public.lessons add column if not exists glossary jsonb;
+
+-- 3. XOA BAI CU CUNG ID roi chen lai (de chay lai file nay luon cap nhat)
 delete from public.lessons where id in ('b3000000-0000-4000-8000-000000000001', 'b3000000-0000-4000-8000-000000000002', 'b3000000-0000-4000-8000-000000000003', 'b3000000-0000-4000-8000-000000000004', 'b3000000-0000-4000-8000-000000000005', 'b3000000-0000-4000-8000-000000000006', 'b3000000-0000-4000-8000-000000000007', 'b3000000-0000-4000-8000-000000000008', 'b3000000-0000-4000-8000-000000000009', 'b3000000-0000-4000-8000-000000000010', 'b4000000-0000-4000-8000-000000000001', 'b4000000-0000-4000-8000-000000000002', 'b4000000-0000-4000-8000-000000000003', 'b4000000-0000-4000-8000-000000000004', 'b4000000-0000-4000-8000-000000000005', 'b4000000-0000-4000-8000-000000000006', 'b4000000-0000-4000-8000-000000000007', 'b4000000-0000-4000-8000-000000000008', 'b4000000-0000-4000-8000-000000000009', 'b4000000-0000-4000-8000-000000000010');
 
--- 3. BAI DOC
-insert into public.lessons (id, skill, title, description, level, content, order_index) values
+-- 4. BAI DOC
+insert into public.lessons (id, skill, title, description, level, content, glossary, order_index) values
 ('b3000000-0000-4000-8000-000000000001', 'reading', 'Working from Home', 'Lợi ích và mặt trái của việc làm việc tại nhà', 'B1', 'Ten years ago, most people travelled to an office every morning. Today, millions of people work from home instead. The change happened quickly, and many companies now let their staff choose where they work.
 
 There are clear advantages. Workers save time and money because they do not have to commute. A person who spends an hour on the road each day gains about five hours every week. Many people also say they concentrate better at home, away from noisy offices and long meetings.
 
 However, working from home is not perfect. Some people find it hard to separate work from private life. They open their laptop at seven in the morning and close it at nine at night. Others feel lonely because they rarely meet their colleagues face to face.
 
-Experts suggest a few simple rules. Set fixed working hours and stop when they end. Create a small area that is used only for work. Meet your team in person at least once a month. With these habits, most workers can enjoy the freedom of home working without losing the benefits of an office.', 301),
+Experts suggest a few simple rules. Set fixed working hours and stop when they end. Create a small area that is used only for work. Meet your team in person at least once a month. With these habits, most workers can enjoy the freedom of home working without losing the benefits of an office.', '[{"term": "work from home", "vi": "làm việc tại nhà"}, {"term": "commute", "vi": "đi lại giữa nhà và nơi làm"}, {"term": "face to face", "vi": "gặp trực tiếp"}, {"term": "fixed working hours", "vi": "giờ làm cố định"}]', 301),
 ('b3000000-0000-4000-8000-000000000002', 'reading', 'Learning a Language as an Adult', 'Vì sao người lớn vẫn học ngoại ngữ tốt', 'B1', 'Many adults believe they are too old to learn a new language. They remember how easily children pick up words and think the chance has passed. Research suggests this belief is only half true.
 
 Children do have one clear advantage: pronunciation. Young learners copy sounds naturally and often speak without a strong accent. Adults usually keep some accent, no matter how long they study.
@@ -30,7 +35,7 @@ In other areas, however, adults do better. They already understand how grammar w
 
 The real difficulty is time. Adults are busy, and progress feels slow when you only study twenty minutes a day. But twenty minutes every day is far better than three hours once a week. Regular practice keeps new words alive in the memory.
 
-So age is not the main problem. Habit is.', 302),
+So age is not the main problem. Habit is.', '[{"term": "pick up", "vi": "tiếp thu, học được (một cách tự nhiên)"}, {"term": "no matter how long", "vi": "dù có bao lâu đi nữa"}, {"term": "steady work", "vi": "làm đều đặn"}, {"term": "keeps new words alive", "vi": "giữ cho từ mới không bị quên"}]', 302),
 ('b3000000-0000-4000-8000-000000000003', 'reading', 'Street Food Culture', 'Văn hoá ẩm thực đường phố và sức hút của nó', 'B1', 'In many Asian cities, the best food is not found in expensive restaurants. It is sold on the pavement, from small carts and plastic tables. Street food is cheap, fast and, for many people, part of daily life.
 
 A typical seller cooks only one or two dishes. Because they make the same thing hundreds of times a day, they become extremely good at it. Customers return for years, and a good stall can support a family for two generations.
@@ -39,7 +44,7 @@ Street food is also social. People sit close together on low stools, share table
 
 There are worries, of course. Hygiene is not always perfect, and some governments have tried to move sellers indoors. Yet many customers judge a stall by simple signs: a long queue, fresh ingredients, and a cook who washes their hands.
 
-For visitors, street food offers something a restaurant cannot: the taste of ordinary life in a city.', 303),
+For visitors, street food offers something a restaurant cannot: the taste of ordinary life in a city.', '[{"term": "street food", "vi": "đồ ăn đường phố"}, {"term": "low stools", "vi": "ghế nhựa thấp"}, {"term": "two generations", "vi": "hai đời, hai thế hệ"}, {"term": "fresh ingredients", "vi": "nguyên liệu tươi"}]', 303),
 ('b3000000-0000-4000-8000-000000000004', 'reading', 'Why Sleep Matters', 'Giấc ngủ ảnh hưởng thế nào tới trí nhớ và sức khoẻ', 'B1', 'Most adults need between seven and nine hours of sleep, but many get far less. People often treat sleep as time that could be used for something more useful. Scientists disagree.
 
 During sleep, the brain does important work. It sorts through the day''s events and moves useful information into long-term memory. This is why students who sleep after studying remember more than students who stay awake all night. The body also repairs muscle and produces hormones that control appetite.
@@ -48,7 +53,7 @@ Losing sleep has quick effects. After one bad night, people react more slowly an
 
 The good news is that habits help. Go to bed and get up at similar times, even at weekends. Keep the bedroom dark and slightly cool. Avoid coffee after the early afternoon, and put the phone in another room.
 
-Sleep is not lost time. It is when the body prepares for tomorrow.', 304),
+Sleep is not lost time. It is when the body prepares for tomorrow.', '[{"term": "long-term memory", "vi": "trí nhớ dài hạn"}, {"term": "stay awake", "vi": "thức, không ngủ"}, {"term": "weight gain", "vi": "tăng cân"}, {"term": "slightly cool", "vi": "hơi mát"}]', 304),
 ('b3000000-0000-4000-8000-000000000005', 'reading', 'Phones and Attention', 'Điện thoại ảnh hưởng tới khả năng tập trung', 'B1', 'The average person checks their phone more than a hundred times a day. Most of these checks last only a few seconds, so they feel harmless. Researchers say the cost is higher than it looks.
 
 The problem is not the time itself but what happens afterwards. When you stop a task to look at a message, your attention does not return immediately. It can take several minutes to reach the same level of concentration again. If this happens twenty times in a morning, most of the morning is spent starting again.
@@ -57,7 +62,7 @@ Phones are designed to attract us. Notifications, bright colours and endless lis
 
 Some simple changes help. Turn off notifications for apps that are not urgent. Keep the phone out of sight while working, not just face down. Choose two or three fixed times a day to check messages.
 
-Nobody needs to give up their phone. The aim is to decide when it speaks to you.', 305),
+Nobody needs to give up their phone. The aim is to decide when it speaks to you.', '[{"term": "a few seconds", "vi": "vài giây"}, {"term": "endless lists", "vi": "danh sách bất tận"}, {"term": "out of sight", "vi": "khuất tầm mắt"}, {"term": "face down", "vi": "úp mặt xuống"}]', 305),
 ('b3000000-0000-4000-8000-000000000006', 'reading', 'Getting Around a Big City', 'Các cách di chuyển trong thành phố lớn', 'B1', 'Every large city faces the same question: how should millions of people move around each day? The answers are different, but the problems are similar.
 
 Cars offer comfort and privacy. Unfortunately, they also take up a great deal of space. A single bus carries as many passengers as forty cars, using a fraction of the road. When too many people drive, everyone moves slowly, including the drivers.
@@ -66,7 +71,7 @@ Public transport is cheaper and cleaner, but it only works if it is reliable. Pe
 
 Recently, many cities have returned to an older idea: walking and cycling. Wide pavements and protected bike lanes cost far less than new roads. They also make streets safer and shops busier.
 
-There is no perfect system. The best cities simply give people a real choice, so that driving becomes one option among several rather than the only one.', 306),
+There is no perfect system. The best cities simply give people a real choice, so that driving becomes one option among several rather than the only one.', '[{"term": "public transport", "vi": "giao thông công cộng"}, {"term": "bike lanes", "vi": "làn đường xe đạp"}, {"term": "a fraction of", "vi": "một phần nhỏ của"}, {"term": "real choice", "vi": "lựa chọn thật sự"}]', 306),
 ('b3000000-0000-4000-8000-000000000007', 'reading', 'Small Habits, Big Savings', 'Thói quen nhỏ giúp tiết kiệm tiền', 'B1', 'People often believe that saving money requires a large salary. In fact, what matters more is the pattern of small daily decisions.
 
 Consider a coffee bought on the way to work. One cup costs very little, but five cups a week for a year add up to a serious amount. The same is true of unused subscriptions, delivery fees and things bought simply because they were on sale.
@@ -75,7 +80,7 @@ Financial advisers suggest a simple exercise. For one month, write down every pa
 
 Another useful habit is to save first. Instead of saving whatever is left at the end of the month, move a fixed sum into a separate account on payday. Because the money disappears immediately, people adjust their spending without noticing.
 
-None of this is complicated. The difficulty is that small habits feel unimportant, and that is exactly why they are powerful.', 307),
+None of this is complicated. The difficulty is that small habits feel unimportant, and that is exactly why they are powerful.', '[{"term": "add up to", "vi": "cộng dồn thành"}, {"term": "on sale", "vi": "đang giảm giá"}, {"term": "save first", "vi": "tiết kiệm trước, tiêu sau"}, {"term": "payday", "vi": "ngày lĩnh lương"}]', 307),
 ('b3000000-0000-4000-8000-000000000008', 'reading', 'The Weather Is Changing', 'Biến đổi thời tiết ảnh hưởng tới đời sống hằng ngày', 'B1', 'Farmers are often the first to notice that the weather is changing. They do not read reports; they simply see that the rain no longer arrives when it used to.
 
 In many countries, the wet season now starts later and ends suddenly. Rice planted at the traditional time may sit in dry soil for weeks. When the rain finally comes, it falls too heavily, and young plants are washed away. A crop that once needed careful timing now needs luck.
@@ -84,7 +89,7 @@ Cities feel the change differently. Concrete and metal hold heat, so a hot day i
 
 Governments are responding slowly. Some are building better drainage; others are planting trees along main roads, because shade is cheap and effective.
 
-Ordinary people are adapting too. Farmers plant different varieties, shops open earlier to avoid the afternoon heat, and families keep water stored at home. Life continues, but the old rules no longer work.', 308),
+Ordinary people are adapting too. Farmers plant different varieties, shops open earlier to avoid the afternoon heat, and families keep water stored at home. Life continues, but the old rules no longer work.', '[{"term": "wet season", "vi": "mùa mưa"}, {"term": "washed away", "vi": "bị cuốn trôi"}, {"term": "outdoor workers", "vi": "người lao động ngoài trời"}, {"term": "keep water stored", "vi": "trữ nước"}]', 308),
 ('b3000000-0000-4000-8000-000000000009', 'reading', 'Making Friends After Thirty', 'Vì sao kết bạn khi trưởng thành lại khó hơn', 'B1', 'At school and university, friendship happens almost by accident. You see the same people every day, you share the same timetable, and there is plenty of free time. After thirty, all three of these conditions usually disappear.
 
 Adults meet fewer new people, and the people they do meet are often busy. A friendly conversation at work may never turn into anything more, simply because nobody has an evening free. Many adults report that they have colleagues they like but no close friends nearby.
@@ -93,7 +98,7 @@ Sociologists say that friendship needs three things: repeated contact, a shared 
 
 This explains why hobbies matter more than they seem to. Joining a class, a running group or a choir is not only about the activity. It creates a reason to see the same faces again and again.
 
-Friendship after thirty rarely happens by accident. It has to be arranged.', 309),
+Friendship after thirty rarely happens by accident. It has to be arranged.', '[{"term": "by accident", "vi": "một cách tình cờ"}, {"term": "share the same timetable", "vi": "dùng chung thời khoá biểu"}, {"term": "without a clear purpose", "vi": "không có mục đích rõ ràng"}, {"term": "repeated contact", "vi": "gặp lại nhiều lần"}]', 309),
 ('b3000000-0000-4000-8000-000000000010', 'reading', 'Reading More Books', 'Cách xây dựng thói quen đọc sách', 'B1', 'Many people say they want to read more but finish only two or three books a year. They rarely lack interest. What they lack is a system.
 
 The first mistake is choosing books that sound impressive rather than books that are enjoyable. A difficult classic left unfinished on a shelf teaches nothing. A simple novel that keeps you turning pages builds the habit, and the habit makes harder books possible later.
@@ -102,7 +107,7 @@ The second mistake is waiting for long free periods. Very few adults have two qu
 
 A third idea is to allow yourself to stop. Many readers force themselves through a book they dislike and then read nothing for months. Leaving a bad book is not failure; it protects the habit.
 
-Reading is less about discipline than about removing small obstacles. Keep a book where you can reach it, and the rest usually follows.', 310),
+Reading is less about discipline than about removing small obstacles. Keep a book where you can reach it, and the rest usually follows.', '[{"term": "turning pages", "vi": "lật hết trang này tới trang khác"}, {"term": "free periods", "vi": "khoảng thời gian rảnh"}, {"term": "force themselves through", "vi": "ép mình đọc cho hết"}, {"term": "small obstacles", "vi": "những trở ngại nhỏ"}]', 310),
 ('b4000000-0000-4000-8000-000000000001', 'reading', 'The Cost of Convenience', 'Cái giá thật của sự tiện lợi tức thì', 'B2', 'A decade ago, ordering dinner meant phoning a restaurant and waiting. Today an app delivers almost anything within half an hour. Convenience of this kind feels like pure progress, but it comes with costs that are easy to overlook.
 
 The most obvious is financial. Delivery fees, service charges and slightly higher menu prices add perhaps thirty per cent to a meal. Customers accept this because each individual charge looks small, yet over a year the difference is substantial.
@@ -111,7 +116,7 @@ Less obvious is the effect on the businesses involved. Restaurants often pay a l
 
 There is also a change in habit. When effort disappears, so does deliberation. People who once decided what to cook on Sunday now decide what to order at eight o''clock, when they are tired and hungry. Studies of household spending suggest that decisions made in that state are rarely the cheapest or the healthiest.
 
-None of this means delivery apps are harmful. For a parent with a sick child or a worker finishing at midnight, they solve a genuine problem. The difficulty arises when an occasional solution quietly becomes a daily default, and nobody remembers choosing it.', 401),
+None of this means delivery apps are harmful. For a parent with a sick child or a worker finishing at midnight, they solve a genuine problem. The difficulty arises when an occasional solution quietly becomes a daily default, and nobody remembers choosing it.', '[{"term": "service charges", "vi": "phí dịch vụ"}, {"term": "delivery fees", "vi": "phí giao hàng"}, {"term": "commission", "vi": "hoa hồng, phần trăm chiết khấu"}, {"term": "daily default", "vi": "lựa chọn mặc định hằng ngày"}, {"term": "genuine problem", "vi": "vấn đề có thật"}]', 401),
 ('b4000000-0000-4000-8000-000000000002', 'reading', 'Why Cities Are Getting Older', 'Dân số già hoá và điều đó thay đổi thành phố ra sao', 'B2', 'For most of the twentieth century, planners designed cities for young families. Schools, playgrounds and wide roads were built on the assumption that the population would keep growing and keep getting younger. In much of the world, that assumption no longer holds.
 
 Birth rates have fallen sharply, while life expectancy has risen. The result is a population in which the fastest growing group is people over sixty-five. In some Asian and European cities, one resident in four will soon belong to that group.
@@ -120,7 +125,7 @@ The consequences reach far beyond healthcare. A city built for drivers becomes d
 
 Some cities have responded intelligently, and often cheaply. Lowering a kerb, adding a bench every two hundred metres or extending the crossing time by four seconds costs very little compared with a new road. Interestingly, these changes benefit almost everyone: parents with pushchairs, injured workers, and anyone carrying heavy shopping.
 
-This is the useful lesson. Designing for the oldest residents is not charity, and it is not a cost imposed by one group on another. A city that an eighty-year-old can cross comfortably tends to be a better city for all of its inhabitants.', 402),
+This is the useful lesson. Designing for the oldest residents is not charity, and it is not a cost imposed by one group on another. A city that an eighty-year-old can cross comfortably tends to be a better city for all of its inhabitants.', '[{"term": "birth rates", "vi": "tỉ lệ sinh"}, {"term": "life expectancy", "vi": "tuổi thọ trung bình"}, {"term": "high kerbs", "vi": "bó vỉa cao"}, {"term": "pushchairs", "vi": "xe đẩy em bé"}, {"term": "no longer holds", "vi": "không còn đúng nữa"}]', 402),
 ('b4000000-0000-4000-8000-000000000003', 'reading', 'The Problem with Productivity Advice', 'Vì sao lời khuyên tăng năng suất thường không hiệu quả', 'B2', 'Bookshops contain hundreds of guides promising greater productivity. Most offer sensible techniques: plan tomorrow tonight, work in focused blocks, deal with email twice a day. Readers try them enthusiastically, and within a fortnight almost everyone has returned to their old routine. It is worth asking why.
 
 One reason is that such advice usually treats the reader as an isolated individual. In reality, most work is interdependent. A person who decides to answer email only twice a day may be admirably focused, but if their colleagues expect a reply within the hour, the plan collapses under social pressure rather than personal weakness.
@@ -129,7 +134,7 @@ A second reason is that productivity advice tends to assume the problem is speed
 
 There is also a curious side effect. The pursuit of efficiency can create more work. A person who becomes visibly capable is given additional responsibilities, and the time saved disappears.
 
-The most useful advice, therefore, is unfashionably dull: decide what you will not do, tell other people about it, and accept that some things will be done badly on purpose. This is harder than buying another notebook, which may explain why it sells fewer books.', 403),
+The most useful advice, therefore, is unfashionably dull: decide what you will not do, tell other people about it, and accept that some things will be done badly on purpose. This is harder than buying another notebook, which may explain why it sells fewer books.', '[{"term": "focused blocks", "vi": "khoảng thời gian tập trung liền mạch"}, {"term": "social pressure", "vi": "áp lực từ người xung quanh"}, {"term": "side effect", "vi": "tác dụng phụ"}, {"term": "on purpose", "vi": "một cách có chủ đích"}]', 403),
 ('b4000000-0000-4000-8000-000000000004', 'reading', 'Second-Hand Fashion', 'Thị trường quần áo cũ và giới hạn của nó', 'B2', 'Not long ago, buying used clothing carried a certain stigma. Today second-hand shops and resale apps are among the fastest growing parts of the fashion industry, and young shoppers in particular treat a vintage jacket as a mark of taste rather than of poverty.
 
 Several forces explain the shift. Clothing has become remarkably cheap, which means the market is flooded with garments that are barely worn. At the same time, awareness of environmental damage has grown: producing a single cotton shirt requires thousands of litres of water. Buying an existing shirt avoids that cost entirely.
@@ -138,7 +143,7 @@ The economics are attractive too. A shopper can acquire better-made clothing for
 
 Yet the picture is more complicated than it seems. Cheap resale can encourage rather than reduce consumption. If a jacket can always be sold on, buying it feels temporary and therefore harmless, and some shoppers simply buy more. Researchers describe this as a rebound effect: an efficiency improvement that increases total use.
 
-The honest conclusion is modest. Second-hand shopping is clearly better than buying new, but it does not solve the underlying problem, which is the sheer volume of clothing produced each year. Reducing that volume requires slower purchasing habits, not merely a cleverer way of passing garments along.', 404),
+The honest conclusion is modest. Second-hand shopping is clearly better than buying new, but it does not solve the underlying problem, which is the sheer volume of clothing produced each year. Reducing that volume requires slower purchasing habits, not merely a cleverer way of passing garments along.', '[{"term": "second-hand", "vi": "đồ đã qua sử dụng"}, {"term": "resale apps", "vi": "ứng dụng bán lại"}, {"term": "rebound effect", "vi": "hiệu ứng bật lại — cải thiện hiệu quả lại làm tăng tiêu dùng"}, {"term": "barely worn", "vi": "gần như chưa mặc"}, {"term": "passing garments along", "vi": "chuyền tay quần áo"}]', 404),
 ('b4000000-0000-4000-8000-000000000005', 'reading', 'How Rumours Spread Online', 'Cơ chế khiến tin sai lan nhanh hơn tin đúng', 'B2', 'Researchers who study social networks have reached an uncomfortable conclusion: false stories often travel faster and further than accurate ones. The explanation has less to do with technology than with human attention.
 
 A true account of an event is usually complicated. It contains qualifications, uncertain details and dull sections. A rumour has no such obligations. It can be shaped into the most surprising version of events, and surprise is precisely what makes people share. In one large study, false claims reached audiences roughly six times faster than corrections did.
@@ -147,7 +152,7 @@ Speed also matters because of order. Whichever version arrives first becomes the
 
 Attempts to fix the problem have produced mixed results. Removing false posts can create the impression that something is being hidden. Labelling them is more effective, though only if the label appears before the reader has formed an opinion.
 
-What seems to help most is unglamorous: slowing the moment of sharing. Platforms that ask users whether they have read an article before posting it see measurably fewer shares of misleading material. The intervention adds two seconds, and two seconds is apparently enough for judgement to catch up with impulse.', 405),
+What seems to help most is unglamorous: slowing the moment of sharing. Platforms that ask users whether they have read an article before posting it see measurably fewer shares of misleading material. The intervention adds two seconds, and two seconds is apparently enough for judgement to catch up with impulse.', '[{"term": "reference point", "vi": "điểm tham chiếu"}, {"term": "mixed results", "vi": "kết quả không đồng nhất"}, {"term": "formed an opinion", "vi": "đã hình thành quan điểm"}, {"term": "misleading material", "vi": "nội dung gây hiểu lầm"}]', 405),
 ('b4000000-0000-4000-8000-000000000006', 'reading', 'The Return of the Night Train', 'Tàu đêm trở lại và ý nghĩa của du lịch chậm', 'B2', 'In the 1990s, night trains across Europe were quietly withdrawn. Budget airlines could cross the continent in two hours for the price of a taxi ride, and sleeping carriages seemed like a charming relic. Three decades later, several countries are putting them back.
 
 The immediate reason is environmental. A train journey produces a small fraction of the emissions of the equivalent flight, and governments under pressure to reduce transport emissions find rail an obvious target for investment. Some have gone further and taxed short domestic flights.
@@ -156,7 +161,7 @@ But the revival is not only about carbon. Travellers have begun to notice someth
 
 Difficulties remain. Sleeping carriages are expensive to build and can carry fewer passengers than a seated coach, so tickets are rarely cheap. Cross-border services require agreement between several rail companies, which is slow work.
 
-Even so, the trend is instructive. It suggests that speed measured door to door, rather than in the air, may change how we judge a journey — and that the fastest option is not always the one that saves the most time.', 406),
+Even so, the trend is instructive. It suggests that speed measured door to door, rather than in the air, may change how we judge a journey — and that the fastest option is not always the one that saves the most time.', '[{"term": "night trains", "vi": "tàu đêm"}, {"term": "sleeping carriages", "vi": "toa giường nằm"}, {"term": "charming relic", "vi": "tàn dư đáng yêu của quá khứ"}, {"term": "door to door", "vi": "tính từ cửa nhà tới điểm đến"}, {"term": "cross-border", "vi": "xuyên biên giới"}]', 406),
 ('b4000000-0000-4000-8000-000000000007', 'reading', 'Who Owns Your Data?', 'Dữ liệu cá nhân và câu hỏi về quyền sở hữu', 'B2', 'When you install a free application, you agree to a document you almost certainly have not read. Somewhere inside it, you grant permission for information about your behaviour to be collected, stored and shared. The arrangement is legal, widely accepted, and strange when examined closely.
 
 Part of the strangeness is that the value of personal data is invisible at the moment of exchange. A single record of one person''s shopping is nearly worthless. Millions of such records, combined, can predict behaviour accurately enough to be sold to advertisers, insurers and political campaigns. The individual gives away something cheap; the collector assembles something valuable.
@@ -165,7 +170,7 @@ Defenders of the system argue that users receive a fair return in the form of fr
 
 Several governments have introduced rules requiring clearer notices and a genuine option to refuse. The effect so far has been limited. Faced with a choice between reading twenty pages and clicking ''accept'', most people click.
 
-Perhaps the more productive question is not who owns data but what may be done with it. Ownership is difficult to define for something that can be copied endlessly. Restricting particular uses — refusing insurance, setting prices individually — is narrower, but it may be enforceable.', 407),
+Perhaps the more productive question is not who owns data but what may be done with it. Ownership is difficult to define for something that can be copied endlessly. Restricting particular uses — refusing insurance, setting prices individually — is narrower, but it may be enforceable.', '[{"term": "free application", "vi": "ứng dụng miễn phí"}, {"term": "political campaigns", "vi": "chiến dịch tranh cử"}, {"term": "fair return", "vi": "sự đền đáp công bằng"}, {"term": "ordinary social and professional life", "vi": "đời sống xã hội và nghề nghiệp bình thường"}]', 407),
 ('b4000000-0000-4000-8000-000000000008', 'reading', 'Learning from Failure', 'Vì sao ta học sai bài học từ thành công', 'B2', 'Business writing is full of advice drawn from successful companies. Study what the winners did, the argument goes, and repeat it. The method sounds reasonable and is quietly misleading.
 
 The difficulty is that we only examine the survivors. For every firm that succeeded by ignoring market research, there may be fifty that did the same and disappeared without writing a book about it. Because the failures are invisible, the behaviour looks like the cause of success when it may simply have been a risk that happened to pay off. Statisticians call this survivorship bias.
@@ -174,7 +179,7 @@ A famous wartime example makes the point. Engineers examining returning aircraft
 
 The lesson for ordinary decisions is practical rather than gloomy. Before copying a strategy, ask what happened to those who tried it and failed. Ask whether the outcome could reasonably be explained by luck. Notice when a story is told backwards, starting from the result.
 
-Failure, unfortunately, is rarely documented as carefully as success. That imbalance is not neutral: it shapes what an entire generation of managers believes to be true.', 408),
+Failure, unfortunately, is rarely documented as carefully as success. That imbalance is not neutral: it shapes what an entire generation of managers believes to be true.', '[{"term": "survivorship bias", "vi": "thiên kiến kẻ sống sót — chỉ nhìn vào những trường hợp thành công"}, {"term": "market research", "vi": "nghiên cứu thị trường"}, {"term": "pay off", "vi": "đem lại kết quả tốt"}, {"term": "told backwards", "vi": "kể ngược từ kết quả trở lại"}]', 408),
 ('b4000000-0000-4000-8000-000000000009', 'reading', 'The Quiet Decline of Cash', 'Tiền mặt biến mất và ai bị bỏ lại', 'B2', 'In a growing number of cities, a person could spend a week without touching a banknote. Cards, phones and watches handle everything from a bus fare to a bowl of noodles. Retailers welcome the change, since counting cash is slow and carrying it is risky.
 
 The advantages are real. Electronic payment leaves a record, which reduces certain kinds of theft and makes tax collection easier. Small traders who once dealt only in coins can now accept payment from a tourist with no local currency at all.
@@ -183,7 +188,7 @@ The losses are less visible, and they fall on particular groups. Elderly people 
 
 There is also a question of privacy. Every electronic payment reveals where a person was and what they bought. Most people accept this without much thought, but the record does not disappear, and its uses may change.
 
-A sensible compromise is emerging in several countries: businesses may encourage digital payment but must still accept cash. This is not nostalgia. It is a recognition that a system with only one method has no way to fail gracefully.', 409),
+A sensible compromise is emerging in several countries: businesses may encourage digital payment but must still accept cash. This is not nostalgia. It is a recognition that a system with only one method has no way to fail gracefully.', '[{"term": "bus fare", "vi": "tiền vé xe buýt"}, {"term": "informally", "vi": "không chính thức"}, {"term": "power cut", "vi": "mất điện"}, {"term": "fail gracefully", "vi": "hỏng một cách êm, vẫn còn phương án thay thế"}]', 409),
 ('b4000000-0000-4000-8000-000000000010', 'reading', 'Why We Misjudge Risk', 'Não người đánh giá rủi ro lệch lạc như thế nào', 'B2', 'People are remarkably bad at estimating danger. Many are nervous about flying yet think nothing of crossing a busy road, although the road is far more likely to harm them. This is not stupidity; it is the predictable result of how attention works.
 
 Risk feels larger when an example comes easily to mind. Air accidents are rare but heavily reported, complete with photographs and names, so they are easy to recall. Road deaths are common but reported briefly and locally, so they leave no vivid impression. Psychologists call this the availability heuristic: we judge frequency by how readily an example appears.
@@ -192,9 +197,9 @@ Control matters too. We accept greater danger when we feel we are in charge. A d
 
 Finally, we respond to how a risk is described. Told that a treatment saves ninety per cent of patients, most people approve. Told that it loses ten per cent, the same people hesitate, although the two statements are identical.
 
-Knowing about these effects does not remove them. What it does allow is a useful habit: when a risk feels obvious, ask whether the feeling comes from evidence or simply from a memorable story.', 410);
+Knowing about these effects does not remove them. What it does allow is a useful habit: when a risk feels obvious, ask whether the feeling comes from evidence or simply from a memorable story.', '[{"term": "availability heuristic", "vi": "phép suy đoán theo mức dễ nhớ"}, {"term": "in charge", "vi": "làm chủ tình hình"}, {"term": "memorable story", "vi": "câu chuyện dễ nhớ"}, {"term": "think nothing of", "vi": "chẳng bận tâm gì tới"}]', 410);
 
--- 4. CAU HOI
+-- 5. CAU HOI
 insert into public.exercises (lesson_id, type, prompt, options, accepted_answers, explanation, order_index) values
 ('b3000000-0000-4000-8000-000000000001', 'multiple_choice', 'How much time can a person save each week by not commuting, according to the passage?', '["About one hour", "About three hours", "About five hours", "About ten hours"]', array['About five hours'], 'Đoạn 2: người mất một tiếng đi lại mỗi ngày sẽ tiết kiệm được khoảng năm tiếng mỗi tuần.', 1),
 ('b3000000-0000-4000-8000-000000000001', 'true_false', 'The passage says that all companies now allow their staff to work from home.', null, array['false'], 'Bài viết nói ''many companies'' (nhiều công ty), không phải tất cả.', 2),

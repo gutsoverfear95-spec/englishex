@@ -4,6 +4,12 @@ START = 1
 LESSONS = [
 dict(
  title="The Cost of Convenience",
+ gloss=[
+ ("service charges","phí dịch vụ"),
+ ("delivery fees","phí giao hàng"),
+ ("commission","hoa hồng, phần trăm chiết khấu"),
+ ("daily default","lựa chọn mặc định hằng ngày"),
+ ("genuine problem","vấn đề có thật")],
  desc="Cái giá thật của sự tiện lợi tức thì",
  passage="""A decade ago, ordering dinner meant phoning a restaurant and waiting. Today an app delivers almost anything within half an hour. Convenience of this kind feels like pure progress, but it comes with costs that are easy to overlook.
 
@@ -37,6 +43,12 @@ None of this means delivery apps are harmful. For a parent with a sick child or 
 
 dict(
  title="Why Cities Are Getting Older",
+ gloss=[
+ ("birth rates","tỉ lệ sinh"),
+ ("life expectancy","tuổi thọ trung bình"),
+ ("high kerbs","bó vỉa cao"),
+ ("pushchairs","xe đẩy em bé"),
+ ("no longer holds","không còn đúng nữa")],
  desc="Dân số già hoá và điều đó thay đổi thành phố ra sao",
  passage="""For most of the twentieth century, planners designed cities for young families. Schools, playgrounds and wide roads were built on the assumption that the population would keep growing and keep getting younger. In much of the world, that assumption no longer holds.
 
@@ -70,6 +82,11 @@ This is the useful lesson. Designing for the oldest residents is not charity, an
 
 dict(
  title="The Problem with Productivity Advice",
+ gloss=[
+ ("focused blocks","khoảng thời gian tập trung liền mạch"),
+ ("social pressure","áp lực từ người xung quanh"),
+ ("side effect","tác dụng phụ"),
+ ("on purpose","một cách có chủ đích")],
  desc="Vì sao lời khuyên tăng năng suất thường không hiệu quả",
  passage="""Bookshops contain hundreds of guides promising greater productivity. Most offer sensible techniques: plan tomorrow tonight, work in focused blocks, deal with email twice a day. Readers try them enthusiastically, and within a fortnight almost everyone has returned to their old routine. It is worth asking why.
 
@@ -104,6 +121,12 @@ The most useful advice, therefore, is unfashionably dull: decide what you will n
 
 dict(
  title="Second-Hand Fashion",
+ gloss=[
+ ("second-hand","đồ đã qua sử dụng"),
+ ("resale apps","ứng dụng bán lại"),
+ ("rebound effect","hiệu ứng bật lại — cải thiện hiệu quả lại làm tăng tiêu dùng"),
+ ("barely worn","gần như chưa mặc"),
+ ("passing garments along","chuyền tay quần áo")],
  desc="Thị trường quần áo cũ và giới hạn của nó",
  passage="""Not long ago, buying used clothing carried a certain stigma. Today second-hand shops and resale apps are among the fastest growing parts of the fashion industry, and young shoppers in particular treat a vintage jacket as a mark of taste rather than of poverty.
 
@@ -137,6 +160,11 @@ The honest conclusion is modest. Second-hand shopping is clearly better than buy
 
 dict(
  title="How Rumours Spread Online",
+ gloss=[
+ ("reference point","điểm tham chiếu"),
+ ("mixed results","kết quả không đồng nhất"),
+ ("formed an opinion","đã hình thành quan điểm"),
+ ("misleading material","nội dung gây hiểu lầm")],
  desc="Cơ chế khiến tin sai lan nhanh hơn tin đúng",
  passage="""Researchers who study social networks have reached an uncomfortable conclusion: false stories often travel faster and further than accurate ones. The explanation has less to do with technology than with human attention.
 
@@ -170,6 +198,12 @@ What seems to help most is unglamorous: slowing the moment of sharing. Platforms
 
 dict(
  title="The Return of the Night Train",
+ gloss=[
+ ("night trains","tàu đêm"),
+ ("sleeping carriages","toa giường nằm"),
+ ("charming relic","tàn dư đáng yêu của quá khứ"),
+ ("door to door","tính từ cửa nhà tới điểm đến"),
+ ("cross-border","xuyên biên giới")],
  desc="Tàu đêm trở lại và ý nghĩa của du lịch chậm",
  passage="""In the 1990s, night trains across Europe were quietly withdrawn. Budget airlines could cross the continent in two hours for the price of a taxi ride, and sleeping carriages seemed like a charming relic. Three decades later, several countries are putting them back.
 
@@ -203,6 +237,11 @@ Even so, the trend is instructive. It suggests that speed measured door to door,
 
 dict(
  title="Who Owns Your Data?",
+ gloss=[
+ ("free application","ứng dụng miễn phí"),
+ ("political campaigns","chiến dịch tranh cử"),
+ ("fair return","sự đền đáp công bằng"),
+ ("ordinary social and professional life","đời sống xã hội và nghề nghiệp bình thường")],
  desc="Dữ liệu cá nhân và câu hỏi về quyền sở hữu",
  passage="""When you install a free application, you agree to a document you almost certainly have not read. Somewhere inside it, you grant permission for information about your behaviour to be collected, stored and shared. The arrangement is legal, widely accepted, and strange when examined closely.
 
@@ -236,6 +275,11 @@ Perhaps the more productive question is not who owns data but what may be done w
 
 dict(
  title="Learning from Failure",
+ gloss=[
+ ("survivorship bias","thiên kiến kẻ sống sót — chỉ nhìn vào những trường hợp thành công"),
+ ("market research","nghiên cứu thị trường"),
+ ("pay off","đem lại kết quả tốt"),
+ ("told backwards","kể ngược từ kết quả trở lại")],
  desc="Vì sao ta học sai bài học từ thành công",
  passage="""Business writing is full of advice drawn from successful companies. Study what the winners did, the argument goes, and repeat it. The method sounds reasonable and is quietly misleading.
 
@@ -269,6 +313,11 @@ Failure, unfortunately, is rarely documented as carefully as success. That imbal
 
 dict(
  title="The Quiet Decline of Cash",
+ gloss=[
+ ("bus fare","tiền vé xe buýt"),
+ ("informally","không chính thức"),
+ ("power cut","mất điện"),
+ ("fail gracefully","hỏng một cách êm, vẫn còn phương án thay thế")],
  desc="Tiền mặt biến mất và ai bị bỏ lại",
  passage="""In a growing number of cities, a person could spend a week without touching a banknote. Cards, phones and watches handle everything from a bus fare to a bowl of noodles. Retailers welcome the change, since counting cash is slow and carrying it is risky.
 
@@ -302,6 +351,11 @@ A sensible compromise is emerging in several countries: businesses may encourage
 
 dict(
  title="Why We Misjudge Risk",
+ gloss=[
+ ("availability heuristic","phép suy đoán theo mức dễ nhớ"),
+ ("in charge","làm chủ tình hình"),
+ ("memorable story","câu chuyện dễ nhớ"),
+ ("think nothing of","chẳng bận tâm gì tới")],
  desc="Não người đánh giá rủi ro lệch lạc như thế nào",
  passage="""People are remarkably bad at estimating danger. Many are nervous about flying yet think nothing of crossing a busy road, although the road is far more likely to harm them. This is not stupidity; it is the predictable result of how attention works.
 
