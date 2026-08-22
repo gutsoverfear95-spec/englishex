@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Volume2 } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis'
@@ -39,6 +39,10 @@ function loadDictionary() {
 // Định nghĩa NGOÀI GlossedText. Nếu đặt bên trong, mỗi lần state đổi (tức mỗi
 // lần rê chuột) React sẽ coi đây là một loại component mới và tháo/gắn lại toàn
 // bộ span trong đoạn văn — gây nháy và làm mất trạng thái hover.
+const SPLIT_PARA = /\n\s*\n/
+const SPLIT_WORD = /([A-Za-z][A-Za-z'-]*)/
+const IS_WORD = /^[A-Za-z]/
+
 function Word({ children, term, vi, phonetic, onShow, onHide }) {
   const fire = (e) => onShow(e, term, vi, phonetic)
   return (
@@ -56,6 +60,25 @@ function Word({ children, term, vi, phonetic, onShow, onHide }) {
     </span>
   )
 }
+
+// Bọc memo: hover chỉ đổi state của tooltip, còn hàng nghìn thẻ span của đoạn
+// văn thì giữ nguyên. Nếu không có lớp này thì mỗi lần rê chuột React phải dựng
+// lại toàn bộ phần tử của bài đọc — đo được ~37ms/lần với bài 2500 từ.
+const Passage = memo(function Passage({ rendered, onShow, onHide }) {
+  return rendered.map((chunks, pi) => (
+    <p key={pi} className="text-slate-700 leading-loose">
+      {chunks.map((c, ci) =>
+        c.vi ? (
+          <Word key={ci} term={c.text} vi={c.vi} phonetic={c.phonetic} onShow={onShow} onHide={onHide}>
+            {c.text}
+          </Word>
+        ) : (
+          <span key={ci}>{c.text}</span>
+        ),
+      )}
+    </p>
+  ))
+})
 
 export default function GlossedText({ text, glossary = [] }) {
   const [dict, setDict] = useState(null)
@@ -83,52 +106,35 @@ export default function GlossedText({ text, glossary = [] }) {
     }
   }, [active])
 
-  const hide = () => setActive(null)
-
-  function show(e, term, vi, phonetic) {
+  // Phải ổn định qua các lần render, nếu không memo của Passage vô tác dụng
+  const hide = useCallback(() => setActive(null), [])
+  const show = useCallback((e, term, vi, phonetic) => {
     e.stopPropagation()
     const r = e.currentTarget.getBoundingClientRect()
     setActive({ term, vi, phonetic, x: r.left + r.width / 2, y: r.top })
-  }
+  }, [])
 
-  // Xuống dòng của đoạn văn phải giữ nguyên nên tách theo đoạn trước
-  const paragraphs = text.split(/\n\s*\n/)
+  // Tách đoạn, tách cụm rồi tra từ điển là việc nặng: bài 2000 từ phải duyệt
+  // hàng nghìn từ. Nếu để trong thân render thì MỖI lần rê chuột (state đổi)
+  // đều làm lại toàn bộ — đo được ~40ms/lần và còn tăng theo độ dài bài.
+  // Ghi nhớ theo [text, glossary, dict] để hover chỉ vẽ lại mỗi cái tooltip.
+  const rendered = useMemo(() => {
+    return text.split(SPLIT_PARA).map((para) =>
+      splitByPhrases(para, glossary).flatMap((chunk) => {
+        if (chunk.gloss) return [{ text: chunk.text, vi: chunk.gloss.vi }]
+        return chunk.text.split(SPLIT_WORD).map((piece) => {
+          if (!IS_WORD.test(piece)) return { text: piece }
+          const hit = dict && lookup(dict, piece.toLowerCase())
+          if (!hit) return { text: piece }
+          return { text: piece, vi: hit.meaning, phonetic: hit.phonetic }
+        })
+      }),
+    )
+  }, [text, glossary, dict])
 
   return (
     <div ref={holderRef} className="space-y-3">
-      {paragraphs.map((para, pi) => (
-        <p key={pi} className="text-slate-700 leading-loose">
-          {splitByPhrases(para, glossary).map((chunk, ci) => {
-            // Cụm từ trong glossary của bài
-            if (chunk.gloss) {
-              return (
-                <Word key={ci} term={chunk.text} vi={chunk.gloss.vi} onShow={show} onHide={hide}>
-                  {chunk.text}
-                </Word>
-              )
-            }
-            // Phần còn lại: tách từng từ rồi tra từ điển
-            return chunk.text.split(/([A-Za-z][A-Za-z'-]*)/).map((piece, wi) => {
-              const key = `${ci}-${wi}`
-              if (!/^[A-Za-z]/.test(piece)) return <span key={key}>{piece}</span>
-              const hit = dict && lookup(dict, piece.toLowerCase())
-              if (!hit) return <span key={key}>{piece}</span>
-              return (
-                <Word
-                  key={key}
-                  term={piece}
-                  vi={hit.meaning}
-                  phonetic={hit.phonetic}
-                  onShow={show}
-                  onHide={hide}
-                >
-                  {piece}
-                </Word>
-              )
-            })
-          })}
-        </p>
-      ))}
+      <Passage rendered={rendered} onShow={show} onHide={hide} />
 
       {active && (
         <div
