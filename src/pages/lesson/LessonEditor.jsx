@@ -7,7 +7,9 @@ import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Spinner from '../../components/ui/Spinner'
 
-// Khoảng độ dài đoạn văn theo cấp độ — dùng để nhắc, không chặn cứng
+// Độ dài GỢI Ý theo cấp độ — chỉ để nhắc, không chặn. Không có giới hạn trên:
+// bài đọc dài 1000–2000 từ là hoàn toàn hợp lệ, app tự chuyển sang bố cục chia
+// đôi màn hình khi bài vượt 400 từ.
 const WORD_RANGE = {
   A1: [60, 120], A2: [100, 170], B1: [150, 230],
   B2: [200, 300], C1: [260, 380], C2: [300, 450],
@@ -98,8 +100,9 @@ export default function LessonEditor() {
   const warnings = []
   if (!title.trim()) errors.push('Chưa có tiêu đề bài đọc.')
   if (!passage.trim()) errors.push('Chưa có nội dung đoạn văn.')
-  if (words && (words < lo || words > hi)) {
-    warnings.push(`Đoạn văn ${words} từ, ngoài khoảng ${lo}–${hi} thường thấy ở ${level}.`)
+  // Chỉ nhắc khi bài NGẮN hơn mức gợi ý. Dài hơn thì không sao — đó là chủ ý.
+  if (words && words < lo) {
+    warnings.push(`Đoạn văn mới ${words} từ, ngắn hơn mức gợi ý ${lo} từ của ${level}.`)
   }
   if (questions.length < 4) warnings.push(`Mới có ${questions.length} câu hỏi, nên có ít nhất 4 câu.`)
 
@@ -288,7 +291,7 @@ export default function LessonEditor() {
             >
               {Object.keys(WORD_RANGE).map((l) => (
                 <option key={l} value={l}>
-                  {l} ({WORD_RANGE[l][0]}–{WORD_RANGE[l][1]} từ)
+                  {l} (từ {WORD_RANGE[l][0]} từ trở lên)
                 </option>
               ))}
             </select>
@@ -301,8 +304,9 @@ export default function LessonEditor() {
         <div>
           <div className="flex items-center justify-between mb-1">
             <label className="block text-sm font-medium text-slate-700">Đoạn văn</label>
-            <span className={`text-xs ${words && (words < lo || words > hi) ? 'text-amber-600' : 'text-slate-400'}`}>
-              {words} từ · gợi ý {lo}–{hi}
+            <span className={`text-xs ${words && words < lo ? 'text-amber-600' : 'text-slate-400'}`}>
+              {words} từ · gợi ý từ {lo} trở lên
+              {words > 400 && ' · sẽ hiện chia đôi màn hình'}
             </span>
           </div>
           <textarea

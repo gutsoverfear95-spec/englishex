@@ -83,8 +83,10 @@ def main():
             seen_titles.add(title.lower())
 
             nwords = len(L["passage"].split())
-            if not (lo <= nwords <= hi):
-                problems.append(f"{title}: doan van {nwords} tu, ngoai khoang {lo}-{hi} cua {m.LEVEL}")
+            # Chi chan khi bai NGAN hon muc goi y. Dai hon thi khong sao —
+            # bai doc 1000-2000 tu la hoan toan hop le.
+            if nwords < lo:
+                problems.append(f"{title}: doan van {nwords} tu, ngan hon muc goi y {lo} cua {m.LEVEL}")
             for term, vi in L.get("gloss", []):
                 if term.lower() not in L["passage"].lower():
                     problems.append(f"{title}: cum '{term}' khong co trong doan van")
