@@ -14,12 +14,17 @@
 -- ---------- 1. CỜ ADMIN ----------
 alter table public.profiles add column if not exists is_admin boolean not null default false;
 
--- ⚠️ ĐỔI EMAIL BÊN DƯỚI THÀNH EMAIL BẠN DÙNG ĐỂ ĐĂNG NHẬP APP, rồi chạy.
+-- Danh sách email được cấp quyền admin. Thêm bớt thoải mái rồi chạy lại file.
+-- Email nào chưa từng đăng ký tài khoản trong app thì dòng đó đơn giản là
+-- không khớp gì cả, không gây lỗi.
 update public.profiles p
    set is_admin = true
   from auth.users u
  where u.id = p.id
-   and u.email = 'minareminie@gmail.com';
+   and u.email in (
+     'thangxgod@gmail.com',
+     'minareminie@gmail.com'
+   );
 
 -- Kiểm tra: phải thấy đúng tài khoản của bạn với is_admin = true
 select u.email, p.is_admin
