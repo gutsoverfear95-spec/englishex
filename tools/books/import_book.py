@@ -141,12 +141,18 @@ _KEYWORD = re.compile(
     rf"^[ \t]*(?:CHAPTER|Chapter|STAVE|Stave|LETTER|Letter|PART|Part|BOOK|Book)"
     rf"\s+{WORD_NUM}\b[^\n]*$", re.M)
 _TITLED = re.compile(r"^[ \t]*[IVXLCDM]{1,7}\.[ \t]+[A-Z][A-Z0-9 \-'’,\.]{4,}$", re.M)
+# Wells "A Short History of the World" de so La Ma mot dong, TEN chuong dong
+# ke tiep. Neu khong co kieu nay thi _TITLED se chi khop cac dong trong MUC LUC
+# (chung co kem so trang nen van dung dinh dang), con than sach thi truot sach
+# — ket qua la "mot chuong 119.000 tu".
+_TWOLINE = re.compile(
+    r"^[ \t]*[IVXLCDM]{1,7}[ \t]*\n[ \t]*[A-Z][A-Z0-9 \-'’,\.]{4,}[ \t]*$", re.M)
 _BARE = re.compile(r"^[ \t]*[IVXLCDM]{1,7}\.?[ \t]*$", re.M)
 
 
 def pick_pattern(body):
     """Chon kieu tieu de ma sach nay thuc su dung."""
-    for pat in (_KEYWORD, _TITLED, _BARE):
+    for pat in (_KEYWORD, _TWOLINE, _TITLED, _BARE):
         if len(pat.findall(body)) >= 3:
             return pat
     return None
