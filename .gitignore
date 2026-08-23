@@ -9,3 +9,4 @@ dist
 
 scripts/.image_cache.json.bak
 __pycache__/
+tools/books/cache/

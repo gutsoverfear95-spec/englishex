@@ -5,11 +5,76 @@
 //
 // Tách riêng khỏi component để kiểm thử được bằng Node.
 // ============================================================
+// Dạng bất quy tắc → dạng gốc. Cắt đuôi không giải quyết được nhóm này:
+// "was" không có đuôi nào để cắt ra "be". Mà đây lại toàn từ hay gặp nhất
+// tiếng Anh — thiếu bảng này thì rê chuột vào was/said/went/children đều câm,
+// dù be/say/go/child đều nằm sẵn trong kho từ.
+const IRREGULAR = {
+  // be, have, do
+  am: 'be', is: 'be', are: 'be', was: 'be', were: 'be', been: 'be', being: 'be',
+  has: 'have', had: 'have', having: 'have',
+  does: 'do', did: 'do', done: 'do', doing: 'do',
+  // động từ thường gặp
+  said: 'say', went: 'go', gone: 'go', got: 'get', gotten: 'get', made: 'make',
+  knew: 'know', known: 'know', thought: 'think', took: 'take', taken: 'take',
+  saw: 'see', seen: 'see', came: 'come', gave: 'give', given: 'give',
+  found: 'find', told: 'tell', became: 'become', left: 'leave', felt: 'feel',
+  brought: 'bring', began: 'begin', begun: 'begin', kept: 'keep', held: 'hold',
+  wrote: 'write', written: 'write', stood: 'stand', heard: 'hear', meant: 'mean',
+  met: 'meet', ran: 'run', paid: 'pay', sat: 'sit', spoke: 'speak', spoken: 'speak',
+  led: 'lead', grew: 'grow', grown: 'grow', lost: 'lose', fell: 'fall', fallen: 'fall',
+  sent: 'send', built: 'build', understood: 'understand', drew: 'draw', drawn: 'draw',
+  broke: 'break', broken: 'break', spent: 'spend', rose: 'rise', risen: 'rise',
+  drove: 'drive', driven: 'drive', bought: 'buy', wore: 'wear', worn: 'wear',
+  chose: 'choose', chosen: 'choose', threw: 'throw', thrown: 'throw',
+  caught: 'catch', won: 'win', forgot: 'forget', forgotten: 'forget',
+  ate: 'eat', eaten: 'eat', taught: 'teach', sold: 'sell', fought: 'fight',
+  slept: 'sleep', drank: 'drink', drunk: 'drink', sang: 'sing', sung: 'sing',
+  rang: 'ring', rung: 'ring', woke: 'wake', woken: 'wake', stole: 'steal',
+  stolen: 'steal', rode: 'ride', ridden: 'ride', flew: 'fly', flown: 'fly',
+  blew: 'blow', blown: 'blow', shone: 'shine', hid: 'hide', hidden: 'hide',
+  bit: 'bite', bitten: 'bite', froze: 'freeze', frozen: 'freeze', hung: 'hang',
+  shook: 'shake', shaken: 'shake', swept: 'sweep', fed: 'feed', lent: 'lend',
+  swam: 'swim', swum: 'swim', laid: 'lay', lay: 'lie', lain: 'lie',
+  // danh từ số nhiều bất quy tắc
+  children: 'child', men: 'man', women: 'woman', feet: 'foot', teeth: 'tooth',
+  mice: 'mouse', geese: 'goose', lives: 'life', knives: 'knife', leaves: 'leaf',
+  wolves: 'wolf', wives: 'wife', shelves: 'shelf', halves: 'half',
+  // so sánh bất quy tắc
+  better: 'good', best: 'good', worse: 'bad', worst: 'bad',
+  more: 'much', most: 'much', further: 'far', farther: 'far',
+  // đại từ phản thân
+  myself: 'i', yourself: 'you', yourselves: 'you', himself: 'he', herself: 'she',
+  itself: 'it', ourselves: 'we', themselves: 'they',
+  // viết tắt mà cắt đuôi không ra: "won't" không chứa chữ nào của "will"
+  "won't": 'will', "shan't": 'shall', "ain't": 'be',
+}
+
 export function baseForms(w) {
   const out = [w]
   const add = (x) => {
     if (x.length >= 2 && !out.includes(x)) out.push(x)
   }
+
+  if (IRREGULAR[w]) add(IRREGULAR[w])
+
+  // Dạng viết tắt: "don't" → do, "I'll" → i, "we're" → we.
+  // GlossedText giữ nguyên dấu nháy trong một token nên nếu không bóc ở đây
+  // thì mọi từ viết tắt đều tra trượt.
+  const apos = w.indexOf("'")
+  if (apos > 0) {
+    // Thử cả hai cách cắt vì chữ n có khi thuộc về đuôi phủ định, có khi thuộc
+    // về chính từ gốc:  don't → do  nhưng  can't → can.
+    const stems = [w.slice(0, apos)]
+    if (w.endsWith("n't")) stems.push(w.slice(0, -3))
+    for (const s of stems) {
+      // Bỏ qua chốt chặn độ dài: gốc của "I'll" là "i" — từ có thật trong kho,
+      // chốt >= 2 sẽ loại oan.
+      if (s && !out.includes(s)) out.push(s)
+      if (IRREGULAR[s]) add(IRREGULAR[s])
+    }
+  }
+
   if (w.endsWith('ies')) add(w.slice(0, -3) + 'y')
   if (w.endsWith('es')) add(w.slice(0, -2))
   if (w.endsWith('s')) add(w.slice(0, -1))
