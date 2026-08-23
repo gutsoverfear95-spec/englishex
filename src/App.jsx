@@ -7,6 +7,8 @@ import Dashboard from './pages/Dashboard'
 import LessonList from './pages/LessonList'
 import LessonPage from './pages/lesson/LessonPage'
 import LessonEditor from './pages/lesson/LessonEditor'
+import BookList from './pages/books/BookList'
+import BookReader from './pages/books/BookReader'
 import CourseList from './pages/vocab/CourseList'
 import TopicList from './pages/vocab/TopicList'
 import StudySession from './pages/vocab/StudySession'
@@ -28,6 +30,10 @@ export default function App() {
           <Route path="/skill/reading/new" element={<LessonEditor />} />
           <Route path="/skill/reading/:lessonId/edit" element={<LessonEditor />} />
           <Route path="/skill/:skill/lesson/:lessonId" element={<LessonPage />} />
+          {/* Tủ sách: tác phẩm kinh điển, đọc theo chương, nhớ chỗ đang đọc */}
+          <Route path="/books" element={<BookList />} />
+          <Route path="/books/:slug" element={<BookReader />} />
+          <Route path="/books/:slug/:num" element={<BookReader />} />
           {/* Từ vựng v2: Chương trình học → Chủ đề → Phiên học SRS */}
           <Route path="/vocab" element={<CourseList />} />
           <Route path="/vocab/course/:courseId" element={<TopicList />} />

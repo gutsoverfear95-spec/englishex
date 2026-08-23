@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
-import { GraduationCap, LayoutDashboard, LogOut, BookMarked } from 'lucide-react'
+import { GraduationCap, LayoutDashboard, Library, LogOut, BookMarked } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { SKILLS } from '../../utils/constants'
 
@@ -40,6 +40,10 @@ export default function Navbar() {
           <NavLink to="/vocab" className={navLinkClass}>
             <BookMarked className="h-4 w-4" />
             <span className="hidden md:inline">Từ vựng</span>
+          </NavLink>
+          <NavLink to="/books" className={navLinkClass}>
+            <Library className="h-4 w-4" />
+            <span className="hidden md:inline">Tủ sách</span>
           </NavLink>
         </div>
 

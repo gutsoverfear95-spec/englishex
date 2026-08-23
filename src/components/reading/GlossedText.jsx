@@ -20,18 +20,26 @@ import { lookup, splitByPhrases } from '../../utils/glossLookup'
 let dictPromise = null
 function loadDictionary() {
   if (!dictPromise) {
-    dictPromise = supabase
-      .from('words')
-      .select('word, meaning, phonetic')
-      .then(({ data }) => {
-        const map = new Map()
-        for (const w of data ?? []) {
-          const k = w.word.toLowerCase()
-          // Từ trùng nhau giữa hai khoá học: giữ bản gặp đầu tiên
-          if (!map.has(k)) map.set(k, w)
-        }
-        return map
-      })
+    dictPromise = Promise.all([
+      supabase.from('words').select('word, meaning, phonetic'),
+      // Từ cổ / văn chương chỉ gặp trong truyện kinh điển (countenance,
+      // vexation...). Để riêng bảng vì words là giáo trình học từ vựng, thêm
+      // vào đó sẽ làm loãng các khoá học.
+      supabase.from('book_words').select('word, meaning, phonetic'),
+    ]).then(([base, extra]) => {
+      const map = new Map()
+      for (const w of base.data ?? []) {
+        const k = w.word.toLowerCase()
+        // Từ trùng nhau giữa hai khoá học: giữ bản gặp đầu tiên
+        if (!map.has(k)) map.set(k, w)
+      }
+      // Kho chính luôn thắng: nghĩa ở đó hợp với trình độ người học hơn
+      for (const w of extra.data ?? []) {
+        const k = w.word.toLowerCase()
+        if (!map.has(k)) map.set(k, w)
+      }
+      return map
+    })
   }
   return dictPromise
 }
