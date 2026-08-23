@@ -1,18 +1,5 @@
--- ============================================================
--- NOI DUNG SACH — sinh tu tools/books/import_book.py, dung sua tay
---
--- Tat ca tac pham deu DA HET BAN QUYEN (public domain), lay tu
--- Project Gutenberg. Chay books_schema.sql TRUOC file nay.
--- An toan chay lai nhieu lan (uuid tat dinh + on conflict).
--- ============================================================
-
--- ===== Alice's Adventures in Wonderland — Lewis Carroll (1865) =====
--- Nguon: Project Gutenberg #11 (public domain)
-insert into public.books (id, slug, title, author, year, level, blurb, cover_emoji, word_count, chapter_count, gutenberg_id, sort_order) values
-  ('804649e6-99d8-49da-aa41-309bc3a3d846', 'alice-in-wonderland', 'Alice''s Adventures in Wonderland', 'Lewis Carroll', 1865, 'B1', 'Cô bé Alice rơi xuống hang thỏ và lạc vào một thế giới phi lý. Câu ngắn, lời thoại nhiều, dễ đọc nhất trong bốn cuốn.', '🐰', 26371, 12, 11, 1)
-on conflict (id) do update set word_count = excluded.word_count, chapter_count = excluded.chapter_count, blurb = excluded.blurb;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('755e54ce-3eb2-4314-ad1e-d7bddfec4037', '804649e6-99d8-49da-aa41-309bc3a3d846', 1, 'Chapter I. Down the Rabbit-hole', 'Alice was beginning to get very tired of sitting by her sister on the
+"id","book_id","number","title","content","word_count"
+"755e54ce-3eb2-4314-ad1e-d7bddfec4037","804649e6-99d8-49da-aa41-309bc3a3d846","1","Chapter I. Down the Rabbit-hole","Alice was beginning to get very tired of sitting by her sister on the
 
 bank, and of having nothing to do: once or twice she had peeped into
 
@@ -372,10 +359,8 @@ So she set to work, and very soon finished off the cake.
 
     *      *      *      *      *      *
 
-*      *      *      *      *      *      *', 2181)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('bfac7f56-e7b0-42c9-a784-c5a5e935a1f1', '804649e6-99d8-49da-aa41-309bc3a3d846', 2, 'Chapter II. The Pool of Tears', '“Curiouser and curiouser!” cried Alice (she was so much surprised, that
+*      *      *      *      *      *      *","2181"
+"bfac7f56-e7b0-42c9-a784-c5a5e935a1f1","804649e6-99d8-49da-aa41-309bc3a3d846","2","Chapter II. The Pool of Tears","“Curiouser and curiouser!” cried Alice (she was so much surprised, that
 
 for the moment she quite forgot how to speak good English); “now I’m
 
@@ -715,10 +700,8 @@ birds and animals that had fallen into it: there were a Duck and a
 
 Dodo, a Lory and an Eaglet, and several other curious creatures. Alice
 
-led the way, and the whole party swam to the shore.', 2093)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('216f5cd6-caf8-4c76-aefb-c5937c618db8', '804649e6-99d8-49da-aa41-309bc3a3d846', 3, 'Chapter III. A Caucus-race and a Long Tale', 'They were indeed a queer-looking party that assembled on the bank—the
+led the way, and the whole party swam to the shore.","2093"
+"216f5cd6-caf8-4c76-aefb-c5937c618db8","804649e6-99d8-49da-aa41-309bc3a3d846","3","Chapter III. A Caucus-race and a Long Tale","They were indeed a queer-looking party that assembled on the bank—the
 
 birds with draggled feathers, the animals with their fur clinging close
 
@@ -1026,10 +1009,8 @@ little pattering of footsteps in the distance, and she looked up
 
 eagerly, half hoping that the Mouse had changed his mind, and was
 
-coming back to finish his story.', 1694)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('5ac69c8a-ae5c-4df3-ac83-54b7bb892112', '804649e6-99d8-49da-aa41-309bc3a3d846', 4, 'Chapter IV. The Rabbit Sends in a Little Bill', 'It was the White Rabbit, trotting slowly back again, and looking
+coming back to finish his story.","1694"
+"5ac69c8a-ae5c-4df3-ac83-54b7bb892112","804649e6-99d8-49da-aa41-309bc3a3d846","4","Chapter IV. The Rabbit Sends in a Little Bill","It was the White Rabbit, trotting slowly back again, and looking
 
 anxiously about as it went, as if it had lost something; and she heard
 
@@ -1457,10 +1438,8 @@ caterpillar, that was sitting on the top with its arms folded, quietly
 
 smoking a long hookah, and taking not the smallest notice of her or of
 
-anything else.', 2607)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('58d9cab2-ca75-41b1-a27f-a16279da3caf', '804649e6-99d8-49da-aa41-309bc3a3d846', 5, 'Chapter V. Advice from a Caterpillar', 'The Caterpillar and Alice looked at each other for some time in
+anything else.","2607"
+"58d9cab2-ca75-41b1-a27f-a16279da3caf","804649e6-99d8-49da-aa41-309bc3a3d846","5","Chapter V. Advice from a Caterpillar","The Caterpillar and Alice looked at each other for some time in
 
 silence: at last the Caterpillar took the hookah out of its mouth, and
 
@@ -1882,10 +1861,8 @@ _this_ size: why, I should frighten them out of their wits!” So she
 
 began nibbling at the righthand bit again, and did not venture to go
 
-near the house till she had brought herself down to nine inches high.', 2180)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('3699ad17-1bac-48cb-a173-9427be50efd6', '804649e6-99d8-49da-aa41-309bc3a3d846', 6, 'Chapter VI. Pig and Pepper', 'For a minute or two she stood looking at the house, and wondering what
+near the house till she had brought herself down to nine inches high.","2180"
+"3699ad17-1bac-48cb-a173-9427be50efd6","804649e6-99d8-49da-aa41-309bc3a3d846","6","Chapter VI. Pig and Pepper","For a minute or two she stood looking at the house, and wondering what
 
 to do next, when suddenly a footman in livery came running out of the
 
@@ -2351,10 +2328,8 @@ to about two feet high: even then she walked up towards it rather
 
 timidly, saying to herself “Suppose it should be raving mad after all!
 
-I almost wish I’d gone to see the Hatter instead!”', 2588)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('559ff757-29a2-4b7c-a15f-2729d0a86e1e', '804649e6-99d8-49da-aa41-309bc3a3d846', 7, 'Chapter VII. A Mad Tea-party', 'There was a table set out under a tree in front of the house, and the
+I almost wish I’d gone to see the Hatter instead!”","2588"
+"559ff757-29a2-4b7c-a15f-2729d0a86e1e","804649e6-99d8-49da-aa41-309bc3a3d846","7","Chapter VII. A Mad Tea-party","There was a table set out under a tree in front of the house, and the
 
 March Hare and the Hatter were having tea at it: a Dormouse was sitting
 
@@ -2814,10 +2789,8 @@ high: then she walked down the little passage: and _then_—she found
 
 herself at last in the beautiful garden, among the bright flower-beds
 
-and the cool fountains.', 2282)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('ac781529-a49a-45f2-a6d9-bbd8c472e826', '804649e6-99d8-49da-aa41-309bc3a3d846', 8, 'Chapter VIII. The Queen’s Croquet-ground', 'A large rose-tree stood near the entrance of the garden: the roses
+and the cool fountains.","2282"
+"ac781529-a49a-45f2-a6d9-bbd8c472e826","804649e6-99d8-49da-aa41-309bc3a3d846","8","Chapter VIII. The Queen’s Croquet-ground","A large rose-tree stood near the entrance of the garden: the roses
 
 growing on it were white, but there were three gardeners at it, busily
 
@@ -3275,10 +3248,8 @@ time he had come back with the Duchess, it had entirely disappeared; so
 
 the King and the executioner ran wildly up and down looking for it,
 
-while the rest of the party went back to the game.', 2482)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('85de2365-64ab-48c5-a3e7-6dc95c2cc984', '804649e6-99d8-49da-aa41-309bc3a3d846', 9, 'Chapter IX. The Mock Turtle’s Story', '“You can’t think how glad I am to see you again, you dear old thing!”
+while the rest of the party went back to the game.","2482"
+"85de2365-64ab-48c5-a3e7-6dc95c2cc984","804649e6-99d8-49da-aa41-309bc3a3d846","9","Chapter IX. The Mock Turtle’s Story","“You can’t think how glad I am to see you again, you dear old thing!”
 
 said the Duchess, as she tucked her arm affectionately into Alice’s,
 
@@ -3722,10 +3693,8 @@ a holiday?”
 
 “That’s enough about lessons,” the Gryphon interrupted in a very
 
-decided tone: “tell her something about the games now.”', 2266)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('75ec94e6-da2f-47fa-a86a-086908329707', '804649e6-99d8-49da-aa41-309bc3a3d846', 10, 'Chapter X. The Lobster Quadrille', 'The Mock Turtle sighed deeply, and drew the back of one flapper across
+decided tone: “tell her something about the games now.”","2266"
+"75ec94e6-da2f-47fa-a86a-086908329707","804649e6-99d8-49da-aa41-309bc3a3d846","10","Chapter X. The Lobster Quadrille","The Mock Turtle sighed deeply, and drew the back of one flapper across
 
 his eyes. He looked at Alice, and tried to speak, but for a minute or
 
@@ -4141,10 +4110,8 @@ came, carried on the breeze that followed them, the melancholy words:—
 
 “Soo—oop of the e—e—evening,
 
-    Beautiful, beautiful Soup!”', 2025)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('f200ee60-29dc-42fc-a049-413726b77292', '804649e6-99d8-49da-aa41-309bc3a3d846', 11, 'Chapter XI. Who Stole the Tarts?', 'The King and Queen of Hearts were seated on their throne when they
+    Beautiful, beautiful Soup!”","2025"
+"f200ee60-29dc-42fc-a049-413726b77292","804649e6-99d8-49da-aa41-309bc3a3d846","11","Chapter XI. Who Stole the Tarts?","The King and Queen of Hearts were seated on their throne when they
 
 arrived, with a great crowd assembled about them—all sorts of little
 
@@ -4502,10 +4469,8 @@ haven’t got much evidence _yet_,” she said to herself. Imagine her
 
 surprise, when the White Rabbit read out, at the top of his shrill
 
-little voice, the name “Alice!”', 1872)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('c6534edf-298f-4a95-a90c-3b9e6546bfc0', '804649e6-99d8-49da-aa41-309bc3a3d846', 12, 'Chapter XII. Alice’s Evidence', '“Here!” cried Alice, quite forgetting in the flurry of the moment how
+little voice, the name “Alice!”","1872"
+"c6534edf-298f-4a95-a90c-3b9e6546bfc0","804649e6-99d8-49da-aa41-309bc3a3d846","12","Chapter XII. Alice’s Evidence","“Here!” cried Alice, quite forgetting in the flurry of the moment how
 
 large she had grown in the last few minutes, and she jumped up in such
 
@@ -4927,16 +4892,8 @@ their simple joys, remembering her own child-life, and the happy summer
 
 days.
 
-THE END', 2101)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-
--- ===== The Adventures of Sherlock Holmes — Arthur Conan Doyle (1892) =====
--- Nguon: Project Gutenberg #1661 (public domain)
-insert into public.books (id, slug, title, author, year, level, blurb, cover_emoji, word_count, chapter_count, gutenberg_id, sort_order) values
-  ('8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 'sherlock-holmes', 'The Adventures of Sherlock Holmes', 'Arthur Conan Doyle', 1892, 'B2', 'Mười hai vụ án độc lập của thám tử Sherlock Holmes. Đọc lẻ từng truyện được, không cần nhớ cốt truyện dài.', '🔍', 104350, 35, 1661, 2)
-on conflict (id) do update set word_count = excluded.word_count, chapter_count = excluded.chapter_count, blurb = excluded.blurb;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('24d2a5e5-a0c1-48b9-af5d-6e3676a1518d', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 1, 'I. A Scandal in Bohemia (1/3)', 'I.
+THE END","2101"
+"24d2a5e5-a0c1-48b9-af5d-6e3676a1518d","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","1","I. A Scandal in Bohemia (1/3)","I.
 
 To Sherlock Holmes she is always _the_ woman. I have seldom heard him
 
@@ -5456,10 +5413,8 @@ those letters back.”
 
 “None.”
 
-“No legal papers or certificates?”', 2840)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('d8705e9f-96ae-48a5-acab-9fb415ea7031', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 2, 'I. A Scandal in Bohemia (2/3)', '“None.”
+“No legal papers or certificates?”","2840"
+"d8705e9f-96ae-48a5-acab-9fb415ea7031","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","2","I. A Scandal in Bohemia (2/3)","“None.”
 
 “Then I fail to follow your Majesty. If this young person should
 
@@ -6017,10 +5972,8 @@ seemed to vary with every fresh part that he assumed. The stage lost a
 
 fine actor, even as science lost an acute reasoner, when he became a
 
-specialist in crime.', 2834)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('4feb4f89-4e87-4240-a3d1-7e5924a5df6a', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 3, 'I. A Scandal in Bohemia (3/3)', 'It was a quarter past six when we left Baker Street, and it still
+specialist in crime.","2834"
+"4feb4f89-4e87-4240-a3d1-7e5924a5df6a","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","3","I. A Scandal in Bohemia (3/3)","It was a quarter past six when we left Baker Street, and it still
 
 wanted ten minutes to the hour when we found ourselves in Serpentine
 
@@ -6552,10 +6505,8 @@ have not heard him do it of late. And when he speaks of Irene Adler, or
 
 when he refers to her photograph, it is always under the honourable
 
-title of _the_ woman.', 2847)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('f25dc07e-21f1-48db-ace2-ccf756373673', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 4, 'II. The Red-headed League (1/3)', 'I had called upon my friend, Mr. Sherlock Holmes, one day in the
+title of _the_ woman.","2847"
+"f25dc07e-21f1-48db-ace2-ccf756373673","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","4","II. The Red-headed League (1/3)","I had called upon my friend, Mr. Sherlock Holmes, one day in the
 
  autumn of last year and found him in deep conversation with a very
 
@@ -7079,10 +7030,8 @@ exceedingly unfortunate that you should be a bachelor.’
 
 “My face lengthened at this, Mr. Holmes, for I thought that I was not
 
-to have the vacancy after all; but after thinking it over for a few', 3035)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('952a24ba-a578-44db-acf6-88710b5a0b71', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 5, 'II. The Red-headed League (2/3)', 'minutes he said that it would be all right.
+to have the vacancy after all; but after thinking it over for a few","3035"
+"952a24ba-a578-44db-acf6-88710b5a0b71","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","5","II. The Red-headed League (2/3)","minutes he said that it would be all right.
 
 “‘In the case of another,’ said he, ‘the objection might be fatal, but
 
@@ -7654,10 +7603,8 @@ only what had happened but what was about to happen, while to me the
 
 whole business was still confused and grotesque. As I drove home to my
 
-house in Kensington I thought over it all, from the extraordinary story', 3035)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('04cacbc4-a242-4795-a618-a022fc3fca7e', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 6, 'II. The Red-headed League (3/3)', 'of the red-headed copier of the _Encyclopædia_ down to the visit to
+house in Kensington I thought over it all, from the extraordinary story","3035"
+"04cacbc4-a242-4795-a618-a022fc3fca7e","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","6","II. The Red-headed League (3/3)","of the red-headed copier of the _Encyclopædia_ down to the visit to
 
 Saxe-Coburg Square, and the ominous words with which he had parted from
 
@@ -8181,10 +8128,8 @@ He shrugged his shoulders. “Well, perhaps, after all, it is of some
 
 little use,” he remarked. “‘_L’homme c’est rien—l’œuvre c’est tout_,’
 
-as Gustave Flaubert wrote to George Sand.”', 3035)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('87c92983-3581-4203-a2d8-ee8194538fa9', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 7, 'III. A Case of Identity (1/2)', '“My dear fellow,” said Sherlock Holmes as we sat on either side of the
+as Gustave Flaubert wrote to George Sand.”","3035"
+"87c92983-3581-4203-a2d8-ee8194538fa9","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","7","III. A Case of Identity (1/2)","“My dear fellow,” said Sherlock Holmes as we sat on either side of the
 
 fire in his lodgings at Baker Street, “life is infinitely stranger than
 
@@ -8792,10 +8737,8 @@ life.”
 
 “You are very kind, Mr. Holmes, but I cannot do that. I shall be true
 
-to Hosmer. He shall find me ready when he comes back.”', 3482)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('72ba8bb6-0781-44f5-ad8b-71cdb37cbbb6', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 8, 'III. A Case of Identity (2/2)', 'For all the preposterous hat and the vacuous face, there was something
+to Hosmer. He shall find me ready when he comes back.”","3482"
+"72ba8bb6-0781-44f5-ad8b-71cdb37cbbb6","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","8","III. A Case of Identity (2/2)","For all the preposterous hat and the vacuous face, there was something
 
 noble in the simple faith of our visitor which compelled our respect.
 
@@ -9399,10 +9342,8 @@ Persian saying, ‘There is danger for him who taketh the tiger cub, and
 
 danger also for whoso snatches a delusion from a woman.’ There is as
 
-much sense in Hafiz as in Horace, and as much knowledge of the world.”', 3493)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('b08dc121-ddbe-43eb-a2c2-abed309e145a', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 9, 'IV. The Boscombe Valley Mystery (1/3)', 'We were seated at breakfast one morning, my wife and I, when the maid
+much sense in Hafiz as in Horace, and as much knowledge of the world.”","3493"
+"b08dc121-ddbe-43eb-a2c2-abed309e145a","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","9","IV. The Boscombe Valley Mystery (1/3)","We were seated at breakfast one morning, my wife and I, when the maid
 
 brought in a telegram. It was from Sherlock Holmes and ran in this way:
 
@@ -9958,10 +9899,8 @@ much, if he evolved from his own inner consciousness anything so
 
 _outré_ as a dying reference to a rat, and the incident of the
 
-vanishing cloth. No, sir, I shall approach this case from the point of', 3200)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('61aa96f0-f4ee-4bbd-a89e-91dbbef4495c', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 10, 'IV. The Boscombe Valley Mystery (2/3)', 'view that what this young man says is true, and we shall see whither
+vanishing cloth. No, sir, I shall approach this case from the point of","3200"
+"61aa96f0-f4ee-4bbd-a89e-91dbbef4495c","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","10","IV. The Boscombe Valley Mystery (2/3)","view that what this young man says is true, and we shall see whither
 
 that hypothesis will lead us. And now here is my pocket Petrarch, and
 
@@ -10507,10 +10446,8 @@ been here before they came like a herd of buffalo and wallowed all over
 
 it. Here is where the party with the lodge-keeper came, and they have
 
-covered all tracks for six or eight feet round the body. But here are', 3195)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('b6db906a-4934-4f99-a8ed-3323eaa665ff', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 11, 'IV. The Boscombe Valley Mystery (3/3)', 'three separate tracks of the same feet.” He drew out a lens and lay
+covered all tracks for six or eight feet round the body. But here are","3195"
+"b6db906a-4934-4f99-a8ed-3323eaa665ff","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","11","IV. The Boscombe Valley Mystery (3/3)","three separate tracks of the same feet.” He drew out a lens and lay
 
 down upon his waterproof to have a better view, talking all the time
 
@@ -11068,10 +11005,8 @@ interview, but he is now dead; and there is every prospect that the son
 
 and daughter may come to live happily together in ignorance of the
 
-black cloud which rests upon their past.', 3220)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('9e90c77f-b5cd-4d3e-af27-ca426875b867', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 12, 'V. The Five Orange Pips (1/3)', 'When I glance over my notes and records of the Sherlock Holmes cases
+black cloud which rests upon their past.","3220"
+"9e90c77f-b5cd-4d3e-af27-ca426875b867","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","12","V. The Five Orange Pips (1/3)","When I glance over my notes and records of the Sherlock Holmes cases
 
 between the years ’82 and ’90, I am faced by so many which present
 
@@ -11479,10 +11414,8 @@ at the foot of the garden. There was no sign of any violence, and the
 
 water was but two feet deep, so that the jury, having regard to his
 
-known eccentricity, brought in a verdict of ‘suicide.’ But I, who knew', 2438)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('acba89bc-986d-4570-a987-7659b662e13c', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 13, 'V. The Five Orange Pips (2/3)', 'how he winced from the very thought of death, had much ado to persuade
+known eccentricity, brought in a verdict of ‘suicide.’ But I, who knew","2438"
+"acba89bc-986d-4570-a987-7659b662e13c","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","13","V. The Five Orange Pips (2/3)","how he winced from the very thought of death, had much ado to persuade
 
 myself that he had gone out of his way to meet it. The matter passed,
 
@@ -11922,10 +11855,8 @@ think, were the main points of my analysis.”
 
 Holmes grinned at the last item. “Well,” he said, “I say now, as I said
 
-then, that a man should keep his little brain-attic stocked with all', 2436)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('24c40a32-a398-44d4-ac56-bc631190e37a', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 14, 'V. The Five Orange Pips (3/3)', 'the furniture that he is likely to use, and the rest he can put away in
+then, that a man should keep his little brain-attic stocked with all","2436"
+"24c40a32-a398-44d4-ac56-bc631190e37a","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","14","V. The Five Orange Pips (3/3)","the furniture that he is likely to use, and the rest he can put away in
 
 the lumber-room of his library, where he can get it if he wants it.
 
@@ -12377,10 +12308,8 @@ swinging in the trough of a wave, with the letters “L. S.” carved upon
 
 it, and that is all which we shall ever know of the fate of the _Lone
 
-Star_.', 2440)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('195a22d4-f62d-49a4-a4d7-4431055ca3fa', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 15, 'VI. The Man with the Twisted Lip (1/3)', 'Isa Whitney, brother of the late Elias Whitney, D.D., Principal of the
+Star_.","2440"
+"195a22d4-f62d-49a4-a4d7-4431055ca3fa","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","15","VI. The Man with the Twisted Lip (1/3)","Isa Whitney, brother of the late Elias Whitney, D.D., Principal of the
 
 Theological College of St. George’s, was much addicted to opium. The
 
@@ -12898,10 +12827,8 @@ behind. One singular point which struck her quick feminine eye was that
 
 although he wore some dark coat, such as he had started to town in, he
 
-had on neither collar nor necktie.', 3066)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('36f46896-28bb-4c06-a4e6-17f68f1be462', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 16, 'VI. The Man with the Twisted Lip (2/3)', '“Convinced that something was amiss with him, she rushed down the
+had on neither collar nor necktie.","3066"
+"36f46896-28bb-4c06-a4e6-17f68f1be462","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","16","VI. The Man with the Twisted Lip (2/3)","“Convinced that something was amiss with him, she rushed down the
 
 steps—for the house was none other than the opium den in which you
 
@@ -13455,10 +13382,8 @@ letters, why should he remain away from you?”
 
 “And on Monday he made no remarks before leaving you?”
 
-“No.”', 3062)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('3e492516-3721-4fc7-ac8a-ade0deaea5dd', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 17, 'VI. The Man with the Twisted Lip (3/3)', '“And you were surprised to see him in Swandam Lane?”
+“No.”","3062"
+"3e492516-3721-4fc7-ac8a-ade0deaea5dd","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","17","VI. The Man with the Twisted Lip (3/3)","“And you were surprised to see him in Swandam Lane?”
 
 “Very much so.”
 
@@ -14008,10 +13933,8 @@ the matter up. I wish I knew how you reach your results.”
 
 consuming an ounce of shag. I think, Watson, that if we drive to Baker
 
-Street we shall just be in time for breakfast.”', 3071)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('e4970468-0bf8-4616-a7b8-4c825bec5c46', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 18, 'VII. The Adventure of the Blue Carbuncle (1/3)', 'I had called upon my friend Sherlock Holmes upon the second morning
+Street we shall just be in time for breakfast.”","3071"
+"e4970468-0bf8-4616-a7b8-4c825bec5c46","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","18","VII. The Adventure of the Blue Carbuncle (1/3)","I had called upon my friend Sherlock Holmes upon the second morning
 
 after Christmas, with the intention of wishing him the compliments of
 
@@ -14477,10 +14400,8 @@ dismay on discovering the robbery, and to having rushed into the room,
 
 where she found matters as described by the last witness. Inspector
 
-Bradstreet, B division, gave evidence as to the arrest of Horner, who', 2596)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('fa63169d-4042-4122-a835-52f97e9477a2', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 19, 'VII. The Adventure of the Blue Carbuncle (2/3)', 'struggled frantically, and protested his innocence in the strongest
+Bradstreet, B division, gave evidence as to the arrest of Horner, who","2596"
+"fa63169d-4042-4122-a835-52f97e9477a2","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","19","VII. The Adventure of the Blue Carbuncle (2/3)","struggled frantically, and protested his innocence in the strongest
 
 terms. Evidence of a previous conviction for robbery having been given
 
@@ -14968,10 +14889,8 @@ Sherlock Holmes looked deeply chagrined. He drew a sovereign from his
 
 pocket and threw it down upon the slab, turning away with the air of a
 
-man whose disgust is too deep for words. A few yards off he stopped', 2593)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('c910676e-f94e-4ca6-ad23-4fe4084a15a2', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 20, 'VII. The Adventure of the Blue Carbuncle (3/3)', 'under a lamp-post and laughed in the hearty, noiseless fashion which
+man whose disgust is too deep for words. A few yards off he stopped","2593"
+"c910676e-f94e-4ca6-ad23-4fe4084a15a2","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","20","VII. The Adventure of the Blue Carbuncle (3/3)","under a lamp-post and laughed in the hearty, noiseless fashion which
 
 was peculiar to him.
 
@@ -15427,10 +15346,8 @@ you will have the goodness to touch the bell, Doctor, we will begin
 
 another investigation, in which, also a bird will be the chief
 
-feature.”', 2619)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('70c3c1b8-8c22-4597-a779-36271dcd82ba', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 21, 'VIII. The Adventure of the Speckled Band (1/3)', 'On glancing over my notes of the seventy odd cases in which I have
+feature.”","2619"
+"70c3c1b8-8c22-4597-a779-36271dcd82ba","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","21","VIII. The Adventure of the Speckled Band (1/3)","On glancing over my notes of the seventy odd cases in which I have
 
 during the last eight years studied the methods of my friend Sherlock
 
@@ -16002,10 +15919,8 @@ what it was that frightened her I cannot imagine.”
 
 “Were there gipsies in the plantation at the time?”
 
-“Yes, there are nearly always some there.”', 3266)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('6468f233-58f3-44ee-a4d1-b104cc73976d', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 22, 'VIII. The Adventure of the Speckled Band (2/3)', '“Ah, and what did you gather from this allusion to a band—a speckled
+“Yes, there are nearly always some there.”","3266"
+"6468f233-58f3-44ee-a4d1-b104cc73976d","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","22","VIII. The Adventure of the Speckled Band (2/3)","“Ah, and what did you gather from this allusion to a band—a speckled
 
 band?”
 
@@ -16607,10 +16522,8 @@ keenest interest.
 
 “My stepfather’s business papers.”
 
-“Oh! you have seen inside, then?”', 3264)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('7fda334e-0689-42d3-a111-a476ea055066', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 23, 'VIII. The Adventure of the Speckled Band (3/3)', '“Only once, some years ago. I remember that it was full of papers.”
+“Oh! you have seen inside, then?”","3264"
+"7fda334e-0689-42d3-a111-a476ea055066","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","23","VIII. The Adventure of the Speckled Band (3/3)","“Only once, some years ago. I remember that it was full of papers.”
 
 “There isn’t a cat in it, for example?”
 
@@ -17194,10 +17107,8 @@ way I am no doubt indirectly responsible for Dr. Grimesby Roylott’s
 
 death, and I cannot say that it is likely to weigh very heavily upon my
 
-conscience.”', 3275)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('50df6e1c-0b87-4770-ae9f-65ac62e83d69', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 24, 'IX. The Adventure of the Engineer’s Thumb (1/3)', 'Of all the problems which have been submitted to my friend, Mr.
+conscience.”","3275"
+"50df6e1c-0b87-4770-ae9f-65ac62e83d69","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","24","IX. The Adventure of the Engineer’s Thumb (1/3)","Of all the problems which have been submitted to my friend, Mr.
 
 Sherlock Holmes, for solution during the years of our intimacy, there
 
@@ -17701,10 +17612,8 @@ suppose that we are absolutely safe from eavesdroppers?’
 
 “‘Entirely.’
 
-“‘Then the matter stands thus. You are probably aware that', 2760)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('820382e5-4f6b-4c8b-a4c8-cd451e4fc123', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 25, 'IX. The Adventure of the Engineer’s Thumb (2/3)', 'fuller’s-earth is a valuable product, and that it is only found in one
+“‘Then the matter stands thus. You are probably aware that","2760"
+"820382e5-4f6b-4c8b-a4c8-cd451e4fc123","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","25","IX. The Adventure of the Engineer’s Thumb (2/3)","fuller’s-earth is a valuable product, and that it is only found in one
 
 or two places in England?’
 
@@ -18168,10 +18077,8 @@ eyes.
 
 “‘Very well,’ said he, ‘you shall know all about the machine.’ He took
 
-a step backward, slammed the little door, and turned the key in the', 2752)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('087a49d7-5a78-4d62-a55b-d7111de2e14d', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 26, 'IX. The Adventure of the Engineer’s Thumb (3/3)', 'lock. I rushed towards it and pulled at the handle, but it was quite
+a step backward, slammed the little door, and turned the key in the","2752"
+"087a49d7-5a78-4d62-a55b-d7111de2e14d","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","26","IX. The Adventure of the Engineer’s Thumb (3/3)","lock. I rushed towards it and pulled at the handle, but it was quite
 
 secure, and did not give in the least to my kicks and shoves. ‘Hullo!’
 
@@ -18651,10 +18558,8 @@ thumb and I have lost a fifty-guinea fee, and what have I gained?”
 
 you know; you have only to put it into words to gain the reputation of
 
-being excellent company for the remainder of your existence.”', 2771)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('b56319e9-a109-438f-a1b3-e15da86e2ff2', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 27, 'X. The Adventure of the Noble Bachelor (1/3)', 'The Lord St. Simon marriage, and its curious termination, have long
+being excellent company for the remainder of your existence.”","2771"
+"b56319e9-a109-438f-a1b3-e15da86e2ff2","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","27","X. The Adventure of the Noble Bachelor (1/3)","The Lord St. Simon marriage, and its curious termination, have long
 
 ceased to be a subject of interest in those exalted circles in which
 
@@ -19164,10 +19069,8 @@ character?”
 
 The nobleman swung his glasses a little faster and stared down into the
 
-fire. “You see, Mr. Holmes,” said he, “my wife was twenty before her', 2687)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('f4f70f75-3af1-4be4-a756-6a93d508134c', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 28, 'X. The Adventure of the Noble Bachelor (2/3)', 'father became a rich man. During that time she ran free in a mining
+fire. “You see, Mr. Holmes,” said he, “my wife was twenty before her","2687"
+"f4f70f75-3af1-4be4-a756-6a93d508134c","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","28","X. The Adventure of the Noble Bachelor (2/3)","father became a rich man. During that time she ran free in a mining
 
 camp and wandered through woods or mountains, so that her education has
 
@@ -19697,10 +19600,8 @@ made me think that he had not been disappointed in his conclusions.
 
 “You seem to expect company. They have laid for five.”
 
-“Yes, I fancy we may have some company dropping in,” said he. “I am', 2694)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('5aa0b432-a409-4847-a92c-996abfed89de', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 29, 'X. The Adventure of the Noble Bachelor (3/3)', 'surprised that Lord St. Simon has not already arrived. Ha! I fancy that
+“Yes, I fancy we may have some company dropping in,” said he. “I am","2694"
+"5aa0b432-a409-4847-a92c-996abfed89de","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","29","X. The Adventure of the Noble Bachelor (3/3)","surprised that Lord St. Simon has not already arrived. Ha! I fancy that
 
 I hear his step now upon the stairs.”
 
@@ -20140,10 +20041,8 @@ that we are never likely to find ourselves in the same position. Draw
 
 your chair up and hand me my violin, for the only problem we have still
 
-to solve is how to while away these bleak autumnal evenings.”', 2721)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('84cc17a8-f56c-4640-a229-8ec0132db4eb', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 30, 'XI. The Adventure of the Beryl Coronet (1/3)', '“Holmes,” said I as I stood one morning in our bow-window looking down
+to solve is how to while away these bleak autumnal evenings.”","2721"
+"84cc17a8-f56c-4640-a229-8ec0132db4eb","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","30","XI. The Adventure of the Beryl Coronet (1/3)","“Holmes,” said I as I stood one morning in our bow-window looking down
 
 the street, “here is a madman coming along. It seems rather sad that
 
@@ -20683,10 +20582,8 @@ though a window had gently closed somewhere. I lay listening with all
 
 my ears. Suddenly, to my horror, there was a distinct sound of
 
-footsteps moving softly in the next room. I slipped out of bed, all', 3220)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('c783df5b-7d15-4145-a3a1-15d838a63e5e', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 31, 'XI. The Adventure of the Beryl Coronet (2/3)', 'palpitating with fear, and peeped round the corner of my dressing-room
+footsteps moving softly in the next room. I slipped out of bed, all","3220"
+"c783df5b-7d15-4145-a3a1-15d838a63e5e","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","31","XI. The Adventure of the Beryl Coronet (2/3)","palpitating with fear, and peeped round the corner of my dressing-room
 
 door.
 
@@ -21276,10 +21173,8 @@ to sound him upon the point, but he always glided away to some other
 
 topic, until at last I gave it over in despair. It was not yet three
 
-when we found ourselves in our rooms once more. He hurried to his', 3223)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('6db131eb-1add-4619-aaef-80f5073c2157', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 32, 'XI. The Adventure of the Beryl Coronet (3/3)', 'chamber and was down again in a few minutes dressed as a common loafer.
+when we found ourselves in our rooms once more. He hurried to his","3223"
+"6db131eb-1add-4619-aaef-80f5073c2157","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","32","XI. The Adventure of the Beryl Coronet (3/3)","chamber and was down again in a few minutes dressed as a common loafer.
 
 With his collar turned up, his shiny, seedy coat, his red cravat, and
 
@@ -21815,10 +21710,8 @@ wherever Sir George Burnwell is. It is equally certain, too, that
 
 whatever her sins are, they will soon receive a more than sufficient
 
-punishment.”', 3236)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('9ae18f14-e03c-4d03-a1da-b86633767ba9', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 33, 'XII. The Adventure of the Copper Beeches (1/3)', '“To the man who loves art for its own sake,” remarked Sherlock Holmes,
+punishment.”","3236"
+"9ae18f14-e03c-4d03-a1da-b86633767ba9","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","33","XII. The Adventure of the Copper Beeches (1/3)","“To the man who loves art for its own sake,” remarked Sherlock Holmes,
 
 tossing aside the advertisement sheet of _The Daily Telegraph_, “it is
 
@@ -22414,10 +22307,8 @@ hour on end, with knitted brows and an abstracted air, but he swept the
 
 matter away with a wave of his hand when I mentioned it. “Data! data!
 
-data!” he cried impatiently. “I can’t make bricks without clay.” And', 3312)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('31137fa5-2849-4115-acd2-ca027718224e', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 34, 'XII. The Adventure of the Copper Beeches (2/3)', 'yet he would always wind up by muttering that no sister of his should
+data!” he cried impatiently. “I can’t make bricks without clay.” And","3312"
+"31137fa5-2849-4115-acd2-ca027718224e","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","34","XII. The Adventure of the Copper Beeches (2/3)","yet he would always wind up by muttering that no sister of his should
 
 ever have accepted such a situation.
 
@@ -22967,10 +22858,8 @@ his keys in his hand, and a look on his face which made him a very
 
 different person to the round, jovial man to whom I was accustomed. His
 
-cheeks were red, his brow was all crinkled with anger, and the veins', 3302)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('89c76026-ea34-4e2b-ab6b-1d9ee0379ff0', '8a2ee8ba-fa79-47f3-a660-97e001e7f1fe', 35, 'XII. The Adventure of the Copper Beeches (3/3)', 'stood out at his temples with passion. He locked the door and hurried
+cheeks were red, his brow was all crinkled with anger, and the veins","3302"
+"89c76026-ea34-4e2b-ab6b-1d9ee0379ff0","8a2ee8ba-fa79-47f3-a660-97e001e7f1fe","35","XII. The Adventure of the Copper Beeches (3/3)","stood out at his temples with passion. He locked the door and hurried
 
 past me without a word or a look.
 
@@ -23538,16 +23427,8 @@ further interest in her when once she had ceased to be the centre of
 
 one of his problems, and she is now the head of a private school at
 
-Walsall, where I believe that she has met with considerable success.', 3330)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-
--- ===== The Great Gatsby — F. Scott Fitzgerald (1925) =====
--- Nguon: Project Gutenberg #64317 (public domain)
-insert into public.books (id, slug, title, author, year, level, blurb, cover_emoji, word_count, chapter_count, gutenberg_id, sort_order) values
-  ('663a6e4f-adba-44b9-a289-a17856cd3409', 'the-great-gatsby', 'The Great Gatsby', 'F. Scott Fitzgerald', 1925, 'B2', 'Nước Mỹ những năm 1920 nhìn qua mắt một người hàng xóm của Gatsby. Tiếng Anh hiện đại, câu ngắn, nhưng nhiều ẩn dụ.', '🥂', 48143, 19, 64317, 3)
-on conflict (id) do update set word_count = excluded.word_count, chapter_count = excluded.chapter_count, blurb = excluded.blurb;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('70d4ef9b-e299-4064-a6a1-35d211ff6abd', '663a6e4f-adba-44b9-a289-a17856cd3409', 1, 'I (1/2)', 'In my younger and more vulnerable years my father gave me some advice
+Walsall, where I believe that she has met with considerable success.","3330"
+"70d4ef9b-e299-4064-a6a1-35d211ff6abd","663a6e4f-adba-44b9-a289-a17856cd3409","1","I (1/2)","In my younger and more vulnerable years my father gave me some advice
 
 that I’ve been turning over in my mind ever since.
 
@@ -24081,10 +23962,8 @@ as I can remember.”
 
 “Don’t look at me,” Daisy retorted, “I’ve been trying to get you to
 
-New York all afternoon.”', 2941)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('759c5d16-5271-4028-a07c-ced82182b14e', '663a6e4f-adba-44b9-a289-a17856cd3409', 2, 'I (2/2)', '“No, thanks,” said Miss Baker to the four cocktails just in from the
+New York all afternoon.”","2941"
+"759c5d16-5271-4028-a07c-ced82182b14e","663a6e4f-adba-44b9-a289-a17856cd3409","2","I (2/2)","“No, thanks,” said Miss Baker to the four cocktails just in from the
 
 pantry. “I’m absolutely in training.”
 
@@ -24666,10 +24545,8 @@ and far away, that might have been the end of a dock. When I looked
 
 once more for Gatsby he had vanished, and I was alone again in the
 
-unquiet darkness.', 2950)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('38bf6091-b405-4448-a5a4-d276636259ac', '663a6e4f-adba-44b9-a289-a17856cd3409', 3, 'II (1/2)', 'About halfway between West Egg and New York the motor road hastily
+unquiet darkness.","2950"
+"38bf6091-b405-4448-a5a4-d276636259ac","663a6e4f-adba-44b9-a289-a17856cd3409","3","II (1/2)","About halfway between West Egg and New York the motor road hastily
 
 joins the railroad and runs beside it for a quarter of a mile, so as
 
@@ -25061,10 +24938,8 @@ was most respectful in his greeting to everyone in the room. He
 
 informed me that he was in the “artistic game,” and I gathered later
 
-that he was a photographer and had made the dim enlargement of', 2130)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('778fc5ec-6a50-486a-ab6d-370e22c76b33', '663a6e4f-adba-44b9-a289-a17856cd3409', 4, 'II (2/2)', 'Mrs. Wilson’s mother which hovered like an ectoplasm on the wall. His
+that he was a photographer and had made the dim enlargement of","2130"
+"778fc5ec-6a50-486a-ab6d-370e22c76b33","663a6e4f-adba-44b9-a289-a17856cd3409","4","II (2/2)","Mrs. Wilson’s mother which hovered like an ectoplasm on the wall. His
 
 wife was shrill, languid, handsome, and horrible. She told me with
 
@@ -25482,10 +25357,8 @@ Then I was lying half asleep in the cold lower level of the
 
 Pennsylvania Station, staring at the morning Tribune, and waiting for
 
-the four o’clock train.', 2149)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('dd26b55e-5f76-4e1e-a147-a5ff8a3d25d5', '663a6e4f-adba-44b9-a289-a17856cd3409', 5, 'III (1/2)', 'There was music from my neighbour’s house through the summer nights.
+the four o’clock train.","2149"
+"dd26b55e-5f76-4e1e-a147-a5ff8a3d25d5","663a6e4f-adba-44b9-a289-a17856cd3409","5","III (1/2)","There was music from my neighbour’s house through the summer nights.
 
 In his blue gardens men and girls came and went like moths among the
 
@@ -26035,10 +25908,8 @@ and corpulent person in his middle years.
 
 A dim background started to take shape behind him, but at her next
 
-remark it faded away.', 2863)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('0cb2e1eb-7762-4594-aa37-ec9e19805119', '663a6e4f-adba-44b9-a289-a17856cd3409', 6, 'III (2/2)', '“However, I don’t believe it.”
+remark it faded away.","2863"
+"0cb2e1eb-7762-4594-aa37-ec9e19805119","663a6e4f-adba-44b9-a289-a17856cd3409","6","III (2/2)","“However, I don’t believe it.”
 
 “Why not?”
 
@@ -26594,10 +26465,8 @@ Everyone suspects himself of at least one of the cardinal virtues, and
 
 this is mine: I am one of the few honest people that I have ever
 
-known.', 2870)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('a212b487-e8e6-4633-a567-5b3b099d57d2', '663a6e4f-adba-44b9-a289-a17856cd3409', 7, 'IV (1/2)', 'On Sunday morning while church bells rang in the villages alongshore,
+known.","2870"
+"a212b487-e8e6-4633-a567-5b3b099d57d2","663a6e4f-adba-44b9-a289-a17856cd3409","7","IV (1/2)","On Sunday morning while church bells rang in the villages alongshore,
 
 the world and its mistress returned to Gatsby’s house and twinkled
 
@@ -27127,10 +26996,8 @@ blinds we’d of seen daylight.”
 
 “Sure he went.” Mr. Wolfshiem’s nose flashed at me indignantly. “He
 
-turned around in the door and says: ‘Don’t let that waiter take away', 2726)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('c5805a36-5881-49f6-a955-e745c99b0b2f', '663a6e4f-adba-44b9-a289-a17856cd3409', 8, 'IV (2/2)', 'my coffee!’ Then he went out on the sidewalk, and they shot him three
+turned around in the door and says: ‘Don’t let that waiter take away","2726"
+"c5805a36-5881-49f6-a955-e745c99b0b2f","663a6e4f-adba-44b9-a289-a17856cd3409","8","IV (2/2)","my coffee!’ Then he went out on the sidewalk, and they shot him three
 
 times in his full belly and drove away.”
 
@@ -27652,10 +27519,8 @@ floated along the dark cornices and blinding signs, and so I drew up
 
 the girl beside me, tightening my arms. Her wan, scornful mouth
 
-smiled, and so I drew her up again closer, this time to my face.', 2729)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('3097dc29-8e5e-4827-a0e8-f0a9814bdf5e', '663a6e4f-adba-44b9-a289-a17856cd3409', 9, 'V (1/2)', 'When I came home to West Egg that night I was afraid for a moment that
+smiled, and so I drew her up again closer, this time to my face.","2729"
+"3097dc29-8e5e-4827-a0e8-f0a9814bdf5e","663a6e4f-adba-44b9-a289-a17856cd3409","9","V (1/2)","When I came home to West Egg that night I was afraid for a moment that
 
 my house was on fire. Two o’clock and the whole corner of the
 
@@ -28079,10 +27944,8 @@ dinner—I felt sure he wouldn’t eat a spoonful. A maid began opening
 
 the upper windows of his house, appeared momentarily in each, and,
 
-leaning from the large central bay, spat meditatively into the', 2113)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('44c25c87-f2a5-4377-aea7-a4618faad133', '663a6e4f-adba-44b9-a289-a17856cd3409', 10, 'V (2/2)', 'garden. It was time I went back. While the rain continued it had
+leaning from the large central bay, spat meditatively into the","2113"
+"44c25c87-f2a5-4377-aea7-a4618faad133","663a6e4f-adba-44b9-a289-a17856cd3409","10","V (2/2)","garden. It was time I went back. While the rain continued it had
 
 seemed like the murmur of their voices, rising and swelling a little
 
@@ -28486,10 +28349,8 @@ looked back at me, remotely, possessed by intense life. Then I went
 
 out of the room and down the marble steps into the rain, leaving them
 
-there together.', 2119)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('72c5482b-d4a0-4ea9-afc8-b8c9d6edc51c', '663a6e4f-adba-44b9-a289-a17856cd3409', 11, 'VI (1/2)', 'About this time an ambitious young reporter from New York arrived one
+there together.","2119"
+"72c5482b-d4a0-4ea9-afc8-b8c9d6edc51c","663a6e4f-adba-44b9-a289-a17856cd3409","11","VI (1/2)","About this time an ambitious young reporter from New York arrived one
 
 morning at Gatsby’s door and asked him if he had anything to say.
 
@@ -28883,10 +28744,8 @@ that summer. There were the same people, or at least the same sort of
 
 people, the same profusion of champagne, the same many-coloured,
 
-many-keyed commotion, but I felt an unpleasantness in the air, a', 2015)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('1d65bbf7-2c1e-4b0f-a24a-9efc4e76f0e2', '663a6e4f-adba-44b9-a289-a17856cd3409', 12, 'VI (2/2)', 'pervading harshness that hadn’t been there before. Or perhaps I had
+many-keyed commotion, but I felt an unpleasantness in the air, a","2015"
+"1d65bbf7-2c1e-4b0f-a24a-9efc4e76f0e2","663a6e4f-adba-44b9-a289-a17856cd3409","12","VI (2/2)","pervading harshness that hadn’t been there before. Or perhaps I had
 
 merely grown used to it, grown to accept West Egg as a world complete
 
@@ -29284,10 +29143,8 @@ as though there was more struggling upon them than a wisp of startled
 
 air. But they made no sound, and what I had almost remembered was
 
-uncommunicable forever.', 2020)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('790b32cc-1b41-4072-a785-5f948a13a1c0', '663a6e4f-adba-44b9-a289-a17856cd3409', 13, 'VII (1/3)', 'It was when curiosity about Gatsby was at its highest that the lights
+uncommunicable forever.","2020"
+"790b32cc-1b41-4072-a785-5f948a13a1c0","663a6e4f-adba-44b9-a289-a17856cd3409","13","VII (1/3)","It was when curiosity about Gatsby was at its highest that the lights
 
 in his house failed to go on one Saturday night—and, as obscurely as
 
@@ -29919,10 +29776,8 @@ the difference between the sick and the well. Wilson was so sick that
 
 he looked guilty, unforgivably guilty—as if he had just got some poor
 
-girl with child.', 2916)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('34ffd389-2ee5-412e-a3e8-2e0f9259929b', '663a6e4f-adba-44b9-a289-a17856cd3409', 14, 'VII (2/3)', '“I’ll let you have that car,” said Tom. “I’ll send it over tomorrow
+girl with child.","2916"
+"34ffd389-2ee5-412e-a3e8-2e0f9259929b","663a6e4f-adba-44b9-a289-a17856cd3409","14","VII (2/3)","“I’ll let you have that car,” said Tom. “I’ll send it over tomorrow
 
 afternoon.”
 
@@ -30524,10 +30379,8 @@ Her frightened eyes told that whatever intentions, whatever courage
 
 she had had, were definitely gone.
 
-“You two start on home, Daisy,” said Tom. “In Mr. Gatsby’s car.”', 2916)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('630796c2-979f-47b6-a9a6-a31a60aee039', '663a6e4f-adba-44b9-a289-a17856cd3409', 15, 'VII (3/3)', 'She looked at Tom, alarmed now, but he insisted with magnanimous
+“You two start on home, Daisy,” said Tom. “In Mr. Gatsby’s car.”","2916"
+"630796c2-979f-47b6-a9a6-a31a60aee039","663a6e4f-adba-44b9-a289-a17856cd3409","15","VII (3/3)","She looked at Tom, alarmed now, but he insisted with magnanimous
 
 scorn.
 
@@ -31125,10 +30978,8 @@ scrutiny of the house, as though my presence marred the sacredness of
 
 the vigil. So I walked away and left him standing there in the
 
-moonlight—watching over nothing.', 2933)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('21d1437c-544d-4bd1-a5db-bc417a9cc15a', '663a6e4f-adba-44b9-a289-a17856cd3409', 16, 'VIII (1/2)', 'I couldn’t sleep all night; a foghorn was groaning incessantly on the
+moonlight—watching over nothing.","2933"
+"21d1437c-544d-4bd1-a5db-bc417a9cc15a","663a6e4f-adba-44b9-a289-a17856cd3409","16","VIII (1/2)","I couldn’t sleep all night; a foghorn was groaning incessantly on the
 
 Sound, and I tossed half-sick between grotesque reality and savage,
 
@@ -31538,10 +31389,8 @@ first came to his ancestral home, three months before. The lawn and
 
 drive had been crowded with the faces of those who guessed at his
 
-corruption—and he had stood on those steps, concealing his', 2261)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('53d0ed05-9076-4d7a-a499-4e6d9a7d2d5f', '663a6e4f-adba-44b9-a289-a17856cd3409', 17, 'VIII (2/2)', 'incorruptible dream, as he waved them goodbye.
+corruption—and he had stood on those steps, concealing his","2261"
+"53d0ed05-9076-4d7a-a499-4e6d9a7d2d5f","663a6e4f-adba-44b9-a289-a17856cd3409","17","VIII (2/2)","incorruptible dream, as he waved them goodbye.
 
 I thanked him for his hospitality. We were always thanking him for
 
@@ -31983,10 +31832,8 @@ It was after we started with Gatsby toward the house that the gardener
 
 saw Wilson’s body a little way off in the grass, and the holocaust was
 
-complete.', 2268)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('10dbf252-a9ad-4a07-a3a7-b5a5ca83cf65', '663a6e4f-adba-44b9-a289-a17856cd3409', 18, 'IX (1/2)', 'After two years I remember the rest of that day, and that night and
+complete.","2268"
+"10dbf252-a9ad-4a07-a3a7-b5a5ca83cf65","663a6e4f-adba-44b9-a289-a17856cd3409","18","IX (1/2)","After two years I remember the rest of that day, and that night and
 
 the next day, only as an endless drill of police and photographers and
 
@@ -32496,10 +32343,8 @@ had something to show me.
 
 fingers. “Look there.”
 
-It was a photograph of the house, cracked in the corners and dirty', 2602)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('5b70979a-5983-43a8-a469-539943fbef64', '663a6e4f-adba-44b9-a289-a17856cd3409', 19, 'IX (2/2)', 'with many hands. He pointed out every detail to me eagerly. “Look
+It was a photograph of the house, cracked in the corners and dirty","2602"
+"5b70979a-5983-43a8-a469-539943fbef64","663a6e4f-adba-44b9-a289-a17856cd3409","19","IX (2/2)","with many hands. He pointed out every detail to me eagerly. “Look
 
 there!” and then sought admiration from my eyes. He had shown it so
 
@@ -32983,16 +32828,8 @@ one fine morning—
 
 So we beat on, boats against the current, borne back ceaselessly into
 
-the past.', 2622)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-
--- ===== Pride and Prejudice — Jane Austen (1813) =====
--- Nguon: Project Gutenberg #1342 (public domain)
-insert into public.books (id, slug, title, author, year, level, blurb, cover_emoji, word_count, chapter_count, gutenberg_id, sort_order) values
-  ('09634a45-2244-491f-a154-dcc2f947f8a5', 'pride-and-prejudice', 'Pride and Prejudice', 'Jane Austen', 1813, 'C1', 'Elizabeth Bennet và ông Darcy. Văn 1813, câu dài và trang trọng — khó nhất trong bốn cuốn, nên để dành.', '💐', 121570, 64, 1342, 4)
-on conflict (id) do update set word_count = excluded.word_count, chapter_count = excluded.chapter_count, blurb = excluded.blurb;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('5f23576b-ac5a-40d7-a4c7-a01f5b5902da', '09634a45-2244-491f-a154-dcc2f947f8a5', 1, 'Chapter I', 'It is a truth universally acknowledged, that a single man in possession
+the past.","2622"
+"5f23576b-ac5a-40d7-a4c7-a01f5b5902da","09634a45-2244-491f-a154-dcc2f947f8a5","1","Chapter I","It is a truth universally acknowledged, that a single man in possession
 
 of a good fortune must be in want of a wife.
 
@@ -33146,10 +32983,8 @@ little information, and uncertain temper. When she was discontented, she
 
 fancied herself nervous. The business of her life was to get her
 
-daughters married: its solace was visiting and news.', 847)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('5dbdbcdc-4def-4ebf-adf2-ea624e78cc81', '09634a45-2244-491f-a154-dcc2f947f8a5', 2, 'Chapter II', 'Mr. Bennet was among the earliest of those who waited on Mr. Bingley. He
+daughters married: its solace was visiting and news.","847"
+"5dbdbcdc-4def-4ebf-adf2-ea624e78cc81","09634a45-2244-491f-a154-dcc2f947f8a5","2","Chapter II","Mr. Bennet was among the earliest of those who waited on Mr. Bingley. He
 
 had always intended to visit him, though to the last always assuring his
 
@@ -33299,10 +33134,8 @@ The rest of the evening was spent in conjecturing how soon he would
 
 return Mr. Bennet’s visit, and determining when they should ask him to
 
-dinner.', 797)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('88f55134-cfa7-46e2-a797-ad34c8951b00', '09634a45-2244-491f-a154-dcc2f947f8a5', 3, 'Chapter III', 'Not all that Mrs. Bennet, however, with the assistance of her five
+dinner.","797"
+"88f55134-cfa7-46e2-a797-ad34c8951b00","09634a45-2244-491f-a154-dcc2f947f8a5","3","Chapter III","Not all that Mrs. Bennet, however, with the assistance of her five
 
 daughters, could ask on the subject, was sufficient to draw from her
 
@@ -33590,10 +33423,8 @@ him! He walked here, and he walked there, fancying himself so very
 
 great! Not handsome enough to dance with! I wish you had been there, my
 
-dear, to have given him one of your set-downs. I quite detest the man.”', 1698)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('dcd1c96b-d937-4211-ab4b-80e5232d5922', '09634a45-2244-491f-a154-dcc2f947f8a5', 4, 'Chapter IV', 'When Jane and Elizabeth were alone, the former, who had been cautious in
+dear, to have given him one of your set-downs. I quite detest the man.”","1698"
+"dcd1c96b-d937-4211-ab4b-80e5232d5922","09634a45-2244-491f-a154-dcc2f947f8a5","4","Chapter IV","When Jane and Elizabeth were alone, the former, who had been cautious in
 
 her praise of Mr. Bingley before, expressed to her sister how very much
 
@@ -33777,10 +33608,8 @@ they should not object to know more of. Miss Bennet was therefore
 
 established as a sweet girl; and their brother felt authorized by such
 
-commendation to think of her as he chose.', 1059)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('4475719e-118f-4c43-af63-d8136c78a5d3', '09634a45-2244-491f-a154-dcc2f947f8a5', 5, 'Chapter V', 'Within a short walk of Longbourn lived a family with whom the Bennets
+commendation to think of her as he chose.","1059"
+"4475719e-118f-4c43-af63-d8136c78a5d3","09634a45-2244-491f-a154-dcc2f947f8a5","5","Chapter V","Within a short walk of Longbourn lived a family with whom the Bennets
 
 were particularly intimate. Sir William Lucas had been formerly in trade
 
@@ -33948,10 +33777,8 @@ directly.”
 
 The boy protested that she should not; she continued to declare that she
 
-would; and the argument ended only with the visit.', 952)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('fb2ca25e-d098-4ded-ae9e-722da2800654', '09634a45-2244-491f-a154-dcc2f947f8a5', 6, 'Chapter VI', 'The ladies of Longbourn soon waited on those of Netherfield. The visit
+would; and the argument ended only with the visit.","952"
+"fb2ca25e-d098-4ded-ae9e-722da2800654","09634a45-2244-491f-a154-dcc2f947f8a5","6","Chapter VI","The ladies of Longbourn soon waited on those of Netherfield. The visit
 
 was returned in due form. Miss Bennet’s pleasing manners grew on the
 
@@ -34367,10 +34194,8 @@ He listened to her with perfect indifference, while she chose to
 
 entertain herself in this manner; and as his composure convinced her
 
-that all was safe, her wit flowed along.', 2340)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('a4a832d4-1031-46db-ab11-39d7dd4ed9ae', '09634a45-2244-491f-a154-dcc2f947f8a5', 7, 'Chapter VII', 'Mr. Bennet’s property consisted almost entirely in an estate of two
+that all was safe, her wit flowed along.","2340"
+"a4a832d4-1031-46db-ab11-39d7dd4ed9ae","09634a45-2244-491f-a154-dcc2f947f8a5","7","Chapter VII","Mr. Bennet’s property consisted almost entirely in an estate of two
 
 thousand a year, which, unfortunately for his daughters, was entailed,
 
@@ -34736,10 +34561,8 @@ present. Elizabeth most thankfully consented, and a servant was
 
 despatched to Longbourn, to acquaint the family with her stay, and bring
 
-back a supply of clothes.', 1990)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('2cf43af1-f790-4e50-ab42-32d2a0bc9d73', '09634a45-2244-491f-a154-dcc2f947f8a5', 8, 'Chapter VIII', 'At five o’clock the two ladies retired to dress, and at half-past six
+back a supply of clothes.","1990"
+"2cf43af1-f790-4e50-ab42-32d2a0bc9d73","09634a45-2244-491f-a154-dcc2f947f8a5","8","Chapter VIII","At five o’clock the two ladies retired to dress, and at half-past six
 
 Elizabeth was summoned to dinner. To the civil inquiries which then
 
@@ -35105,10 +34928,8 @@ however, by duets after supper; while he could find no better relief to
 
 his feelings than by giving his housekeeper directions that every
 
-possible attention might be paid to the sick lady and her sister.', 1925)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('63bf58bf-91f7-404a-a08c-aca79235494b', '09634a45-2244-491f-a154-dcc2f947f8a5', 9, 'Chapter IX', 'Elizabeth passed the chief of the night in her sister’s room, and in the
+possible attention might be paid to the sick lady and her sister.","1925"
+"63bf58bf-91f7-404a-a08c-aca79235494b","09634a45-2244-491f-a154-dcc2f947f8a5","9","Chapter IX","Elizabeth passed the chief of the night in her sister’s room, and in the
 
 morning had the pleasure of being able to send a tolerable answer to the
 
@@ -35406,10 +35227,8 @@ remarks of the two ladies and Mr. Darcy; the latter of whom, however,
 
 could not be prevailed on to join in their censure of _her_, in spite of
 
-all Miss Bingley’s witticisms on _fine eyes_.', 1727)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('826d59e0-f73e-4f45-a30d-55b0f4fdaa96', '09634a45-2244-491f-a154-dcc2f947f8a5', 10, 'Chapter X', 'The day passed much as the day before had done. Mrs. Hurst and Miss
+all Miss Bingley’s witticisms on _fine eyes_.","1727"
+"826d59e0-f73e-4f45-a30d-55b0f4fdaa96","09634a45-2244-491f-a154-dcc2f947f8a5","10","Chapter X","The day passed much as the day before had done. Mrs. Hurst and Miss
 
 Bingley had spent some hours of the morning with the invalid, who
 
@@ -35823,10 +35642,8 @@ She then ran gaily off, rejoicing, as she rambled about, in the hope of
 
 being at home again in a day or two. Jane was already so much recovered
 
-as to intend leaving her room for a couple of hours that evening.', 2206)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('6fa0665e-3b37-4421-a9a8-017776e96690', '09634a45-2244-491f-a154-dcc2f947f8a5', 11, 'Chapter XI', 'When the ladies removed after dinner Elizabeth ran up to her sister, and
+as to intend leaving her room for a couple of hours that evening.","2206"
+"6fa0665e-3b37-4421-a9a8-017776e96690","09634a45-2244-491f-a154-dcc2f947f8a5","11","Chapter XI","When the ladies removed after dinner Elizabeth ran up to her sister, and
 
 seeing her well guarded from cold, attended her into the drawing-room,
 
@@ -36118,10 +35935,8 @@ Her sister made not the smallest objection, and the pianoforte was
 
 opened; and Darcy, after a few moments’ recollection, was not sorry for
 
-it. He began to feel the danger of paying Elizabeth too much attention.', 1595)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('2836a70e-290a-4873-a0a1-fcf35b57cdf9', '09634a45-2244-491f-a154-dcc2f947f8a5', 12, 'Chapter XII', 'In consequence of an agreement between the sisters, Elizabeth wrote the
+it. He began to feel the danger of paying Elizabeth too much attention.","1595"
+"2836a70e-290a-4873-a0a1-fcf35b57cdf9","09634a45-2244-491f-a154-dcc2f947f8a5","12","Chapter XII","In consequence of an agreement between the sisters, Elizabeth wrote the
 
 next morning to her mother, to beg that the carriage might be sent for
 
@@ -36235,10 +36050,8 @@ in the regiment since the preceding Wednesday; several of the officers
 
 had dined lately with their uncle; a private had been flogged; and it
 
-had actually been hinted that Colonel Forster was going to be married.', 673)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('d0a71b40-06de-47f3-a5ea-b283a61dbc34', '09634a45-2244-491f-a154-dcc2f947f8a5', 13, 'Chapter XIII', '“I hope, my dear,” said Mr. Bennet to his wife, as they were at
+had actually been hinted that Colonel Forster was going to be married.","673"
+"d0a71b40-06de-47f3-a5ea-b283a61dbc34","09634a45-2244-491f-a154-dcc2f947f8a5","13","Chapter XIII","“I hope, my dear,” said Mr. Bennet to his wife, as they were at
 
 breakfast the next morning, “that you have ordered a good dinner to-day,
 
@@ -36534,10 +36347,8 @@ pardon for having displeased her. In a softened tone she declared
 
 herself not at all offended; but he continued to apologize for about a
 
-quarter of an hour.', 1690)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('56574bdc-ea56-4fbb-ae94-dfee12e7b4fe', '09634a45-2244-491f-a154-dcc2f947f8a5', 14, 'Chapter XIV', 'During dinner, Mr. Bennet scarcely spoke at all; but when the servants
+quarter of an hour.","1690"
+"56574bdc-ea56-4fbb-ae94-dfee12e7b4fe","09634a45-2244-491f-a154-dcc2f947f8a5","14","Chapter XIV","During dinner, Mr. Bennet scarcely spoke at all; but when the servants
 
 were withdrawn, he thought it time to have some conversation with his
 
@@ -36733,10 +36544,8 @@ young cousin no ill-will, and should never resent her behaviour as any
 
 affront, seated himself at another table with Mr. Bennet, and prepared
 
-for backgammon.', 1115)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('c61bc3dc-cccc-49db-a9b2-728f7f4a9bee', '09634a45-2244-491f-a154-dcc2f947f8a5', 15, 'Chapter XV', 'Mr. Collins was not a sensible man, and the deficiency of nature had
+for backgammon.","1115"
+"c61bc3dc-cccc-49db-a9b2-728f7f4a9bee","09634a45-2244-491f-a154-dcc2f947f8a5","15","Chapter XV","Mr. Collins was not a sensible man, and the deficiency of nature had
 
 been but little assisted by education or society; the greatest part of
 
@@ -37026,10 +36835,8 @@ utterly unknown to her before. Something, he supposed, might be
 
 attributed to his connection with them, but yet he had never met with so
 
-much attention in the whole course of his life.', 1688)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('c62b7bf2-f43e-43e4-a036-608d3135c13e', '09634a45-2244-491f-a154-dcc2f947f8a5', 16, 'Chapter XVI', 'As no objection was made to the young people’s engagement with their
+much attention in the whole course of his life.","1688"
+"c62b7bf2-f43e-43e4-a036-608d3135c13e","09634a45-2244-491f-a154-dcc2f947f8a5","16","Chapter XVI","As no objection was made to the young people’s engagement with their
 
 aunt, and all Mr. Collins’s scruples of leaving Mr. and Mrs. Bennet for
 
@@ -37627,10 +37434,8 @@ at whist, enumerating all the dishes at supper, and repeatedly fearing
 
 that he crowded his cousins, had more to say than he could well manage
 
-before the carriage stopped at Longbourn House.', 3360)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('2c2a9707-5983-4aad-a56b-0be033b82cb7', '09634a45-2244-491f-a154-dcc2f947f8a5', 17, 'Chapter XVII', 'Elizabeth related to Jane, the next day, what had passed between Mr.
+before the carriage stopped at Longbourn House.","3360"
+"2c2a9707-5983-4aad-a56b-0be033b82cb7","09634a45-2244-491f-a154-dcc2f947f8a5","17","Chapter XVII","Elizabeth related to Jane, the next day, what had passed between Mr.
 
 Wickham and herself. Jane listened with astonishment and concern: she
 
@@ -37852,10 +37657,8 @@ of her acquaintance with Mr. Wickham; and nothing less than a dance on
 
 Tuesday could have made such a Friday, Saturday, Sunday, and Monday
 
-endurable to Kitty and Lydia.', 1274)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('be690e85-243a-4de0-abea-074e2374a604', '09634a45-2244-491f-a154-dcc2f947f8a5', 18, 'Chapter XVIII (1/2)', 'Till Elizabeth entered the drawing-room at Netherfield, and looked in
+endurable to Kitty and Lydia.","1274"
+"be690e85-243a-4de0-abea-074e2374a604","09634a45-2244-491f-a154-dcc2f947f8a5","18","Chapter XVIII (1/2)","Till Elizabeth entered the drawing-room at Netherfield, and looked in
 
 vain for Mr. Wickham among the cluster of red coats there assembled, a
 
@@ -38321,10 +38124,8 @@ Bingley’s regard, and said all in her power to heighten her confidence
 
 in it. On their being joined by Mr. Bingley himself, Elizabeth withdrew
 
-to Miss Lucas; to whose inquiry after the pleasantness of her last', 2574)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('3a91d31b-c077-43d7-a2e3-daad3de21bff', '09634a45-2244-491f-a154-dcc2f947f8a5', 19, 'Chapter XVIII (2/2)', 'partner she had scarcely replied, before Mr. Collins came up to them,
+to Miss Lucas; to whose inquiry after the pleasantness of her last","2574"
+"3a91d31b-c077-43d7-a2e3-daad3de21bff","09634a45-2244-491f-a154-dcc2f947f8a5","19","Chapter XVIII (2/2)","partner she had scarcely replied, before Mr. Collins came up to them,
 
 and told her with great exultation, that he had just been so fortunate
 
@@ -38756,10 +38557,8 @@ Elizabeth was the least dear to her of all her children; and though the
 
 man and the match were quite good enough for _her_, the worth of each
 
-was eclipsed by Mr. Bingley and Netherfield.', 2593)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('cd490b4e-fe37-4868-af79-f6c9f7eb26fc', '09634a45-2244-491f-a154-dcc2f947f8a5', 20, 'Chapter XIX', 'The next day opened a new scene at Longbourn. Mr. Collins made his
+was eclipsed by Mr. Bingley and Netherfield.","2593"
+"cd490b4e-fe37-4868-af79-f6c9f7eb26fc","09634a45-2244-491f-a154-dcc2f947f8a5","20","Chapter XIX","The next day opened a new scene at Longbourn. Mr. Collins made his
 
 declaration in form. Having resolved to do it without loss of time, as
 
@@ -39085,10 +38884,8 @@ encouragement, to apply to her father, whose negative might be uttered
 
 in such a manner as must be decisive, and whose behaviour at least could
 
-not be mistaken for the affectation and coquetry of an elegant female.', 1909)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('29adfb1a-0658-45ee-a869-2935f32c0607', '09634a45-2244-491f-a154-dcc2f947f8a5', 21, 'Chapter XX', 'Mr. Collins was not left long to the silent contemplation of his
+not be mistaken for the affectation and coquetry of an elegant female.","1909"
+"29adfb1a-0658-45ee-a869-2935f32c0607","09634a45-2244-491f-a154-dcc2f947f8a5","21","Chapter XX","Mr. Collins was not left long to the silent contemplation of his
 
 successful love; for Mrs. Bennet, having dawdled about in the vestibule
 
@@ -39374,10 +39171,8 @@ My object has been to secure an amiable companion for myself, with due
 
 consideration for the advantage of all your family; and if my _manner_
 
-has been at all reprehensible, I here beg leave to apologize.”', 1643)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('48c87280-5bd1-4cd1-ab47-d7969feb683c', '09634a45-2244-491f-a154-dcc2f947f8a5', 22, 'Chapter XXI', 'The discussion of Mr. Collins’s offer was now nearly at an end, and
+has been at all reprehensible, I here beg leave to apologize.”","1643"
+"48c87280-5bd1-4cd1-ab47-d7969feb683c","09634a45-2244-491f-a154-dcc2f947f8a5","22","Chapter XXI","The discussion of Mr. Collins’s offer was now nearly at an end, and
 
 Elizabeth had only to suffer from the uncomfortable feelings necessarily
 
@@ -39723,10 +39518,8 @@ Longbourn; and the conclusion of all was the comfortable declaration,
 
 that, though he had been invited only to a family dinner, she would take
 
-care to have two full courses.', 1998)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('d1e14b54-6733-4814-af43-27c89cfecf6d', '09634a45-2244-491f-a154-dcc2f947f8a5', 23, 'Chapter XXII', 'The Bennets were engaged to dine with the Lucases; and again, during the
+care to have two full courses.","1998"
+"d1e14b54-6733-4814-af43-27c89cfecf6d","09634a45-2244-491f-a154-dcc2f947f8a5","23","Chapter XXII","The Bennets were engaged to dine with the Lucases; and again, during the
 
 chief of the day, was Miss Lucas so kind as to listen to Mr. Collins.
 
@@ -40026,10 +39819,8 @@ herself, and sunk in her esteem, was added the distressing conviction
 
 that it was impossible for that friend to be tolerably happy in the lot
 
-she had chosen.', 1730)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('8a94b5fd-dcc5-4e33-a1ea-649958558b6e', '09634a45-2244-491f-a154-dcc2f947f8a5', 24, 'Chapter XXIII', 'Elizabeth was sitting with her mother and sisters, reflecting on what
+she had chosen.","1730"
+"8a94b5fd-dcc5-4e33-a1ea-649958558b6e","09634a45-2244-491f-a154-dcc2f947f8a5","24","Chapter XXIII","Elizabeth was sitting with her mother and sisters, reflecting on what
 
 she had heard, and doubting whether she was authorized to mention it,
 
@@ -40315,10 +40106,8 @@ daughters I cannot understand; and all for the sake of Mr. Collins, too!
 
 Why should _he_ have it more than anybody else?”
 
-“I leave it to yourself to determine,” said Mr. Bennet.', 1609)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('710ab350-878d-4e80-adcc-195ab044f53a', '09634a45-2244-491f-a154-dcc2f947f8a5', 25, 'Chapter XXIV', 'Miss Bingley’s letter arrived, and put an end to doubt. The very first
+“I leave it to yourself to determine,” said Mr. Bennet.","1609"
+"710ab350-878d-4e80-adcc-195ab044f53a","09634a45-2244-491f-a154-dcc2f947f8a5","25","Chapter XXIV","Miss Bingley’s letter arrived, and put an end to doubt. The very first
 
 sentence conveyed the assurance of their being all settled in London for
 
@@ -40652,10 +40441,8 @@ Hertfordshire: her mild and steady candour always pleaded for
 
 allowances, and urged the possibility of mistakes; but by everybody else
 
-Mr. Darcy was condemned as the worst of men.', 1926)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('14dc5a4d-abc1-4018-ab01-5ec7ea32e8c0', '09634a45-2244-491f-a154-dcc2f947f8a5', 26, 'Chapter XXV', 'After a week spent in professions of love and schemes of felicity, Mr.
+Mr. Darcy was condemned as the worst of men.","1926"
+"14dc5a4d-abc1-4018-ab01-5ec7ea32e8c0","09634a45-2244-491f-a154-dcc2f947f8a5","26","Chapter XXV","After a week spent in professions of love and schemes of felicity, Mr.
 
 Collins was called from his amiable Charlotte by the arrival of
 
@@ -40923,10 +40710,8 @@ agree with it; and was confident, at last, that she recollected having
 
 heard Mr. Fitzwilliam Darcy formerly spoken of as a very proud,
 
-ill-natured boy.', 1514)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('49b37b0e-ad6c-4b19-a2f7-e418da4eab21', '09634a45-2244-491f-a154-dcc2f947f8a5', 27, 'Chapter XXVI', 'Mrs. Gardiner’s caution to Elizabeth was punctually and kindly given on
+ill-natured boy.","1514"
+"49b37b0e-ad6c-4b19-a2f7-e418da4eab21","09634a45-2244-491f-a154-dcc2f947f8a5","27","Chapter XXVI","Mrs. Gardiner’s caution to Elizabeth was punctually and kindly given on
 
 the first favourable opportunity of speaking to her alone: after
 
@@ -41320,10 +41105,8 @@ of the world, and not yet open to the mortifying conviction that
 
 handsome young men must have something to live on as well as the
 
-plain.”', 2328)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('37600067-50d0-4c65-a5a7-d5093ab8469e', '09634a45-2244-491f-a154-dcc2f947f8a5', 28, 'Chapter XXVII', 'With no greater events than these in the Longbourn family, and otherwise
+plain.”","2328"
+"37600067-50d0-4c65-a5a7-d5093ab8469e","09634a45-2244-491f-a154-dcc2f947f8a5","28","Chapter XXVII","With no greater events than these in the Longbourn family, and otherwise
 
 diversified by little beyond the walks to Meryton, sometimes dirty and
 
@@ -41547,10 +41330,8 @@ we attempt to describe any particular scene, will we begin quarrelling
 
 about its relative situation. Let _our_ first effusions be less
 
-insupportable than those of the generality of travellers.”', 1254)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('5048afd8-4975-4a04-a4a1-5af9acdb94fb', '09634a45-2244-491f-a154-dcc2f947f8a5', 29, 'Chapter XXVIII', 'Every object in the next day’s journey was new and interesting to
+insupportable than those of the generality of travellers.”","1254"
+"5048afd8-4975-4a04-a4a1-5af9acdb94fb","09634a45-2244-491f-a154-dcc2f947f8a5","29","Chapter XXVIII","Every object in the next day’s journey was new and interesting to
 
 Elizabeth; and her spirits were in a state of enjoyment; for she had
 
@@ -41802,10 +41583,8 @@ girls than he began to congratulate them on their good fortune, which
 
 Charlotte explained by letting them know that the whole party was asked
 
-to dine at Rosings the next day.', 1448)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('70e4edfe-723c-4c0d-a011-99fc43131d5b', '09634a45-2244-491f-a154-dcc2f947f8a5', 30, 'Chapter XXIX', 'Mr. Collins’s triumph, in consequence of this invitation, was complete.
+to dine at Rosings the next day.","1448"
+"70e4edfe-723c-4c0d-a011-99fc43131d5b","09634a45-2244-491f-a154-dcc2f947f8a5","30","Chapter XXIX","Mr. Collins’s triumph, in consequence of this invitation, was complete.
 
 The power of displaying the grandeur of his patroness to his wondering
 
@@ -42239,10 +42018,8 @@ her commendation, though costing her some trouble, could by no means
 
 satisfy Mr. Collins, and he was very soon obliged to take her Ladyship’s
 
-praise into his own hands.', 2380)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('914a51c1-857e-4d70-ae59-49dba9f799f8', '09634a45-2244-491f-a154-dcc2f947f8a5', 31, 'Chapter XXX', 'Sir William stayed only a week at Hunsford; but his visit was long
+praise into his own hands.","2380"
+"914a51c1-857e-4d70-ae59-49dba9f799f8","09634a45-2244-491f-a154-dcc2f947f8a5","31","Chapter XXX","Sir William stayed only a week at Hunsford; but his visit was long
 
 enough to convince him of his daughter’s being most comfortably settled,
 
@@ -42452,10 +42229,8 @@ answered that he had never been so fortunate as to meet Miss Bennet. The
 
 subject was pursued no further, and the gentlemen soon afterwards went
 
-away.', 1229)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('eceabf84-14ba-4d80-a7ff-48cf3452e653', '09634a45-2244-491f-a154-dcc2f947f8a5', 32, 'Chapter XXXI', 'Colonel Fitzwilliam’s manners were very much admired at the Parsonage,
+away.","1229"
+"eceabf84-14ba-4d80-a7ff-48cf3452e653","09634a45-2244-491f-a154-dcc2f947f8a5","32","Chapter XXXI","Colonel Fitzwilliam’s manners were very much admired at the Parsonage,
 
 and the ladies all felt that he must add considerably to the pleasure of
 
@@ -42725,10 +42500,8 @@ them with all the forbearance of civility; and at the request of the
 
 gentlemen remained at the instrument till her Ladyship’s carriage was
 
-ready to take them all home.', 1552)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('435ca565-f54c-49dc-a579-1e5eb6004262', '09634a45-2244-491f-a154-dcc2f947f8a5', 33, 'Chapter XXXII', 'Elizabeth was sitting by herself the next morning, and writing to Jane,
+ready to take them all home.","1552"
+"435ca565-f54c-49dc-a579-1e5eb6004262","09634a45-2244-491f-a154-dcc2f947f8a5","33","Chapter XXXII","Elizabeth was sitting by herself the next morning, and writing to Jane,
 
 while Mrs. Collins and Maria were gone on business into the village,
 
@@ -42996,10 +42769,8 @@ certainly admired her, and his situation in life was most eligible; but,
 
 to counterbalance these advantages, Mr. Darcy had considerable patronage
 
-in the church, and his cousin could have none at all.', 1492)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('4e341a66-9c2d-4634-ac2e-9bc7c8c70e16', '09634a45-2244-491f-a154-dcc2f947f8a5', 34, 'Chapter XXXIII', 'More than once did Elizabeth, in her ramble within the park,
+in the church, and his cousin could have none at all.","1492"
+"4e341a66-9c2d-4634-ac2e-9bc7c8c70e16","09634a45-2244-491f-a154-dcc2f947f8a5","34","Chapter XXXIII","More than once did Elizabeth, in her ramble within the park,
 
 unexpectedly meet Mr. Darcy. She felt all the perverseness of the
 
@@ -43331,10 +43102,8 @@ as possible prevented her husband from pressing her; but Mr. Collins
 
 could not conceal his apprehension of Lady Catherine’s being rather
 
-displeased by her staying at home.', 1854)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('1bf0ab68-b923-4af2-a909-46b8b63ca7aa', '09634a45-2244-491f-a154-dcc2f947f8a5', 35, 'Chapter XXXIV', 'When they were gone, Elizabeth, as if intending to exasperate herself as
+displeased by her staying at home.","1854"
+"1bf0ab68-b923-4af2-a909-46b8b63ca7aa","09634a45-2244-491f-a154-dcc2f947f8a5","35","Chapter XXXIV","When they were gone, Elizabeth, as if intending to exasperate herself as
 
 much as possible against Mr. Darcy, chose for her employment the
 
@@ -43702,10 +43471,8 @@ She continued in very agitating reflections till the sound of Lady
 
 Catherine’s carriage made her feel how unequal she was to encounter
 
-Charlotte’s observation, and hurried her away to her room.', 2097)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('a16c781a-3845-4dde-a6cf-447a99e92f48', '09634a45-2244-491f-a154-dcc2f947f8a5', 36, 'Chapter XXXV', 'Elizabeth awoke the next morning to the same thoughts and meditations
+Charlotte’s observation, and hurried her away to her room.","2097"
+"a16c781a-3845-4dde-a6cf-447a99e92f48","09634a45-2244-491f-a154-dcc2f947f8a5","36","Chapter XXXV","Elizabeth awoke the next morning to the same thoughts and meditations
 
 which had at length closed her eyes. She could not yet recover from the
 
@@ -44195,10 +43962,8 @@ to find some opportunity of putting this letter in your hands in the
 
 course of the morning. I will only add, God bless you.
 
-“FITZWILLIAM DARCY.”', 2993)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('37b68f04-3798-4f5f-a658-ecd37ec52034', '09634a45-2244-491f-a154-dcc2f947f8a5', 37, 'Chapter XXXVI', 'Elizabeth, when Mr. Darcy gave her the letter, did not expect it to
+“FITZWILLIAM DARCY.”","2993"
+"37b68f04-3798-4f5f-a658-ecd37ec52034","09634a45-2244-491f-a154-dcc2f947f8a5","37","Chapter XXXVI","Elizabeth, when Mr. Darcy gave her the letter, did not expect it to
 
 contain a renewal of his offers, she had formed no expectation at all of
 
@@ -44546,10 +44311,8 @@ till she could be found. Elizabeth could but just _affect_ concern in
 
 missing him; she really rejoiced at it. Colonel Fitzwilliam was no
 
-longer an object. She could think only of her letter.', 1997)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('a9276285-0b4b-461b-a8d4-ccc8e93c14ff', '09634a45-2244-491f-a154-dcc2f947f8a5', 38, 'Chapter XXXVII', 'The two gentlemen left Rosings the next morning; and Mr. Collins having
+longer an object. She could think only of her letter.","1997"
+"a9276285-0b4b-461b-a8d4-ccc8e93c14ff","09634a45-2244-491f-a154-dcc2f947f8a5","38","Chapter XXXVII","The two gentlemen left Rosings the next morning; and Mr. Collins having
 
 been in waiting near the lodges, to make them his parting obeisance, was
 
@@ -44791,10 +44554,8 @@ a good journey, and invited them to come to Hunsford again next year;
 
 and Miss de Bourgh exerted herself so far as to courtesy and hold out
 
-her hand to both.', 1368)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('e327c1a1-d108-4556-a474-ddd1163a53ef', '09634a45-2244-491f-a154-dcc2f947f8a5', 39, 'Chapter XXXVIII', 'On Saturday morning Elizabeth and Mr. Collins met for breakfast a few
+her hand to both.","1368"
+"e327c1a1-d108-4556-a474-ddd1163a53ef","09634a45-2244-491f-a154-dcc2f947f8a5","39","Chapter XXXVIII","On Saturday morning Elizabeth and Mr. Collins met for breakfast a few
 
 minutes before the others appeared; and he took the opportunity of
 
@@ -44976,10 +44737,8 @@ and her fear, if she once entered on the subject, of being hurried into
 
 repeating something of Bingley, which might only grieve her sister
 
-further.', 1037)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('1f6ad08d-1ce4-4289-a197-056c728041eb', '09634a45-2244-491f-a154-dcc2f947f8a5', 40, 'Chapter XXXIX', 'It was the second week in May, in which the three young ladies set out
+further.","1037"
+"1f6ad08d-1ce4-4289-a197-056c728041eb","09634a45-2244-491f-a154-dcc2f947f8a5","40","Chapter XXXIX","It was the second week in May, in which the three young ladies set out
 
 together from Gracechurch Street for the town of ----, in Hertfordshire;
 
@@ -45245,10 +45004,8 @@ father had not the smallest intention of yielding; but his answers were
 
 at the same time so vague and equivocal, that her mother, though often
 
-disheartened, had never yet despaired of succeeding at last.', 1628)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('c33f3f25-d2d0-4ba3-af76-0ad58c8afbc7', '09634a45-2244-491f-a154-dcc2f947f8a5', 41, 'Chapter XL', 'Elizabeth’s impatience to acquaint Jane with what had happened could no
+disheartened, had never yet despaired of succeeding at last.","1628"
+"c33f3f25-d2d0-4ba3-af76-0ad58c8afbc7","09634a45-2244-491f-a154-dcc2f947f8a5","41","Chapter XL","Elizabeth’s impatience to acquaint Jane with what had happened could no
 
 longer be overcome; and at length resolving to suppress every particular
 
@@ -45540,10 +45297,8 @@ often talk of it between themselves. Well, if they can be easy with an
 
 estate that is not lawfully their own, so much the better. _I_ should be
 
-ashamed of having one that was only entailed on me.”', 1676)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('b10eac61-b8a2-49ef-a8b0-bd7233c4e8f2', '09634a45-2244-491f-a154-dcc2f947f8a5', 42, 'Chapter XLI', 'The first week of their return was soon gone. The second began. It was
+ashamed of having one that was only entailed on me.”","1676"
+"b10eac61-b8a2-49ef-a8b0-bd7233c4e8f2","09634a45-2244-491f-a154-dcc2f947f8a5","42","Chapter XLI","The first week of their return was soon gone. The second began. It was
 
 the last of the regiment’s stay in Meryton, and all the young ladies in
 
@@ -45945,10 +45700,8 @@ was every reason to believe would be attended to; and, in the clamorous
 
 happiness of Lydia herself in bidding farewell, the more gentle adieus
 
-of her sisters were uttered without being heard.', 2263)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('67d464d6-bdb5-4f1c-a0ad-eafecfd32dd7', '09634a45-2244-491f-a154-dcc2f947f8a5', 43, 'Chapter XLII', 'Had Elizabeth’s opinion been all drawn from her own family, she could
+of her sisters were uttered without being heard.","2263"
+"67d464d6-bdb5-4f1c-a0ad-eafecfd32dd7","09634a45-2244-491f-a154-dcc2f947f8a5","43","Chapter XLII","Had Elizabeth’s opinion been all drawn from her own family, she could
 
 not have formed a very pleasing picture of conjugal felicity or domestic
 
@@ -46266,10 +46019,8 @@ with a proper air of indifference, that she had not really any dislike
 
 to the scheme.
 
-To Pemberley, therefore, they were to go.', 1823)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('bab6ac50-055e-418f-a8a5-24defa1e92a3', '09634a45-2244-491f-a154-dcc2f947f8a5', 44, 'Chapter XLIII (1/2)', 'Elizabeth, as they drove along, watched for the first appearance of
+To Pemberley, therefore, they were to go.","1823"
+"bab6ac50-055e-418f-a8a5-24defa1e92a3","09634a45-2244-491f-a154-dcc2f947f8a5","44","Chapter XLIII (1/2)","Elizabeth, as they drove along, watched for the first appearance of
 
 Pemberley Woods with some perturbation; and when at length they turned
 
@@ -46703,10 +46454,8 @@ feelings, followed them in silence. She was overpowered by shame and
 
 vexation. Her coming there was the most unfortunate, the most ill-judged
 
-thing in the world! How strange must it appear to him! In what a', 2415)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('883b1224-9612-4a15-ad59-43bb37c73cff', '09634a45-2244-491f-a154-dcc2f947f8a5', 45, 'Chapter XLIII (2/2)', 'disgraceful light might it not strike so vain a man! It might seem as if
+thing in the world! How strange must it appear to him! In what a","2415"
+"883b1224-9612-4a15-ad59-43bb37c73cff","09634a45-2244-491f-a154-dcc2f947f8a5","45","Chapter XLIII (2/2)","disgraceful light might it not strike so vain a man! It might seem as if
 
 she had purposely thrown herself in his way again! Oh! why did she come?
 
@@ -47120,10 +46869,8 @@ much attention for any of these new friends; and she could do nothing
 
 but think, and think with wonder, of Mr. Darcy’s civility, and, above
 
-all, of his wishing her to be acquainted with his sister.', 2429)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('77b9ace9-1f41-477f-a8ca-84b47715f735', '09634a45-2244-491f-a154-dcc2f947f8a5', 46, 'Chapter XLIV', 'Elizabeth had settled it that Mr. Darcy would bring his sister to visit
+all, of his wishing her to be acquainted with his sister.","2429"
+"77b9ace9-1f41-477f-a8ca-84b47715f735","09634a45-2244-491f-a154-dcc2f947f8a5","46","Chapter XLIV","Elizabeth had settled it that Mr. Darcy would bring his sister to visit
 
 her the very day after her reaching Pemberley; and was, consequently,
 
@@ -47515,10 +47262,8 @@ Mr. Gardiner left them soon after breakfast. The fishing scheme had been
 
 renewed the day before, and a positive engagement made of his meeting
 
-some of the gentlemen at Pemberley by noon.', 2332)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('377ab94d-ca16-4351-ada0-aa11306a588a', '09634a45-2244-491f-a154-dcc2f947f8a5', 47, 'Chapter XLV', 'Convinced as Elizabeth now was that Miss Bingley’s dislike of her had
+some of the gentlemen at Pemberley by noon.","2332"
+"377ab94d-ca16-4351-ada0-aa11306a588a","09634a45-2244-491f-a154-dcc2f947f8a5","47","Chapter XLV","Convinced as Elizabeth now was that Miss Bingley’s dislike of her had
 
 originated in jealousy, she could not help feeling how very unwelcome
 
@@ -47820,10 +47565,8 @@ himself; yet Elizabeth was longing to know what Mrs. Gardiner thought of
 
 him, and Mrs. Gardiner would have been highly gratified by her niece’s
 
-beginning the subject.', 1728)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('42163264-b346-49bc-a311-d8996028ae3d', '09634a45-2244-491f-a154-dcc2f947f8a5', 48, 'Chapter XLVI', 'Elizabeth had been a good deal disappointed in not finding a letter from
+beginning the subject.","1728"
+"42163264-b346-49bc-a311-d8996028ae3d","09634a45-2244-491f-a154-dcc2f947f8a5","48","Chapter XLVI","Elizabeth had been a good deal disappointed in not finding a letter from
 
 Jane on their first arrival at Lambton; and this disappointment had been
 
@@ -48331,10 +48074,8 @@ remained to be done but to go; and Elizabeth, after all the misery of
 
 the morning, found herself, in a shorter space of time than she could
 
-have supposed, seated in the carriage, and on the road to Longbourn.', 3009)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('08fb4ff2-bb7c-407c-a680-bfd9e6da5926', '09634a45-2244-491f-a154-dcc2f947f8a5', 49, 'Chapter XLVII (1/2)', '“I have been thinking it over again, Elizabeth,” said her uncle, as they
+have supposed, seated in the carriage, and on the road to Longbourn.","3009"
+"08fb4ff2-bb7c-407c-a680-bfd9e6da5926","09634a45-2244-491f-a154-dcc2f947f8a5","49","Chapter XLVII (1/2)","“I have been thinking it over again, Elizabeth,” said her uncle, as they
 
 drove from the town; “and really, upon serious consideration, I am much
 
@@ -48684,10 +48425,8 @@ in his grave; and if you are not kind to us, brother, I do not know what
 
 we shall do.”
 
-They all exclaimed against such terrific ideas; and Mr. Gardiner, after', 2032)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('ade6be9c-d312-462a-aa95-87319d0019ad', '09634a45-2244-491f-a154-dcc2f947f8a5', 50, 'Chapter XLVII (2/2)', 'general assurances of his affection for her and all her family, told her
+They all exclaimed against such terrific ideas; and Mr. Gardiner, after","2032"
+"ade6be9c-d312-462a-aa95-87319d0019ad","09634a45-2244-491f-a154-dcc2f947f8a5","50","Chapter XLVII (2/2)","general assurances of his affection for her and all her family, told her
 
 that he meant to be in London the very next day, and would assist Mr.
 
@@ -49033,10 +48772,8 @@ other designs that he had formed; but he was in such a hurry to be gone,
 
 and his spirits so greatly discomposed, that I had difficulty in finding
 
-out even so much as this.”', 2045)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('92207bf3-922b-4a0c-a1a3-037f21f17603', '09634a45-2244-491f-a154-dcc2f947f8a5', 51, 'Chapter XLVIII', 'The whole party were in hopes of a letter from Mr. Bennet the next
+out even so much as this.”","2045"
+"92207bf3-922b-4a0c-a1a3-037f21f17603","09634a45-2244-491f-a154-dcc2f947f8a5","51","Chapter XLVIII","The whole party were in hopes of a letter from Mr. Bennet the next
 
 morning, but the post came in without bringing a single line from him.
 
@@ -49428,10 +49165,8 @@ Kitty, who took all these threats in a serious light, began to cry.
 
 girl for the next ten years, I will take you to a review at the end of
 
-them.”', 2252)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('a5c942a2-f135-4bd7-a60f-27b313fc6397', '09634a45-2244-491f-a154-dcc2f947f8a5', 52, 'Chapter XLIX', 'Two days after Mr. Bennet’s return, as Jane and Elizabeth were walking
+them.”","2252"
+"a5c942a2-f135-4bd7-a60f-27b313fc6397","09634a45-2244-491f-a154-dcc2f947f8a5","52","Chapter XLIX","Two days after Mr. Bennet’s return, as Jane and Elizabeth were walking
 
 together in the shrubbery behind the house, they saw the housekeeper
 
@@ -49825,10 +49560,8 @@ neither rational happiness, nor worldly prosperity could be justly
 
 expected for her sister, in looking back to what they had feared, only
 
-two hours ago, she felt all the advantages of what they had gained.', 2240)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('c35f710a-680e-4194-a435-a414cc76399d', '09634a45-2244-491f-a154-dcc2f947f8a5', 53, 'Chapter L', 'Mr. Bennet had very often wished, before this period of his life, that,
+two hours ago, she felt all the advantages of what they had gained.","2240"
+"c35f710a-680e-4194-a435-a414cc76399d","09634a45-2244-491f-a154-dcc2f947f8a5","53","Chapter L","Mr. Bennet had very often wished, before this period of his life, that,
 
 instead of spending his whole income, he had laid by an annual sum, for
 
@@ -50210,10 +49943,8 @@ was surprised, however, that Wickham should consent to such a scheme;
 
 and, had she consulted only her own inclination, any meeting with him
 
-would have been the last object of her wishes.', 2198)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('a2decf84-bfbb-45f6-a73b-cdab634c9cbc', '09634a45-2244-491f-a154-dcc2f947f8a5', 54, 'Chapter LI', 'Their sister’s wedding-day arrived; and Jane and Elizabeth felt for her
+would have been the last object of her wishes.","2198"
+"a2decf84-bfbb-45f6-a73b-cdab634c9cbc","09634a45-2244-491f-a154-dcc2f947f8a5","54","Chapter LI","Their sister’s wedding-day arrived; and Jane and Elizabeth felt for her
 
 probably more than she felt for herself. The carriage was sent to meet
 
@@ -50571,10 +50302,8 @@ Elizabeth privately of what Lydia had let fall; Elizabeth was glad of
 
 it:--till it appeared whether her inquiries would receive any
 
-satisfaction, she had rather be without a confidante.', 2068)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('639ca71e-e766-47e4-acfe-5bbe1d4d1653', '09634a45-2244-491f-a154-dcc2f947f8a5', 55, 'Chapter LII', 'Elizabeth had the satisfaction of receiving an answer to her letter as
+satisfaction, she had rather be without a confidante.","2068"
+"639ca71e-e766-47e4-acfe-5bbe1d4d1653","09634a45-2244-491f-a154-dcc2f947f8a5","55","Chapter LII","Elizabeth had the satisfaction of receiving an answer to her letter as
 
 soon as she possibly could. She was no sooner in possession of it, than
 
@@ -51104,10 +50833,8 @@ mind.”
 
 She held out her hand: he kissed it with affectionate gallantry, though
 
-he hardly knew how to look, and they entered the house.', 3027)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('78825a28-dfe4-4757-a280-afc2dc5ab71c', '09634a45-2244-491f-a154-dcc2f947f8a5', 56, 'Chapter LIII', 'Mr. Wickham was so perfectly satisfied with this conversation, that he
+he hardly knew how to look, and they entered the house.","3027"
+"78825a28-dfe4-4757-a280-afc2dc5ab71c","09634a45-2244-491f-a154-dcc2f947f8a5","56","Chapter LIII","Mr. Wickham was so perfectly satisfied with this conversation, that he
 
 never again distressed himself, or provoked his dear sister Elizabeth,
 
@@ -51613,10 +51340,8 @@ not think anything less than two courses could be good enough for a man
 
 on whom she had such anxious designs, or satisfy the appetite and pride
 
-of one who had ten thousand a year.', 2933)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('670e9fde-c493-4615-ad84-4e9d8662e28b', '09634a45-2244-491f-a154-dcc2f947f8a5', 57, 'Chapter LIV', 'As soon as they were gone, Elizabeth walked out to recover her spirits;
+of one who had ten thousand a year.","2933"
+"670e9fde-c493-4615-ad84-4e9d8662e28b","09634a45-2244-491f-a154-dcc2f947f8a5","57","Chapter LIV","As soon as they were gone, Elizabeth walked out to recover her spirits;
 
 or, in other words, to dwell without interruption on those subjects
 
@@ -51902,10 +51627,8 @@ instruct, though we can teach only what is not worth knowing. Forgive
 
 me; and if you persist in indifference, do not make _me_ your
 
-confidante.”', 1592)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('281c7104-533f-4cfe-a7a5-a538490cbf66', '09634a45-2244-491f-a154-dcc2f947f8a5', 58, 'Chapter LV', 'A few days after this visit, Mr. Bingley called again, and alone. His
+confidante.”","1592"
+"281c7104-533f-4cfe-a7a5-a538490cbf66","09634a45-2244-491f-a154-dcc2f947f8a5","58","Chapter LV","A few days after this visit, Mr. Bingley called again, and alone. His
 
 friend had left him that morning for London, but was to return home in
 
@@ -52325,10 +52048,8 @@ The Bennets were speedily pronounced to be the luckiest family in the
 
 world; though only a few weeks before, when Lydia had first run away,
 
-they had been generally proved to be marked out for misfortune.', 2324)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('169614d0-af05-4296-a6ea-ab2132035e4e', '09634a45-2244-491f-a154-dcc2f947f8a5', 59, 'Chapter LVI', 'One morning, about a week after Bingley’s engagement with Jane had been
+they had been generally proved to be marked out for misfortune.","2324"
+"169614d0-af05-4296-a6ea-ab2132035e4e","09634a45-2244-491f-a154-dcc2f947f8a5","59","Chapter LVI","One morning, about a week after Bingley’s engagement with Jane had been
 
 formed, as he and the females of the family were sitting together in the
 
@@ -52828,10 +52549,8 @@ nothing particular to say to you, Lizzy?”
 
 Elizabeth was forced to give in to a little falsehood here; for to
 
-acknowledge the substance of their conversation was impossible.', 2722)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('e27ceb8c-de76-44c4-a90a-1d8fdb14f2bc', '09634a45-2244-491f-a154-dcc2f947f8a5', 60, 'Chapter LVII', 'The discomposure of spirits which this extraordinary visit threw
+acknowledge the substance of their conversation was impossible.","2722"
+"e27ceb8c-de76-44c4-a90a-1d8fdb14f2bc","09634a45-2244-491f-a154-dcc2f947f8a5","60","Chapter LVII","The discomposure of spirits which this extraordinary visit threw
 
 Elizabeth into could not be easily overcome; nor could she for many
 
@@ -53115,10 +52834,8 @@ what he said of Mr. Darcy’s indifference; and she could do nothing but
 
 wonder at such a want of penetration, or fear that, perhaps, instead of
 
-his seeing too _little_, she might have fancied too _much_.', 1650)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('d85f8d75-9e8d-4e97-a58c-f73486843634', '09634a45-2244-491f-a154-dcc2f947f8a5', 61, 'Chapter LVIII', 'Instead of receiving any such letter of excuse from his friend, as
+his seeing too _little_, she might have fancied too _much_.","1650"
+"d85f8d75-9e8d-4e97-a58c-f73486843634","09634a45-2244-491f-a154-dcc2f947f8a5","61","Chapter LVIII","Instead of receiving any such letter of excuse from his friend, as
 
 Elizabeth half expected Mr. Bingley to do, he was able to bring Darcy
 
@@ -53550,10 +53267,8 @@ Bingley, which of course was to be inferior only to his own, he
 
 continued the conversation till they reached the house. In the hall they
 
-parted.', 2431)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('b42d5047-5c0e-45cf-a059-5d89d814d4be', '09634a45-2244-491f-a154-dcc2f947f8a5', 62, 'Chapter LIX', '“My dear Lizzy, where can you have been walking to?” was a question
+parted.","2431"
+"b42d5047-5c0e-45cf-a059-5d89d814d4be","09634a45-2244-491f-a154-dcc2f947f8a5","62","Chapter LIX","“My dear Lizzy, where can you have been walking to?” was a question
 
 which Elizabeth received from Jane as soon as she entered the room, and
 
@@ -53987,10 +53702,8 @@ every hour in his esteem.
 
 is my favourite; but I think I shall like _your_ husband quite as well
 
-as Jane’s.”', 2468)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('a1b0ef32-9514-4a36-ae5a-3670a8c461df', '09634a45-2244-491f-a154-dcc2f947f8a5', 63, 'Chapter LX', 'Elizabeth’s spirits soon rising to playfulness again, she wanted Mr.
+as Jane’s.”","2468"
+"a1b0ef32-9514-4a36-ae5a-3670a8c461df","09634a45-2244-491f-a154-dcc2f947f8a5","63","Chapter LX","Elizabeth’s spirits soon rising to playfulness again, she wanted Mr.
 
 Darcy to account for his having ever fallen in love with her. “How could
 
@@ -54266,10 +53979,8 @@ with delight to the time when they should be removed from society so
 
 little pleasing to either, to all the comfort and elegance of their
 
-family party at Pemberley.', 1586)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
-insert into public.book_chapters (id, book_id, number, title, content, word_count) values
-  ('81de9402-db81-4a81-a05f-f2a5172a9bb9', '09634a45-2244-491f-a154-dcc2f947f8a5', 64, 'Chapter LXI', 'Happy for all her maternal feelings was the day on which Mrs. Bennet got
+family party at Pemberley.","1586"
+"81de9402-db81-4a81-a05f-f2a5172a9bb9","09634a45-2244-491f-a154-dcc2f947f8a5","64","Chapter LXI","Happy for all her maternal feelings was the day on which Mrs. Bennet got
 
 rid of her two most deserving daughters. With what delighted pride she
 
@@ -54483,5 +54194,4 @@ as well as Elizabeth, really loved them; and they were both ever
 
 sensible of the warmest gratitude towards the persons who, by bringing
 
-her into Derbyshire, had been the means of uniting them.', 1238)
-on conflict (book_id, number) do update set title = excluded.title, content = excluded.content, word_count = excluded.word_count;
+her into Derbyshire, had been the means of uniting them.","1238"

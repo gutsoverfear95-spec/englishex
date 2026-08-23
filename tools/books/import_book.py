@@ -14,6 +14,7 @@ xuat ra SQL sai.
 
 Chay:  python tools/books/import_book.py
 """
+import glob
 import hashlib
 import os
 import re
@@ -259,7 +260,7 @@ def build(book):
 
 
 def main():
-    all_sql = []
+    all_sql, all_ch = [], []
     print(f"{'Sach':<36}{'Chuong':>8}{'Tong tu':>10}{'Tu/chuong':>11}{'Dai nhat':>10}")
     print("-" * 75)
 
@@ -302,26 +303,118 @@ def main():
                 f"title = excluded.title, content = excluded.content, "
                 f"word_count = excluded.word_count;"
             )
-        all_sql.append(f"-- ===== {b['title']} — {b['author']} ({b['year']}) =====\n"
-                       f"-- Nguon: Project Gutenberg #{b['gid']} (public domain)\n"
-                       + "\n".join(rows))
+        all_sql.append((b, rows))
+        all_ch.append((b, ch))
 
     if failed:
         raise SystemExit("\nCO LOI — khong xuat SQL.")
 
-    head = (
-        "-- ============================================================\n"
-        "-- NOI DUNG SACH — sinh tu tools/books/import_book.py, dung sua tay\n"
-        "--\n"
-        "-- Tat ca tac pham deu DA HET BAN QUYEN (public domain), lay tu\n"
-        "-- Project Gutenberg. Chay books_schema.sql TRUOC file nay.\n"
-        "-- An toan chay lai nhieu lan (uuid tat dinh + on conflict).\n"
-        "-- ============================================================\n\n"
-    )
-    out = os.path.join(OUT_DIR, "books_content.sql")
-    with open(out, "w", encoding="utf-8") as f:
-        f.write(head + "\n\n".join(all_sql) + "\n")
-    print(f"\n-> {out}  ({os.path.getsize(out) / 1e6:.1f} MB)")
+    write_files(all_sql)
+    write_csv(all_ch)
+
+
+# Supabase SQL Editor tu choi cau lenh qua lon ("Query is too large to be run
+# via the SQL Editor"). Ca 4 cuon gop lai la 1,8 MB nen phai cat nho. Cat theo
+# ranh gioi CAU LENH, khong cat giua chung mot lenh insert.
+#
+# Tai lieu Supabase khong ghi nguong chinh xac, nen de bien an toan rong thay
+# vi do sat. 180 KB thi chac chan qua, doi lai la nhieu file hon.
+MAX_BYTES = 180_000
+
+
+def write_csv(books_rows_data):
+    """Xuat them ban CSV de nap bang Table Editor (gioi han 100 MB).
+
+    Nhanh hon han dan 10 lan vao SQL Editor. Doi lai: CSV chi INSERT chu khong
+    upsert, nen bang phai trong truoc khi nap.
+    """
+    import csv
+
+    ch_path = os.path.join(OUT_DIR, "book_chapters.csv")
+    with open(ch_path, "w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f, quoting=csv.QUOTE_ALL)
+        w.writerow(["id", "book_id", "number", "title", "content", "word_count"])
+        for b, chapters in books_rows_data:
+            bid = uid("book", b["slug"])
+            for c in chapters:
+                w.writerow([uid("chap", b["slug"], c["number"]), bid, c["number"],
+                            c["title"], c["content"], c["word_count"]])
+    print(f"\n  book_chapters.csv     {os.path.getsize(ch_path) / 1024:>6.0f} KB   "
+          f"{sum(len(c) for _, c in books_rows_data)} chuong (nap bang Table Editor)")
+
+    # Thong tin 4 cuon rat nho — tach rieng de duong CSV dung duoc doc lap,
+    # khong phai mo file SQL 180 KB chi de lay 4 dong dau.
+    meta = os.path.join(OUT_DIR, "books_meta.sql")
+    rows = []
+    for b, chapters in books_rows_data:
+        rows.append(
+            f"  ('{uid('book', b['slug'])}', {sql_str(b['slug'])}, {sql_str(b['title'])}, "
+            f"{sql_str(b['author'])}, {b['year']}, {sql_str(b['level'])}, "
+            f"{sql_str(b['blurb'])}, {sql_str(b['emoji'])}, "
+            f"{sum(c['word_count'] for c in chapters)}, {len(chapters)}, "
+            f"{b['gid']}, {b['order']})")
+    with open(meta, "w", encoding="utf-8") as f:
+        f.write(
+            "-- Thong tin 4 cuon sach. Chay TRUOC khi nap chuong (CSV hoac SQL).\n"
+            "-- Tat ca deu la sach DA HET BAN QUYEN, nguon Project Gutenberg.\n"
+            "-- An toan chay lai nhieu lan.\n\n"
+            "insert into public.books (id, slug, title, author, year, level, blurb,\n"
+            "  cover_emoji, word_count, chapter_count, gutenberg_id, sort_order) values\n"
+            + ",\n".join(rows) + "\n"
+            "on conflict (id) do update set\n"
+            "  word_count = excluded.word_count,\n"
+            "  chapter_count = excluded.chapter_count,\n"
+            "  blurb = excluded.blurb;\n")
+    print(f"  books_meta.sql        {os.path.getsize(meta) / 1024:>6.1f} KB   "
+          f"{len(rows)} cuon")
+
+
+def write_files(books_rows):
+    """Ghi ra nhieu file, moi file du nho de dan thang vao SQL Editor."""
+    for old in glob.glob(os.path.join(OUT_DIR, "books_content*.sql")):
+        os.remove(old)
+
+    # Xep hang doi: (nhan sach, cau lenh)
+    queue = []
+    for b, rows in books_rows:
+        for r in rows:
+            queue.append((b, r))
+
+    files, cur, cur_bytes, cur_books = [], [], 0, []
+    for b, stmt in queue:
+        n = len(stmt.encode("utf-8")) + 2
+        if cur and cur_bytes + n > MAX_BYTES:
+            files.append((cur, cur_books))
+            cur, cur_bytes, cur_books = [], 0, []
+        if b["slug"] not in cur_books:
+            cur_books.append(b["slug"])
+            cur.append(f"-- ===== {b['title']} — {b['author']} ({b['year']}) =====\n"
+                       f"-- Nguon: Project Gutenberg #{b['gid']} (public domain)")
+        cur.append(stmt)
+        cur_bytes += n
+    if cur:
+        files.append((cur, cur_books))
+
+    total = len(files)
+    print()
+    for i, (stmts, slugs) in enumerate(files, 1):
+        head = (
+            "-- ============================================================\n"
+            f"-- NOI DUNG SACH — phan {i}/{total}\n"
+            "-- Sinh tu tools/books/import_book.py, dung sua tay.\n"
+            "--\n"
+            f"-- Chua: {', '.join(slugs)}\n"
+            "--\n"
+            "-- Chay books_schema.sql TRUOC, roi chay cac phan nay THEO THU TU.\n"
+            "-- An toan chay lai nhieu lan (uuid tat dinh + on conflict).\n"
+            "-- Cat nho vi SQL Editor cua Supabase tu choi cau lenh qua lon.\n"
+            "-- ============================================================\n\n"
+        )
+        path = os.path.join(OUT_DIR, f"books_content_{i:02d}.sql")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(head + "\n\n".join(stmts) + "\n")
+        kb = os.path.getsize(path) / 1024
+        print(f"  books_content_{i:02d}.sql  {kb:>6.0f} KB   {', '.join(slugs)}")
 
 
 if __name__ == "__main__":
