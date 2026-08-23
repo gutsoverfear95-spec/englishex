@@ -1,5 +1,5 @@
 -- ============================================================
--- NOI DUNG SACH — phan 6/11
+-- NOI DUNG SACH — phan 6/20
 -- Sinh tu tools/books/import_book.py, dung sua tay.
 --
 -- Chua: the-great-gatsby, pride-and-prejudice
@@ -5884,5 +5884,5 @@ on conflict (book_id, number) do update set title = excluded.title, content = ex
 -- Nguon: Project Gutenberg #1342 (public domain)
 
 insert into public.books (id, slug, title, author, year, level, blurb, cover_emoji, word_count, chapter_count, gutenberg_id, sort_order) values
-  ('09634a45-2244-491f-a154-dcc2f947f8a5', 'pride-and-prejudice', 'Pride and Prejudice', 'Jane Austen', 1813, 'C1', 'Elizabeth Bennet và ông Darcy. Văn 1813, câu dài và trang trọng — khó nhất trong bốn cuốn, nên để dành.', '💐', 121570, 64, 1342, 4)
+  ('09634a45-2244-491f-a154-dcc2f947f8a5', 'pride-and-prejudice', 'Pride and Prejudice', 'Jane Austen', 1813, 'C1', 'Elizabeth Bennet và ông Darcy. Văn 1813, câu dài và trang trọng — khó nhất trong bốn tiểu thuyết, nên để dành.', '💐', 121570, 64, 1342, 4)
 on conflict (id) do update set word_count = excluded.word_count, chapter_count = excluded.chapter_count, blurb = excluded.blurb;

@@ -21,8 +21,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 OUT = os.path.join(HERE, "..", "..", "supabase", "books_words.sql")
 
-BATCHES = ["gloss_01"]
-BOOK_IDS = [11, 1661, 64317, 1342]
+BATCHES = ["gloss_01", "gloss_02"]
+BOOK_IDS = [11, 1661, 64317, 1342, 699, 35461]
 
 
 def load_batches():

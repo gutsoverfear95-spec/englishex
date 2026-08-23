@@ -45,7 +45,19 @@ BOOKS = [
     dict(gid=1342, slug="pride-and-prejudice", title="Pride and Prejudice",
          author="Jane Austen", year=1813, level="C1", emoji="💐", order=4,
          blurb="Elizabeth Bennet và ông Darcy. Văn 1813, câu dài và trang trọng — "
-               "khó nhất trong bốn cuốn, nên để dành."),
+               "khó nhất trong bốn tiểu thuyết, nên để dành."),
+    # --- Lịch sử ---
+    # Will Durant không dùng được: The Story of Civilization (1935) còn bản
+    # quyền tới 2031. Hai cuốn dưới đây đã hết bản quyền và đo được là dễ nhất
+    # trong nhóm sách sử.
+    dict(gid=699, slug="child-history-england", title="A Child's History of England",
+         author="Charles Dickens", year=1853, level="B2", emoji="🏰", order=5,
+         blurb="Lịch sử nước Anh do Dickens kể lại cho con mình nghe — giọng "
+               "kể chuyện chứ không phải giọng giáo khoa. Dễ vào nhất trong sách sử."),
+    dict(gid=35461, slug="short-history-world", title="A Short History of the World",
+         author="H. G. Wells", year=1922, level="C1", emoji="🌍", order=6,
+         blurb="Cả lịch sử thế giới trong 66 chương ngắn. Chương gọn nhưng dày "
+               "tên riêng (Babylon, Assyria...) nên đọc chậm hơn tiểu thuyết."),
 ]
 
 
@@ -77,15 +89,18 @@ def smart_title(s):
     for w in s.split(" "):
         core = w.rstrip(".,:;")
         tail = w[len(core):]
-        if ROMAN.match(core):
+        is_roman = bool(ROMAN.match(core))
+        if is_roman:
             out.append(core.upper() + tail)
         elif not start and core.lower() in SMALL:
             out.append(core.lower() + tail)
         else:
             out.append(core[:1].upper() + core[1:].lower() + tail)
-        # "XII. The Adventure..." — chu sau dau cham la chu dau cua ten truyen,
-        # khong duoc ha thanh chu thuong du no nam trong nhom gioi tu.
-        start = tail.startswith(".")
+        # Chu dau cua TEN chuong khong duoc ha thanh chu thuong du no nam trong
+        # nhom gioi tu. Ten chuong bat dau ngay sau dau cham ("XII. The
+        # Adventure...") HOAC ngay sau so La Ma khong co dau cham ("I THE WORLD
+        # IN SPACE" — kieu hai dong cua Wells).
+        start = tail.startswith(".") or is_roman
     return " ".join(out)
 
 
@@ -246,11 +261,29 @@ def sql_str(s):
     return "'" + s.replace("'", "''") + "'"
 
 
+# Sach hoc thuat hay co bang tra cuu o cuoi. Khong cat thi no dinh vao chuong
+# cuoi cung va nguoi doc nhan duoc mot "chuong" toan kieu
+# "Mesozoic period, 27; land life of, 28".
+BACK_MATTER = re.compile(r"\n[ \t]*(?:INDEX|APPENDIX|BIBLIOGRAPHY|FOOTNOTES|"
+                         r"CHRONOLOGICAL TABLE|TABLE OF DATES|GLOSSARY)"
+                         r"[ \t]*\n[\s\S]*$", re.I)
+
+
+def cut_back_matter(body):
+    """Bo bang tra cuu / phu luc o cuoi, nhung chi khi no that su o gan cuoi."""
+    m = BACK_MATTER.search(body)
+    # Neu tim thay o qua som thi do la muc luc dau sach hoac tu trung ten,
+    # cat vao la mat noi dung that.
+    if m and m.start() > len(body) * 0.6:
+        return body[:m.start()]
+    return body
+
+
 def build(book):
     raw = fetch(book["gid"])
     if not raw:
         raise SystemExit(f"khong tai duoc sach {book['gid']}")
-    body = strip_license(raw)
+    body = cut_back_matter(strip_license(raw))
 
     chapters, n = [], 0
     for head, text in extract(body):
@@ -273,7 +306,10 @@ def main():
     failed = False
     for b in BOOKS:
         ch = build(b)
-        src = len(strip_license(fetch(b["gid"])).split())
+        # So voi van ban SAU khi da bo muc luc / bang tra cuu. Chot chan nay de
+        # bat viec cat chuong lam mat chu, chu khong phai de bat viec bo phan
+        # phu tro — bo phan phu tro la co y.
+        src = len(cut_back_matter(strip_license(fetch(b["gid"]))).split())
         errs = check(b["slug"], ch, src)
         ws = [c["word_count"] for c in ch]
         print(f"{b['slug']:<36}{len(ch):>8}{sum(ws):>10,}"

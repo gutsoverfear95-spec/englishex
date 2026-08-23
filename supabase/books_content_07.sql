@@ -1,5 +1,5 @@
 -- ============================================================
--- NOI DUNG SACH — phan 7/11
+-- NOI DUNG SACH — phan 7/20
 -- Sinh tu tools/books/import_book.py, dung sua tay.
 --
 -- Chua: pride-and-prejudice
