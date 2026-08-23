@@ -3,7 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>English Learning App</title>
+
+    <!-- SVG cho trình duyệt hiện đại (nét ở mọi kích thước), .ico cho bản cũ
+         và cho lần trình duyệt tự hỏi /favicon.ico. -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <!-- iOS không đọc được SVG khi thêm vào màn hình chính, phải có PNG. -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="description" content="EnglishEx — học tiếng Anh qua từ vựng lặp lại ngắt quãng, bài đọc và tủ sách kinh điển." />
+
+    <title>EnglishEx — Học tiếng Anh</title>
   </head>
   <body>
     <div id="root"></div>

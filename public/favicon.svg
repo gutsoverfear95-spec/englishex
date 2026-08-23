@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="EnglishEx">
+  <!--
+    Mu tot nghiep tren nen cham — khop voi icon GraduationCap va mau indigo-600
+    cua Navbar.
+
+    Hai rang buoc khi ve favicon:
+      - Khong dung net mong: o 16x16 mot net 1px se bien mat hoac nhoe thanh
+        vet xam. Moi chi tiet o day deu la khoi dac hoac net >= 3 don vi.
+      - Can theo chieu doc quanh y=32. Hinh nay rong hon cao nen le trai/phai
+        hep, con le tren/duoi phai bang nhau thi nhin moi khong bi troi len.
+  -->
+  <rect width="64" height="64" rx="14" fill="#4f46e5"/>
+
+  <!-- Tam bang (hinh thoi det) -->
+  <path d="M32 15.5 58 26.5 32 37.5 6 26.5Z" fill="#fff"/>
+
+  <!-- Than mu duoi tam bang -->
+  <path d="M19 31.2v10.8q0 2.5 3.5 4.3Q26.8 48.5 32 48.5t9.5-2.2q3.5-1.8 3.5-4.3V31.2L32 37.1Z" fill="#fff"/>
+
+  <!-- Day tua -->
+  <path d="M55.5 29v11.5" stroke="#fff" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+  <circle cx="55.5" cy="43" r="3.4" fill="#fff"/>
+</svg>
