@@ -37,7 +37,7 @@ console.log('-'.repeat(70))
 for (const [gid, name] of BOOKS) {
   if (!fs.existsSync(path.join(CACHE, `${gid}.txt`))) continue
   // Tach y het GlossedText: giu dau nhay trong tu ("don't" la MOT token)
-  const toks = body(gid).match(/[A-Za-z][A-Za-z'-]*/g) ?? []
+  const toks = body(gid).match(/[A-Za-z][A-Za-z'’-]*/g) ?? []
   const lowerSeen = new Set(toks.filter((w) => w === w.toLowerCase()).map((w) => w.toLowerCase()))
 
   let hit = 0, names = 0, miss = 0

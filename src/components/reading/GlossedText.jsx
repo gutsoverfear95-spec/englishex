@@ -48,7 +48,7 @@ function loadDictionary() {
 // lần rê chuột) React sẽ coi đây là một loại component mới và tháo/gắn lại toàn
 // bộ span trong đoạn văn — gây nháy và làm mất trạng thái hover.
 const SPLIT_PARA = /\n\s*\n/
-const SPLIT_WORD = /([A-Za-z][A-Za-z'-]*)/
+const SPLIT_WORD = /([A-Za-z][A-Za-z'’-]*)/
 const IS_WORD = /^[A-Za-z]/
 
 function Word({ children, term, vi, phonetic, onShow, onHide }) {

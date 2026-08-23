@@ -56,17 +56,24 @@ export function baseForms(w) {
     if (x.length >= 2 && !out.includes(x)) out.push(x)
   }
 
-  if (IRREGULAR[w]) add(IRREGULAR[w])
+  // Quy dấu nháy cong ’ về nháy thẳng ' NGAY TỪ ĐẦU. Sách và văn bản đã qua
+  // dàn trang gần như luôn dùng nháy cong, nên nếu không quy về một mối thì
+  // "don’t" tra trượt. Phải làm trước khi tra IRREGULAR: bảng đó lưu khoá
+  // nháy thẳng, bỏ bước này thì "won’t" rơi xuống lấy gốc "won" và ra "win".
+  const nw = w.replace(/’/g, "'")
+  if (nw !== w) add(nw)
+
+  if (IRREGULAR[nw]) add(IRREGULAR[nw])
 
   // Dạng viết tắt: "don't" → do, "I'll" → i, "we're" → we.
   // GlossedText giữ nguyên dấu nháy trong một token nên nếu không bóc ở đây
   // thì mọi từ viết tắt đều tra trượt.
-  const apos = w.indexOf("'")
+  const apos = nw.indexOf("'")
   if (apos > 0) {
     // Thử cả hai cách cắt vì chữ n có khi thuộc về đuôi phủ định, có khi thuộc
     // về chính từ gốc:  don't → do  nhưng  can't → can.
-    const stems = [w.slice(0, apos)]
-    if (w.endsWith("n't")) stems.push(w.slice(0, -3))
+    const stems = [nw.slice(0, apos)]
+    if (nw.endsWith("n't")) stems.push(nw.slice(0, -3))
     for (const s of stems) {
       // Bỏ qua chốt chặn độ dài: gốc của "I'll" là "i" — từ có thật trong kho,
       // chốt >= 2 sẽ loại oan.
