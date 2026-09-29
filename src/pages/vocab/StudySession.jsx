@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowRight, List, RotateCcw, X } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import { fetchAll } from '../../lib/fetchAll'
 import StudyRunner from '../../components/vocab/StudyRunner'
 import FunButton from '../../components/fun/FunButton'
 import Mascot from '../../components/fun/Mascot'
@@ -45,7 +46,7 @@ export default function StudySession() {
     const [topicRes, wordsRes, progressRes] = await Promise.all([
       supabase.from('topics').select('*, courses(title)').eq('id', topicId).maybeSingle(),
       supabase.from('words').select('*').eq('topic_id', topicId).order('order_index'),
-      supabase.from('user_progress').select('*'),
+      fetchAll(() => supabase.from('user_progress').select('*').order('word_id')),
     ])
     const words = wordsRes.data ?? []
     const pm = {}

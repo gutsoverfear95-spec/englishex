@@ -30,7 +30,7 @@ export default function TrueFalse({ exercise, onSubmit, disabled }) {
             onClick={() => setSelected(c.value)}
             className={`px-4 py-3 rounded-lg border text-sm font-medium transition-colors cursor-pointer disabled:cursor-default ${
               selected === c.value
-                ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
+                ? 'border-brand-500 bg-brand-50 text-brand-700'
                 : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50'
             }`}
           >

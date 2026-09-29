@@ -154,7 +154,7 @@ export default function BookReader() {
     return (
       <Card className="p-10 text-center space-y-3">
         <p className="text-slate-600">Không tìm thấy chương này.</p>
-        <Link to="/books" className="text-indigo-600 hover:underline">
+        <Link to="/books" className="text-brand-600 hover:underline">
           ← Về tủ sách
         </Link>
       </Card>
@@ -229,7 +229,7 @@ export function ReaderShell({
               }}
               className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer flex items-center gap-2 ${
                 c.number === current
-                  ? 'bg-indigo-50 text-indigo-700 font-medium'
+                  ? 'bg-brand-50 text-brand-700 font-medium'
                   : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -287,7 +287,7 @@ export function ReaderShell({
           <button
             type="button"
             onClick={() => go(current + 1)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-brand-600 text-white hover:bg-brand-700 transition-colors cursor-pointer"
           >
             Chương sau
             <ArrowRight className="h-4 w-4" />

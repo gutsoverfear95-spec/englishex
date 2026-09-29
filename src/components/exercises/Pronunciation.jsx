@@ -55,7 +55,7 @@ export default function Pronunciation({ exercise, onSubmit, disabled }) {
                 type="button"
                 onClick={listening ? stop : start}
                 className={`h-16 w-16 rounded-full grid place-items-center text-white transition-colors cursor-pointer ${
-                  listening ? 'bg-red-500 animate-pulse' : 'bg-indigo-600 hover:bg-indigo-700'
+                  listening ? 'bg-red-500 animate-pulse' : 'bg-brand-600 hover:bg-brand-700'
                 }`}
                 title={listening ? 'Dừng ghi âm' : 'Bắt đầu nói'}
               >

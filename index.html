@@ -11,7 +11,7 @@
     <!-- iOS không đọc được SVG khi thêm vào màn hình chính, phải có PNG. -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <meta name="theme-color" content="#7c3aed" />
+    <meta name="theme-color" content="#15803d" />
 
     <!-- Baloo 2 cho tiêu đề (tròn, vui) + Be Vietnam Pro cho chữ thường (thiết
          kế riêng cho dấu tiếng Việt, đọc lâu không mỏi). Cả hai có bộ ký tự
@@ -27,13 +27,14 @@
 
     <title>EnglishEx — Học tiếng Anh</title>
 
-    <!-- Gắn theme đã lưu TRƯỚC khi trang vẽ, để không chớp màu tím rồi mới
-         chuyển sang xanh. Trùng khoá và giá trị với src/lib/theme.js. -->
+    <!-- Gắn theme đã lưu TRƯỚC khi trang vẽ. Xanh là mặc định; người dùng đã
+         chọn tím vẫn giữ lựa chọn. Trùng khoá và giá trị với src/lib/theme.js. -->
     <script>
       try {
-        if (localStorage.getItem('englishex_theme') === 'green') {
+        if (localStorage.getItem('englishex_theme') !== 'purple') {
           document.documentElement.dataset.theme = 'green'
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#15803d')
+        } else {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#7c3aed')
         }
       } catch (e) {}
     </script>

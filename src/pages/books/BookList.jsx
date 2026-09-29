@@ -77,7 +77,7 @@ export default function BookList() {
                     {book.cover_emoji}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <h2 className="font-semibold text-slate-800 group-hover:text-indigo-700 transition-colors">
+                    <h2 className="font-semibold text-slate-800 group-hover:text-brand-700 transition-colors">
                       {book.title}
                     </h2>
                     <p className="text-xs text-slate-500">
@@ -109,7 +109,7 @@ export default function BookList() {
                           ? 'Đã đọc xong'
                           : `Đang đọc chương ${at}/${book.chapter_count}`}
                       </span>
-                      <span className="text-indigo-600 font-medium inline-flex items-center gap-0.5">
+                      <span className="text-brand-600 font-medium inline-flex items-center gap-0.5">
                         Đọc tiếp
                         <ChevronRight className="h-4 w-4" />
                       </span>
@@ -117,7 +117,7 @@ export default function BookList() {
                   </>
                 )}
                 {at === 0 && (
-                  <span className="inline-flex items-center gap-0.5 text-sm font-medium text-indigo-600">
+                  <span className="inline-flex items-center gap-0.5 text-sm font-medium text-brand-600">
                     Bắt đầu đọc
                     <ChevronRight className="h-4 w-4" />
                   </span>

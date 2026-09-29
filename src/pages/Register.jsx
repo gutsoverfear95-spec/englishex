@@ -55,7 +55,7 @@ export default function Register() {
     <div className="min-h-screen bg-slate-50 grid place-items-center px-4">
       <Card className="w-full max-w-sm p-6 space-y-5">
         <div className="text-center space-y-1">
-          <GraduationCap className="h-10 w-10 text-indigo-600 mx-auto" />
+          <GraduationCap className="h-10 w-10 text-brand-600 mx-auto" />
           <h1 className="text-xl font-bold text-slate-800">Tạo tài khoản EnglishEx</h1>
           <p className="text-sm text-slate-500">Luyện Nghe - Nói - Đọc - Viết mỗi ngày</p>
         </div>
@@ -126,7 +126,7 @@ export default function Register() {
 
         <p className="text-sm text-center text-slate-500">
           Đã có tài khoản?{' '}
-          <Link to="/login" className="text-indigo-600 font-medium hover:underline">
+          <Link to="/login" className="text-brand-600 font-medium hover:underline">
             Đăng nhập
           </Link>
         </p>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Lock, LockOpen, CheckCircle2, PlayCircle, Clock, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Lock, LockOpen, CheckCircle2, PlayCircle, Clock, ChevronRight, List } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import { fetchAll } from '../../lib/fetchAll'
 import Card from '../../components/ui/Card'
 import ProgressBar from '../../components/ui/ProgressBar'
 import Spinner from '../../components/ui/Spinner'
@@ -45,14 +46,16 @@ export default function TopicList() {
       const [courseRes, topicsRes, progressRes] = await Promise.all([
         supabase.from('courses').select('*').eq('id', courseId).maybeSingle(),
         supabase.from('topics').select('*').eq('course_id', courseId).order('order_index'),
-        supabase.from('user_progress').select('*'),
+        fetchAll(() => supabase.from('user_progress').select('*').order('word_id')),
       ])
       const topicList = topicsRes.data ?? []
 
       // Bước 2: từ của các chủ đề này (cần danh sách topic id từ bước 1)
       const topicIds = topicList.map((t) => t.id)
       const wordsRes = topicIds.length
-        ? await supabase.from('words').select('id, topic_id').in('topic_id', topicIds)
+        ? await fetchAll(() =>
+            supabase.from('words').select('id, topic_id').in('topic_id', topicIds).order('id'),
+          )
         : { data: [] }
 
       const byTopic = {}
@@ -83,7 +86,7 @@ export default function TopicList() {
     return (
       <Card className="p-10 text-center space-y-2">
         <p className="text-slate-600">Không tìm thấy chương trình học.</p>
-        <Link to="/vocab" className="text-indigo-600 font-medium hover:underline">
+        <Link to="/vocab" className="text-brand-600 font-medium hover:underline">
           Về trang Từ vựng
         </Link>
       </Card>
@@ -117,6 +120,14 @@ export default function TopicList() {
           <p className="text-slate-500 text-sm sm:text-base">{course.description}</p>
         </div>
 
+        <div className="flex items-center gap-2 shrink-0">
+        <Link
+          to={`/vocab/words?course=${courseId}`}
+          className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors"
+        >
+          <List className="h-4 w-4" /> Danh sách từ
+        </Link>
+
         {/* Cho phép bỏ qua thứ tự tuần tự để xem trước / kiểm tra chủ đề bất kỳ */}
         <button
           type="button"
@@ -128,13 +139,14 @@ export default function TopicList() {
           }
           className={`inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
             unlockAll
-              ? 'border-violet-200 bg-violet-50 text-violet-700 hover:bg-violet-100'
+              ? 'border-brand-200 bg-brand-50 text-brand-700 hover:bg-brand-100'
               : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
           }`}
         >
           {unlockAll ? <LockOpen className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
           {unlockAll ? 'Đang mở tất cả' : 'Mở khoá tất cả'}
         </button>
+        </div>
       </div>
 
       <div className="space-y-3">
@@ -159,7 +171,7 @@ export default function TopicList() {
                       ? 'bg-green-100 text-green-600'
                       : learning
                         ? 'bg-amber-100 text-amber-600'
-                        : 'bg-violet-100 text-violet-600'
+                        : 'bg-brand-100 text-brand-600'
                 }`}
               >
                 {locked ? (
@@ -187,7 +199,7 @@ export default function TopicList() {
                     </span>
                   )}
                 </div>
-                <ProgressBar value={pct} barClass={locked ? 'bg-slate-300' : 'bg-violet-500'} />
+                <ProgressBar value={pct} barClass={locked ? 'bg-slate-300' : 'bg-brand-500'} />
                 <p className={`text-xs sm:text-sm ${locked ? 'text-slate-400' : 'text-slate-500'}`}>
                   {locked ? 'Hoàn thành chủ đề trước để mở khoá' : `${learned}/${total} từ đã học`}
                 </p>

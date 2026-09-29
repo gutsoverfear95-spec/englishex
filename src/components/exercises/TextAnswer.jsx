@@ -44,7 +44,7 @@ export default function TextAnswer({ exercise, onSubmit, disabled, showPrompt = 
         autoComplete="off"
         spellCheck={false}
         placeholder="Nhập câu trả lời bằng tiếng Anh…"
-        className="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-slate-50"
+        className="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 disabled:bg-slate-50"
       />
 
       {/* Enter hoặc bấm nút đều submit được */}

@@ -1,5 +1,5 @@
 // ============================================================
-// THEME MÀU: 'purple' (tím chủ đạo, mặc định) hoặc 'green' (xanh lá chủ đạo).
+// THEME MÀU: 'green' (xanh lá chủ đạo, mặc định) hoặc 'purple' (tím chủ đạo).
 //
 // Chỉ là một thuộc tính data-theme trên <html>; index.css đổi bộ biến màu
 // theo thuộc tính đó. Lưu theo trình duyệt, không lưu lên máy chủ — đây là
@@ -17,7 +17,7 @@ export const THEMES = {
 
 export function getTheme() {
   const saved = localStorage.getItem(THEME_KEY)
-  return saved in THEMES ? saved : 'purple'
+  return saved in THEMES ? saved : 'green'
 }
 
 export function applyTheme(theme) {
