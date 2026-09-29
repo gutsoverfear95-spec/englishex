@@ -54,7 +54,7 @@ export default function LessonPage() {
     return (
       <Card className="p-10 text-center space-y-2">
         <p className="text-slate-600">Không tìm thấy bài học.</p>
-        <Link to="/" className="text-indigo-600 font-medium hover:underline">
+        <Link to="/" className="text-brand-600 font-medium hover:underline">
           Về trang chủ
         </Link>
       </Card>

@@ -1,2 +1,134 @@
 /* Tailwind v4: chỉ cần 1 dòng import, không cần @tailwind base/components/utilities */
 @import "tailwindcss";
+
+/* ============================================================
+   BỘ MÀU & CHỮ — phong cách "vui nhộn, trò chơi hoá"
+   Tím là màu chính, vàng và xanh lá chỉ để điểm nhấn.
+
+   Những cặp màu chữ/nền đã kiểm độ tương phản (WCAG AA ≥ 4.5:1):
+     trắng trên brand-600 (#7c3aed)  ≈ 5.7:1
+     ink trên sun-400    (#facc15)   ≈ 11:1  → nút vàng LUÔN dùng chữ tối
+     trắng trên leaf-700 (#15803d)   ≈ 5.0:1 → KHÔNG dùng chữ trắng trên
+                                              leaf-600: chỉ ≈ 3.3:1
+   ============================================================ */
+@theme {
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Baloo 2", "Be Vietnam Pro", ui-sans-serif, sans-serif;
+
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c4b5fd;
+  --color-brand-400: #a78bfa;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #6d28d9;
+  --color-brand-800: #5b21b6;
+  --color-brand-900: #4c1d95;
+
+  --color-sun-100: #fef9c3;
+  --color-sun-200: #fef08a;
+  --color-sun-300: #fde047;
+  --color-sun-400: #facc15;
+  --color-sun-600: #ca8a04;
+  --color-sun-800: #854d0e;
+
+  --color-leaf-50: #f0fdf4;
+  --color-leaf-100: #dcfce7;
+  --color-leaf-200: #bbf7d0;
+  --color-leaf-400: #4ade80;
+  --color-leaf-500: #22c55e;
+  --color-leaf-600: #16a34a;
+  --color-leaf-700: #15803d;
+  --color-leaf-800: #166534;
+
+  /* Màu điểm nhấn thứ hai, chỉ dùng cho chỗ TRANG TRÍ (ô "đã ôn hôm nay",
+     thanh tiến độ phiên học, "đã thuộc", pháo giấy). Theme tím: accent =
+     xanh lá; theme xanh: accent = tím. Còn leaf-* giữ nghĩa "đúng / dễ" ở
+     cả hai theme — màu phản hồi không được đổi theo sở thích trang trí. */
+  --color-accent-50: #f0fdf4;
+  --color-accent-100: #dcfce7;
+  --color-accent-200: #bbf7d0;
+  --color-accent-400: #4ade80;
+  --color-accent-500: #22c55e;
+  --color-accent-700: #15803d;
+  --color-accent-800: #166534;
+
+  --color-ink: #1e1b2e;
+  --color-canvas: #faf8ff;
+
+  --animate-pop-in: pop-in 220ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  --animate-rise: rise 260ms ease-out both;
+  --animate-confetti: confetti 1.4s ease-out both;
+
+  @keyframes pop-in {
+    from { opacity: 0; transform: scale(0.94); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes confetti {
+    0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+    15%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(140px) rotate(320deg); }
+  }
+}
+
+/* Nút "nhấn được" kiểu đồ chơi: bóng đặc ở đáy, bấm xuống thì nút lún vào bóng.
+   Dùng box-shadow + translate chứ không dùng border-bottom: đổi độ dày viền
+   làm hộp cao thấp đi 2–4px và đẩy cả nội dung bên dưới nhảy theo. */
+@utility press {
+  box-shadow: 0 4px 0 0 var(--press-color, rgb(0 0 0 / 0.18));
+  transition: transform 120ms ease-out, box-shadow 120ms ease-out, background-color 150ms;
+  &:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 0 var(--press-color, rgb(0 0 0 / 0.18));
+  }
+}
+
+/* ============================================================
+   THEME XANH LÁ CHỦ ĐẠO — vàng + tím làm điểm nhấn.
+   Chỉ ghi đè biến; mọi class (bg-brand-600, text-accent-700...) giữ nguyên
+   nên component không cần biết đang ở theme nào.
+
+   Thang "brand" của theme xanh LỆCH một bậc so với bảng màu Tailwind: vị trí
+   600 dùng green-700 (#15803d). Chữ trắng trên green-600 chỉ đạt ≈ 3.3:1, còn
+   trên green-700 đạt ≈ 5.0:1 — nút chính dùng brand-600 nên phải lệch.
+   ============================================================ */
+:root[data-theme="green"] {
+  --color-brand-50: #f0fdf4;
+  --color-brand-100: #dcfce7;
+  --color-brand-200: #bbf7d0;
+  --color-brand-300: #86efac;
+  --color-brand-400: #4ade80;
+  --color-brand-500: #22c55e;
+  --color-brand-600: #15803d;
+  --color-brand-700: #166534;
+  --color-brand-800: #14532d;
+  --color-brand-900: #052e16;
+
+  --color-accent-50: #f5f3ff;
+  --color-accent-100: #ede9fe;
+  --color-accent-200: #ddd6fe;
+  --color-accent-400: #a78bfa;
+  --color-accent-500: #8b5cf6;
+  --color-accent-700: #6d28d9;
+  --color-accent-800: #5b21b6;
+
+  --color-canvas: #f7fcf8;
+}
+
+/* Người dùng bật "giảm chuyển động" trong hệ điều hành → tắt gần như mọi
+   hiệu ứng, kể cả lật thẻ 3D. Kết quả vẫn hiện ngay, chỉ bỏ phần chuyển. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

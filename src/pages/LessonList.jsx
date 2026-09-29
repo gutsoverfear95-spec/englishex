@@ -115,7 +115,7 @@ export default function LessonList() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h2 className="font-semibold text-slate-800">{lesson.title}</h2>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-600">
                       {LEVEL_LABELS[lesson.level] ?? lesson.level}
                     </span>
                   </div>

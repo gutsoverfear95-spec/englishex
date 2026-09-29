@@ -28,7 +28,7 @@ export default function MultipleChoice({ exercise, onSubmit, disabled }) {
             onClick={() => setSelected(opt)}
             className={`text-left px-4 py-3 rounded-lg border text-sm transition-colors cursor-pointer disabled:cursor-default ${
               selected === opt
-                ? 'border-indigo-500 bg-indigo-50 text-indigo-700 font-medium'
+                ? 'border-brand-500 bg-brand-50 text-brand-700 font-medium'
                 : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50'
             }`}
           >

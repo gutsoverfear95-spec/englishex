@@ -36,8 +36,8 @@ export default function PinGate({ children }) {
         onSubmit={handleSubmit}
         className="w-full max-w-xs bg-white rounded-2xl shadow-xl p-8 text-center space-y-4"
       >
-        <span className="inline-grid place-items-center h-12 w-12 rounded-full bg-indigo-50">
-          <Lock className="h-6 w-6 text-indigo-600" />
+        <span className="inline-grid place-items-center h-12 w-12 rounded-full bg-brand-50">
+          <Lock className="h-6 w-6 text-brand-600" />
         </span>
         <div>
           <h1 className="text-lg font-bold text-slate-800">EnglishEx</h1>
@@ -54,7 +54,7 @@ export default function PinGate({ children }) {
             setPin(e.target.value.replace(/\D/g, '')) // chỉ nhận chữ số
             setError(false)
           }}
-          className="w-full text-center text-2xl tracking-[0.5em] rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full text-center text-2xl tracking-[0.5em] rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500"
           placeholder="••••"
         />
 
@@ -63,7 +63,7 @@ export default function PinGate({ children }) {
         <button
           type="submit"
           disabled={!pin}
-          className="w-full rounded-lg bg-indigo-600 text-white py-2 text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 cursor-pointer"
+          className="w-full rounded-lg bg-brand-600 text-white py-2 text-sm font-medium hover:bg-brand-700 disabled:opacity-50 cursor-pointer"
         >
           Vào trang web
         </button>

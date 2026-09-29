@@ -2,10 +2,11 @@ import { Link, NavLink } from 'react-router-dom'
 import { GraduationCap, LayoutDashboard, Library, LogOut, BookMarked } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { SKILLS } from '../../utils/constants'
+import ThemeToggle from '../fun/ThemeToggle'
 
 const navLinkClass = ({ isActive }) =>
   `flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
-    isActive ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-100'
+    isActive ? 'bg-brand-50 text-brand-700' : 'text-slate-600 hover:bg-slate-100'
   }`
 
 export default function Navbar() {
@@ -17,7 +18,7 @@ export default function Navbar() {
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
       <nav className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-        <Link to="/" className="flex items-center gap-2 font-bold text-indigo-600 shrink-0">
+        <Link to="/" className="flex items-center gap-2 font-bold text-brand-600 shrink-0">
           <GraduationCap className="h-6 w-6" />
           <span className="hidden sm:inline">EnglishEx</span>
         </Link>
@@ -48,6 +49,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
+          <ThemeToggle />
           <span className="hidden sm:inline text-sm text-slate-500 max-w-32 truncate">
             {displayName}
           </span>

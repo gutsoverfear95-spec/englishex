@@ -13,15 +13,15 @@ export default function ChoiceAnswer({ word, options, onPick }) {
   const { speak } = useSpeechSynthesis()
 
   return (
-    <div className="rounded-2xl border-2 border-violet-200 bg-white shadow-lg p-5 sm:p-6 space-y-4">
+    <div className="rounded-3xl border-2 border-brand-100 bg-white shadow-[0_6px_0_0_var(--color-brand-100)] p-5 sm:p-6 space-y-4">
       <div className="text-center space-y-1">
-        <p className="text-xs uppercase tracking-wide text-slate-400">Chọn nghĩa đúng</p>
-        <p className="text-3xl sm:text-4xl font-bold text-slate-800">{word.word}</p>
-        {word.phonetic && <p className="text-slate-400">{word.phonetic}</p>}
+        <p className="text-xs font-bold uppercase tracking-wide text-brand-600">Chọn nghĩa đúng</p>
+        <p className="font-display text-4xl sm:text-5xl font-bold text-ink">{word.word}</p>
+        {word.phonetic && <p className="text-slate-500">{word.phonetic}</p>}
         <button
           type="button"
           onClick={() => speak(word.word)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-50 text-sm text-violet-600 hover:bg-violet-100 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 min-h-11 px-4 rounded-full bg-brand-50 text-sm font-semibold text-brand-700 hover:bg-brand-100 transition-colors cursor-pointer"
         >
           <Volume2 className="h-4 w-4" /> Phát âm
         </button>
@@ -33,12 +33,12 @@ export default function ChoiceAnswer({ word, options, onPick }) {
             key={opt.id}
             type="button"
             onClick={() => onPick(opt)}
-            className="flex items-center gap-3 rounded-xl border-2 border-slate-200 px-3 py-3 text-left hover:border-violet-400 hover:bg-violet-50 active:scale-[0.99] transition-all cursor-pointer"
+            className="press [--press-color:var(--color-brand-100)] flex items-center gap-3 rounded-2xl border-2 border-brand-100 bg-white min-h-14 px-3 py-2.5 text-left hover:border-brand-400 hover:bg-brand-50 cursor-pointer focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
           >
-            <span className="h-7 w-7 shrink-0 grid place-items-center rounded-lg bg-slate-100 text-sm font-bold text-slate-500">
+            <span className="h-7 w-7 shrink-0 grid place-items-center rounded-xl bg-brand-100 text-sm font-bold text-brand-700">
               {'ABCD'[i]}
             </span>
-            <span className="text-slate-700">{opt.meaning}</span>
+            <span className="font-medium text-ink">{opt.meaning}</span>
           </button>
         ))}
       </div>

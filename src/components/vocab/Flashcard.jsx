@@ -17,7 +17,7 @@ function HighlightedExample({ sentence, target }) {
   const parts = sentence.split(new RegExp(`\\b(${body})\\b`, 'gi'))
   const matcher = new RegExp(`^${body}$`, 'i')
   return (
-    <p className="text-sm sm:text-base text-violet-100 italic leading-relaxed">
+    <p className="text-sm sm:text-base text-brand-100 italic leading-relaxed">
       “
       {parts.map((part, i) =>
         matcher.test(part) ? (
@@ -81,36 +81,41 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
         }`}
       >
         {/* ---------- MẶT TRƯỚC: từ + phát âm ---------- */}
-        <div className="absolute inset-0 [backface-visibility:hidden] rounded-2xl border-2 border-violet-200 bg-white shadow-lg grid place-items-center p-4 sm:p-6">
+        <div className="absolute inset-0 [backface-visibility:hidden] rounded-3xl border-2 border-brand-100 bg-white shadow-[0_6px_0_0_var(--color-brand-100)] grid place-items-center p-4 sm:p-6">
           {word.level && (
-            <span className="absolute top-3 right-3 text-xs font-semibold px-2 py-1 rounded-full bg-violet-50 text-violet-600">
+            <span className="absolute top-3 right-3 text-xs font-bold px-2 py-1 rounded-full bg-sun-200 text-sun-800">
               {word.level}
             </span>
           )}
           <div className="text-center space-y-2 sm:space-y-3">
-            <p className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800">{word.word}</p>
+            <p className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-ink">{word.word}</p>
             {word.phonetic && (
-              <p className="text-base sm:text-lg text-slate-400">{word.phonetic}</p>
+              <p className="text-base sm:text-lg text-slate-500">{word.phonetic}</p>
             )}
             <button
               type="button"
               onClick={playAudio}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-50 text-sm text-violet-600 hover:bg-violet-100 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 min-h-11 px-4 rounded-full bg-brand-50 text-sm font-semibold text-brand-700 hover:bg-brand-100 transition-colors cursor-pointer"
             >
               <Volume2 className="h-4 w-4" /> Phát âm
             </button>
           </div>
-          <p className="absolute bottom-3 inset-x-0 text-center text-xs text-slate-300 flex items-center justify-center gap-1">
+          <p className="absolute bottom-3 inset-x-0 text-center text-xs text-slate-500 flex items-center justify-center gap-1">
             <RefreshCw className="h-3 w-3" /> Bấm để xem nghĩa
           </p>
         </div>
 
         {/* ---------- MẶT SAU: nghĩa + các câu ví dụ kèm bản dịch ---------- */}
-        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-700 text-white shadow-lg overflow-y-auto">
+        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-3xl bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-[0_6px_0_0_var(--color-brand-900)] overflow-y-auto">
           <div className="min-h-full p-4 sm:p-5 flex flex-col gap-3">
             <div className="text-center space-y-0.5 shrink-0">
-              {word.phonetic && <p className="text-violet-200 text-sm">{word.phonetic}</p>}
-              <p className="text-2xl sm:text-3xl font-bold">{word.meaning}</p>
+              {/* Mặt sau hiện cả TỪ tiếng Anh: sau khi trả lời sai, thứ người học
+                  cần nhìn rõ nhất là mặt chữ đúng, không chỉ nghĩa của nó. */}
+              <p className="font-display text-xl font-bold text-sun-200">
+                {word.word}
+                {word.phonetic && <span className="ml-2 font-sans text-sm font-normal text-brand-100">{word.phonetic}</span>}
+              </p>
+              <p className="font-display text-2xl sm:text-3xl font-bold leading-tight">{word.meaning}</p>
             </div>
 
             {/* Ảnh minh hoạ đặt ngay dưới nghĩa để gắn hình với từ.
@@ -127,7 +132,7 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
                   onError={(e) => (e.target.closest('figure').style.display = 'none')}
                 />
                 {word.image_credit && (
-                  <figcaption className="mt-1 text-center text-[10px] text-violet-300">
+                  <figcaption className="mt-1 text-center text-[10px] text-brand-200">
                     Ảnh:{' '}
                     <a
                       href={word.image_credit_url}
@@ -155,14 +160,14 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
                     <div className="flex-1 min-w-0">
                       <HighlightedExample sentence={ex.sentence_en} target={word.word} />
                       {ex.sentence_vi && (
-                        <p className="text-xs sm:text-sm text-violet-200 mt-0.5">{ex.sentence_vi}</p>
+                        <p className="text-xs sm:text-sm text-brand-100 mt-0.5">{ex.sentence_vi}</p>
                       )}
                     </div>
                     <button
                       type="button"
                       onClick={(e) => playSentence(e, ex.sentence_en)}
                       title="Nghe câu này"
-                      className="mt-0.5 shrink-0 p-1 rounded-lg text-violet-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                      className="mt-0.5 shrink-0 p-1 rounded-lg text-brand-100 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
                     >
                       <Volume2 className="h-3.5 w-3.5" />
                     </button>
@@ -174,7 +179,7 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
             <button
               type="button"
               onClick={playAudio}
-              className="mx-auto mt-auto inline-flex items-center gap-1.5 text-sm text-violet-200 hover:text-white transition-colors cursor-pointer"
+              className="mx-auto mt-auto inline-flex items-center gap-1.5 text-sm text-brand-100 hover:text-white transition-colors cursor-pointer"
             >
               <Volume2 className="h-4 w-4" /> Nghe lại từ
             </button>

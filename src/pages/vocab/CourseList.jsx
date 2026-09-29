@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BookMarked, ChevronRight, GraduationCap } from 'lucide-react'
+import { BookMarked, BookOpen, CalendarCheck, ChevronRight, GraduationCap } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import { fetchAll } from '../../lib/fetchAll'
 import Card from '../../components/ui/Card'
 import ProgressBar from '../../components/ui/ProgressBar'
 import Spinner from '../../components/ui/Spinner'
@@ -29,8 +30,12 @@ export default function CourseList() {
       const [coursesRes, wordsRes, progressRes] = await Promise.all([
         supabase.from('courses').select('*').order('order_index'),
         // Lấy course_id của từng từ qua join lồng: words → topics → course_id
-        supabase.from('words').select('id, topics!inner(course_id)'),
-        supabase.from('user_progress').select('word_id, status, next_review_date'),
+        fetchAll(() =>
+          supabase.from('words').select('id, topics!inner(course_id)').order('id'),
+        ),
+        fetchAll(() =>
+          supabase.from('user_progress').select('word_id, status, next_review_date').order('word_id'),
+        ),
       ])
       const map = {}
       for (const w of wordsRes.data ?? []) map[w.id] = w.topics?.course_id
@@ -56,24 +61,66 @@ export default function CourseList() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <span className="p-3 rounded-xl bg-violet-50">
-          <BookMarked className="h-6 w-6 text-violet-600" />
+        <span className="p-3 rounded-xl bg-brand-50">
+          <BookMarked className="h-6 w-6 text-brand-600" />
         </span>
         <div>
           <h1 className="text-2xl font-bold text-slate-800">Từ vựng</h1>
-          <p className="text-slate-500 text-sm">
-            Chọn chương trình học phù hợp với mục tiêu của bạn
-            {dueCount > 0 && (
-              <span className="text-amber-600 font-medium"> · {dueCount} từ đang chờ ôn trong các chủ đề</span>
-            )}
-          </p>
+          <p className="text-slate-500 text-sm">Chọn chương trình học phù hợp với mục tiêu của bạn</p>
         </div>
+      </div>
+
+      {/* Hai lối tắt quan trọng nhất, đặt TRÊN danh sách chương trình:
+          ôn đúng hạn mới là việc cần làm mỗi ngày, còn học từ mới thì tuần nào
+          cũng được. Để chúng lẫn dưới danh sách là mời người học quên ôn. */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Link
+          to="/vocab/review"
+          className={`group rounded-xl border p-4 flex items-center gap-3 transition-colors ${
+            dueCount > 0
+              ? 'border-amber-200 bg-amber-50 hover:bg-amber-100'
+              : 'border-slate-200 bg-white hover:bg-slate-50'
+          }`}
+        >
+          <span
+            className={`h-11 w-11 shrink-0 grid place-items-center rounded-full ${
+              dueCount > 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'
+            }`}
+          >
+            <CalendarCheck className="h-5 w-5" />
+          </span>
+          <span className="min-w-0">
+            <span className="block font-semibold text-slate-800">Ôn hôm nay</span>
+            <span className="block text-sm text-slate-500">
+              {dueCount > 0
+                ? `${dueCount} từ đến hạn, trộn mọi chủ đề`
+                : 'Không còn từ nào đến hạn — quá tốt!'}
+            </span>
+          </span>
+          <ChevronRight className="ml-auto h-5 w-5 text-slate-300 group-hover:text-slate-500 transition-colors shrink-0" />
+        </Link>
+
+        <Link
+          to="/vocab/words"
+          className="group rounded-xl border border-slate-200 bg-white p-4 flex items-center gap-3 hover:bg-slate-50 transition-colors"
+        >
+          <span className="h-11 w-11 shrink-0 grid place-items-center rounded-full bg-brand-100 text-brand-600">
+            <BookOpen className="h-5 w-5" />
+          </span>
+          <span className="min-w-0">
+            <span className="block font-semibold text-slate-800">Tất cả từ vựng</span>
+            <span className="block text-sm text-slate-500">
+              Tra {Object.keys(wordCourse).length} từ: nghĩa, phát âm, ví dụ
+            </span>
+          </span>
+          <ChevronRight className="ml-auto h-5 w-5 text-slate-300 group-hover:text-slate-500 transition-colors shrink-0" />
+        </Link>
       </div>
 
       {/* Lưới chương trình học — responsive 1 → 2 cột */}
       <div className="grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2">
         {courses.map((course) => {
-          const style = COVER_STYLES[course.color] ?? COVER_STYLES.indigo
+          const style = COVER_STYLES[course.color] ?? COVER_STYLES.emerald
           // Số từ THỰC TẾ trong DB thuộc course này + số từ user đã học
           const courseWordIds = Object.keys(wordCourse).filter((id) => wordCourse[id] === course.id)
           const learned = progress.filter((p) => courseWordIds.includes(p.word_id)).length
@@ -100,7 +147,7 @@ export default function CourseList() {
                 <div className="p-4 sm:p-5 space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <h2 className="font-semibold text-slate-800 group-hover:text-indigo-700 transition-colors">
+                      <h2 className="font-semibold text-slate-800 group-hover:text-brand-700 transition-colors">
                         {course.title}
                       </h2>
                       <p className="text-xs sm:text-sm text-slate-500">{course.description}</p>
