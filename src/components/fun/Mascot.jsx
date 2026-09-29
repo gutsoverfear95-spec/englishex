@@ -10,7 +10,7 @@
 //
 // Chỉ để trang trí nên aria-hidden: nội dung thật luôn nằm ở chữ bên cạnh.
 // ============================================================
-export default function Mascot({ mood = 'wave', className = 'h-24 w-24' }) {
+export default function Mascot({ mood = 'wave', coverEyes = false, className = 'h-24 w-24' }) {
   const cheer = mood === 'cheer'
   const wave = mood === 'wave'
 
@@ -31,6 +31,7 @@ export default function Mascot({ mood = 'wave', className = 'h-24 w-24' }) {
         rx="8"
         ry="12"
         fill="var(--color-brand-600)"
+        opacity={coverEyes ? 0 : 1}
         transform={cheer ? 'rotate(-30 20 44)' : 'rotate(20 20 72)'}
       />
       {/* Tay — phải (vẫy tay thì giơ lên) */}
@@ -40,6 +41,7 @@ export default function Mascot({ mood = 'wave', className = 'h-24 w-24' }) {
         rx="8"
         ry="12"
         fill="var(--color-brand-600)"
+        opacity={coverEyes ? 0 : 1}
         transform={cheer || wave ? 'rotate(30 100 44)' : 'rotate(-20 100 72)'}
       />
 
@@ -64,6 +66,13 @@ export default function Mascot({ mood = 'wave', className = 'h-24 w-24' }) {
         <path d="M50 70 Q60 84 70 70 Z" fill="#1e1b2e" />
       ) : (
         <path d="M51 71 Q60 79 69 71" stroke="#1e1b2e" strokeWidth="3" strokeLinecap="round" fill="none" />
+      )}
+
+      {coverEyes && (
+        <g fill="var(--color-brand-600)" stroke="var(--color-brand-700)" strokeWidth="1.5">
+          <rect x="31" y="46" width="28" height="23" rx="11" transform="rotate(-12 45 57)" />
+          <rect x="61" y="46" width="28" height="23" rx="11" transform="rotate(12 75 57)" />
+        </g>
       )}
 
       {/* Sao vàng khi ăn mừng */}
