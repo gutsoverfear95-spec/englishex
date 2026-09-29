@@ -241,7 +241,7 @@ export default function StudyRunner({
             <ChunkyProgress
               value={(doneCount / initialCount) * 100}
               label="Tiến độ phiên học"
-              fill="bg-leaf-500"
+              fill="bg-accent-500"
             />
             <span className="shrink-0 font-display font-bold text-slate-600 tabular-nums">
               {doneCount}/{initialCount}

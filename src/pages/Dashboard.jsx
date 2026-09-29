@@ -245,7 +245,7 @@ export default function Dashboard() {
                     />
                     <p className="text-sm text-brand-100">
                       Đã học <strong className="text-white">{next.learned}/{next.total}</strong> từ
-                      {next.due > 0 && <> · <strong className="text-sun-200">{next.due}</strong> từ cần ôn</>}
+                      {next.due > 0 && <> · <strong className="text-sun-100">{next.due}</strong> từ cần ôn</>}
                     </p>
                   </div>
                 </>
@@ -295,13 +295,13 @@ export default function Dashboard() {
             )}
           </section>
 
-          <section className="rounded-3xl border-2 border-leaf-200 bg-leaf-50 p-4 flex flex-col animate-rise [animation-delay:120ms]">
-            <span className="h-10 w-10 grid place-items-center rounded-2xl bg-leaf-500 text-white">
+          <section className="rounded-3xl border-2 border-accent-200 bg-accent-50 p-4 flex flex-col animate-rise [animation-delay:120ms]">
+            <span className="h-10 w-10 grid place-items-center rounded-2xl bg-accent-500 text-white">
               <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
             </span>
             <p className="mt-2 font-display text-3xl font-bold text-ink leading-none">{vocab.reviewedToday}</p>
             <p className="text-sm text-slate-700">từ đã ôn hôm nay</p>
-            <p className="mt-auto pt-3 text-sm text-leaf-800">
+            <p className="mt-auto pt-3 text-sm text-accent-800">
               {vocab.reviewedToday > 0 ? 'Làm tốt lắm!' : 'Bắt đầu thôi nào'}
             </p>
           </section>
@@ -328,11 +328,11 @@ export default function Dashboard() {
               {vocab.learned.toLocaleString('vi-VN')}
             </dd>
           </div>
-          <div className="rounded-2xl bg-leaf-50 py-2">
+          <div className="rounded-2xl bg-accent-50 py-2">
             <dt className="text-xs text-slate-600 inline-flex items-center gap-1">
-              <Star className="h-3 w-3 text-leaf-700" aria-hidden="true" /> Đã thuộc
+              <Star className="h-3 w-3 text-accent-700" aria-hidden="true" /> Đã thuộc
             </dt>
-            <dd className="font-display text-xl font-bold text-leaf-700">
+            <dd className="font-display text-xl font-bold text-accent-700">
               {vocab.mastered.toLocaleString('vi-VN')}
             </dd>
           </div>

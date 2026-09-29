@@ -42,6 +42,18 @@
   --color-leaf-700: #15803d;
   --color-leaf-800: #166534;
 
+  /* Màu điểm nhấn thứ hai, chỉ dùng cho chỗ TRANG TRÍ (ô "đã ôn hôm nay",
+     thanh tiến độ phiên học, "đã thuộc", pháo giấy). Theme tím: accent =
+     xanh lá; theme xanh: accent = tím. Còn leaf-* giữ nghĩa "đúng / dễ" ở
+     cả hai theme — màu phản hồi không được đổi theo sở thích trang trí. */
+  --color-accent-50: #f0fdf4;
+  --color-accent-100: #dcfce7;
+  --color-accent-200: #bbf7d0;
+  --color-accent-400: #4ade80;
+  --color-accent-500: #22c55e;
+  --color-accent-700: #15803d;
+  --color-accent-800: #166534;
+
   --color-ink: #1e1b2e;
   --color-canvas: #faf8ff;
 
@@ -74,6 +86,38 @@
     transform: translateY(4px);
     box-shadow: 0 0 0 0 var(--press-color, rgb(0 0 0 / 0.18));
   }
+}
+
+/* ============================================================
+   THEME XANH LÁ CHỦ ĐẠO — vàng + tím làm điểm nhấn.
+   Chỉ ghi đè biến; mọi class (bg-brand-600, text-accent-700...) giữ nguyên
+   nên component không cần biết đang ở theme nào.
+
+   Thang "brand" của theme xanh LỆCH một bậc so với bảng màu Tailwind: vị trí
+   600 dùng green-700 (#15803d). Chữ trắng trên green-600 chỉ đạt ≈ 3.3:1, còn
+   trên green-700 đạt ≈ 5.0:1 — nút chính dùng brand-600 nên phải lệch.
+   ============================================================ */
+:root[data-theme="green"] {
+  --color-brand-50: #f0fdf4;
+  --color-brand-100: #dcfce7;
+  --color-brand-200: #bbf7d0;
+  --color-brand-300: #86efac;
+  --color-brand-400: #4ade80;
+  --color-brand-500: #22c55e;
+  --color-brand-600: #15803d;
+  --color-brand-700: #166534;
+  --color-brand-800: #14532d;
+  --color-brand-900: #052e16;
+
+  --color-accent-50: #f5f3ff;
+  --color-accent-100: #ede9fe;
+  --color-accent-200: #ddd6fe;
+  --color-accent-400: #a78bfa;
+  --color-accent-500: #8b5cf6;
+  --color-accent-700: #6d28d9;
+  --color-accent-800: #5b21b6;
+
+  --color-canvas: #f7fcf8;
 }
 
 /* Người dùng bật "giảm chuyển động" trong hệ điều hành → tắt gần như mọi

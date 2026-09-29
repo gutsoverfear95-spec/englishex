@@ -26,6 +26,17 @@
     <meta name="description" content="EnglishEx — học tiếng Anh qua từ vựng lặp lại ngắt quãng, bài đọc và tủ sách kinh điển." />
 
     <title>EnglishEx — Học tiếng Anh</title>
+
+    <!-- Gắn theme đã lưu TRƯỚC khi trang vẽ, để không chớp màu tím rồi mới
+         chuyển sang xanh. Trùng khoá và giá trị với src/lib/theme.js. -->
+    <script>
+      try {
+        if (localStorage.getItem('englishex_theme') === 'green') {
+          document.documentElement.dataset.theme = 'green'
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#15803d')
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

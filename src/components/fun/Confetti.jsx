@@ -1,6 +1,6 @@
 // Pháo giấy nhẹ cho màn chúc mừng — thuần CSS, 18 mảnh, chạy 1 lần rồi thôi.
 // Bật "giảm chuyển động" thì index.css tắt animation → không hiện gì cả.
-const COLORS = ['bg-brand-500', 'bg-sun-400', 'bg-leaf-500', 'bg-brand-300', 'bg-sun-300']
+const COLORS = ['bg-brand-500', 'bg-sun-400', 'bg-accent-500', 'bg-brand-300', 'bg-sun-300']
 
 export default function Confetti() {
   return (

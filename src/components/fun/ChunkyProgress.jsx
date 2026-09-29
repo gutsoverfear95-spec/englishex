@@ -3,7 +3,7 @@
 export default function ChunkyProgress({
   value = 0,
   label,
-  fill = 'bg-leaf-500',
+  fill = 'bg-accent-500',
   track = 'bg-brand-100',
   className = '',
 }) {

@@ -17,7 +17,7 @@ function HighlightedExample({ sentence, target }) {
   const parts = sentence.split(new RegExp(`\\b(${body})\\b`, 'gi'))
   const matcher = new RegExp(`^${body}$`, 'i')
   return (
-    <p className="text-sm sm:text-base text-violet-100 italic leading-relaxed">
+    <p className="text-sm sm:text-base text-brand-100 italic leading-relaxed">
       “
       {parts.map((part, i) =>
         matcher.test(part) ? (
@@ -113,7 +113,7 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
                   cần nhìn rõ nhất là mặt chữ đúng, không chỉ nghĩa của nó. */}
               <p className="font-display text-xl font-bold text-sun-200">
                 {word.word}
-                {word.phonetic && <span className="ml-2 font-sans text-sm font-normal text-violet-200">{word.phonetic}</span>}
+                {word.phonetic && <span className="ml-2 font-sans text-sm font-normal text-brand-100">{word.phonetic}</span>}
               </p>
               <p className="font-display text-2xl sm:text-3xl font-bold leading-tight">{word.meaning}</p>
             </div>
@@ -132,7 +132,7 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
                   onError={(e) => (e.target.closest('figure').style.display = 'none')}
                 />
                 {word.image_credit && (
-                  <figcaption className="mt-1 text-center text-[10px] text-violet-300">
+                  <figcaption className="mt-1 text-center text-[10px] text-brand-200">
                     Ảnh:{' '}
                     <a
                       href={word.image_credit_url}
@@ -160,14 +160,14 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
                     <div className="flex-1 min-w-0">
                       <HighlightedExample sentence={ex.sentence_en} target={word.word} />
                       {ex.sentence_vi && (
-                        <p className="text-xs sm:text-sm text-violet-200 mt-0.5">{ex.sentence_vi}</p>
+                        <p className="text-xs sm:text-sm text-brand-100 mt-0.5">{ex.sentence_vi}</p>
                       )}
                     </div>
                     <button
                       type="button"
                       onClick={(e) => playSentence(e, ex.sentence_en)}
                       title="Nghe câu này"
-                      className="mt-0.5 shrink-0 p-1 rounded-lg text-violet-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                      className="mt-0.5 shrink-0 p-1 rounded-lg text-brand-100 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
                     >
                       <Volume2 className="h-3.5 w-3.5" />
                     </button>
@@ -179,7 +179,7 @@ export default function Flashcard({ word, examples = [], flipped, onFlip }) {
             <button
               type="button"
               onClick={playAudio}
-              className="mx-auto mt-auto inline-flex items-center gap-1.5 text-sm text-violet-200 hover:text-white transition-colors cursor-pointer"
+              className="mx-auto mt-auto inline-flex items-center gap-1.5 text-sm text-brand-100 hover:text-white transition-colors cursor-pointer"
             >
               <Volume2 className="h-4 w-4" /> Nghe lại từ
             </button>

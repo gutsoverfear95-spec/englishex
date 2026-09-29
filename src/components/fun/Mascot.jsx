@@ -1,5 +1,5 @@
 // ============================================================
-// LINH VẬT — một bạn nhỏ màu tím với mầm cây xanh trên đầu ("đang lớn lên"
+// LINH VẬT — một bạn nhỏ màu chủ đạo với mầm cây màu điểm nhấn trên đầu ("đang lớn lên"
 // mỗi ngày học). Vẽ bằng SVG chứ không dùng emoji: emoji mỗi máy một kiểu,
 // không đổi màu theo bộ màu của app được.
 //
@@ -20,9 +20,9 @@ export default function Mascot({ mood = 'wave', className = 'h-24 w-24' }) {
       <ellipse cx="60" cy="110" rx="30" ry="5" fill="#1e1b2e" opacity="0.08" />
 
       {/* Mầm cây */}
-      <path d="M60 24 C60 16 60 12 60 8" stroke="#15803d" strokeWidth="3" strokeLinecap="round" fill="none" />
-      <path d="M60 12 C52 4 42 6 40 12 C48 16 56 16 60 12Z" fill="#22c55e" />
-      <path d="M60 10 C66 2 76 2 79 8 C72 13 64 14 60 10Z" fill="#4ade80" />
+      <path d="M60 24 C60 16 60 12 60 8" stroke="var(--color-accent-700)" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M60 12 C52 4 42 6 40 12 C48 16 56 16 60 12Z" fill="var(--color-accent-500)" />
+      <path d="M60 10 C66 2 76 2 79 8 C72 13 64 14 60 10Z" fill="var(--color-accent-400)" />
 
       {/* Tay — trái */}
       <ellipse
@@ -30,7 +30,7 @@ export default function Mascot({ mood = 'wave', className = 'h-24 w-24' }) {
         cy={cheer ? 44 : 72}
         rx="8"
         ry="12"
-        fill="#7c3aed"
+        fill="var(--color-brand-600)"
         transform={cheer ? 'rotate(-30 20 44)' : 'rotate(20 20 72)'}
       />
       {/* Tay — phải (vẫy tay thì giơ lên) */}
@@ -39,13 +39,13 @@ export default function Mascot({ mood = 'wave', className = 'h-24 w-24' }) {
         cy={cheer || wave ? 44 : 72}
         rx="8"
         ry="12"
-        fill="#7c3aed"
+        fill="var(--color-brand-600)"
         transform={cheer || wave ? 'rotate(30 100 44)' : 'rotate(-20 100 72)'}
       />
 
       {/* Thân */}
-      <rect x="22" y="24" width="76" height="80" rx="36" fill="#8b5cf6" />
-      <ellipse cx="60" cy="80" rx="24" ry="17" fill="#c4b5fd" opacity="0.55" />
+      <rect x="22" y="24" width="76" height="80" rx="36" fill="var(--color-brand-500)" />
+      <ellipse cx="60" cy="80" rx="24" ry="17" fill="var(--color-brand-300)" opacity="0.55" />
 
       {/* Mắt */}
       <ellipse cx="46" cy="56" rx="8" ry="9" fill="#fff" />
