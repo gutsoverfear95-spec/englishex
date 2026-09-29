@@ -20,8 +20,10 @@ export function useProgress() {
   )
 
   // Log 1 lần trả lời (user_id do DB tự điền qua default auth.uid())
-  const recordAttempt = useCallback((exerciseId, userAnswer, isCorrect, score) => {
-    return supabase.from('attempts').insert({
+  const recordAttempt = useCallback(async (exerciseId, userAnswer, isCorrect, score) => {
+    // Supabase queries are lazy/thenable: awaiting here ensures the request is
+    // dispatched even when the UI intentionally records it in the background.
+    return await supabase.from('attempts').insert({
       exercise_id: exerciseId,
       user_answer: userAnswer,
       is_correct: isCorrect,

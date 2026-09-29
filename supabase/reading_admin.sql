@@ -14,6 +14,11 @@
 -- ---------- 1. CỜ ADMIN ----------
 alter table public.profiles add column if not exists is_admin boolean not null default false;
 
+-- RLS chỉ giới hạn DÒNG, không giới hạn CỘT. Thu hồi quyền update cả bảng rồi
+-- chỉ cấp lại cột hồ sơ thông thường để user không thể tự đặt is_admin = true.
+revoke update on table public.profiles from authenticated;
+grant update (display_name) on table public.profiles to authenticated;
+
 -- Danh sách email được cấp quyền admin. Thêm bớt thoải mái rồi chạy lại file.
 -- Email nào chưa từng đăng ký tài khoản trong app thì dòng đó đơn giản là
 -- không khớp gì cả, không gây lỗi.
