@@ -4,7 +4,7 @@ import Navbar from './Navbar'
 // Khung chung cho mọi trang sau đăng nhập: Navbar cố định + nội dung ở giữa
 export default function AppLayout() {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-canvas">
       <Navbar />
       <main className="max-w-5xl mx-auto px-4 py-8">
         <Outlet />
