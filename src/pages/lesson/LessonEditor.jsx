@@ -42,6 +42,7 @@ export default function LessonEditor() {
   const [passage, setPassage] = useState('')
   const [gloss, setGloss] = useState([{ term: '', vi: '' }])
   const [questions, setQuestions] = useState([emptyMc()])
+  const [originalExerciseIds, setOriginalExerciseIds] = useState([])
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState(null)
 
@@ -69,18 +70,22 @@ export default function LessonEditor() {
         const g = Array.isArray(L.glossary) ? L.glossary : []
         setGloss(g.length ? g.map((x) => ({ term: x.term, vi: x.vi })) : [{ term: '', vi: '' }])
       }
-      const qs = (eRes.data ?? []).map((e) => {
+      const exercises = eRes.data ?? []
+      setOriginalExerciseIds(exercises.map((e) => e.id))
+      const qs = exercises.map((e) => {
         if (e.type === 'multiple_choice') {
           const opts = Array.isArray(e.options) ? e.options.slice(0, 4) : ['', '', '', '']
           while (opts.length < 4) opts.push('')
           const ans = e.accepted_answers?.[0] ?? ''
           const idx = opts.indexOf(ans)
           return {
+            id: e.id,
             kind: 'mc', prompt: e.prompt ?? '', options: opts,
             answerIdx: idx >= 0 ? idx : null, explanation: e.explanation ?? '',
           }
         }
         return {
+          id: e.id,
           kind: 'tf', prompt: e.prompt ?? '', options: null,
           answer: e.accepted_answers?.[0] === 'false' ? 'false' : 'true',
           explanation: e.explanation ?? '',
@@ -100,6 +105,7 @@ export default function LessonEditor() {
   const warnings = []
   if (!title.trim()) errors.push('Chưa có tiêu đề bài đọc.')
   if (!passage.trim()) errors.push('Chưa có nội dung đoạn văn.')
+  if (questions.length === 0) errors.push('Bài đọc phải có ít nhất một câu hỏi.')
   // Chỉ nhắc khi bài NGẮN hơn mức gợi ý. Dài hơn thì không sao — đó là chủ ý.
   if (words && words < lo) {
     warnings.push(`Đoạn văn mới ${words} từ, ngắn hơn mức gợi ý ${lo} từ của ${level}.`)
@@ -133,6 +139,7 @@ export default function LessonEditor() {
 
   function buildRows(id) {
     return questions.map((q, i) => ({
+      ...(q.id ? { id: q.id } : {}),
       lesson_id: id,
       type: q.kind === 'mc' ? 'multiple_choice' : 'true_false',
       prompt: q.prompt.trim(),
@@ -181,20 +188,38 @@ export default function LessonEditor() {
         setSaving(false)
         return
       }
-      // Thay toàn bộ câu hỏi: xoá hết rồi chèn lại theo thứ tự mới.
-      // Đơn giản hơn nhiều so với dò từng câu xem cái nào đổi, và tiến độ học
-      // nằm ở bảng lesson_progress nên không bị ảnh hưởng.
-      const { error: de } = await supabase.from('exercises').delete().eq('lesson_id', lessonId)
-      if (de) {
-        setSaveError(de.message)
-        setSaving(false)
-        return
+      // Giữ ID của câu hỏi cũ để không làm mất attempts qua ON DELETE CASCADE.
+      // Chỉ xoá những câu người soạn đã bỏ, sau khi cập nhật/chèn thành công.
+      const rows = buildRows(lessonId)
+      const existingRows = rows.filter((row) => row.id)
+      const newRows = rows.filter((row) => !row.id)
+
+      if (existingRows.length) {
+        const { error } = await supabase.from('exercises').upsert(existingRows)
+        if (error) {
+          setSaveError(`Không cập nhật được câu hỏi: ${error.message}`)
+          setSaving(false)
+          return
+        }
       }
-      const { error: ie } = await supabase.from('exercises').insert(buildRows(lessonId))
-      if (ie) {
-        setSaveError(`Bài đã lưu nhưng câu hỏi lỗi: ${ie.message}`)
-        setSaving(false)
-        return
+      if (newRows.length) {
+        const { error } = await supabase.from('exercises').insert(newRows)
+        if (error) {
+          setSaveError(`Không thêm được câu hỏi mới: ${error.message}`)
+          setSaving(false)
+          return
+        }
+      }
+
+      const retainedIds = new Set(existingRows.map((row) => row.id))
+      const removedIds = originalExerciseIds.filter((id) => !retainedIds.has(id))
+      if (removedIds.length) {
+        const { error } = await supabase.from('exercises').delete().in('id', removedIds)
+        if (error) {
+          setSaveError(`Bài đã lưu nhưng không xoá được câu hỏi đã bỏ: ${error.message}`)
+          setSaving(false)
+          return
+        }
       }
       navigate('/skill/reading')
       return
