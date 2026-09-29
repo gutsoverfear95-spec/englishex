@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import ProtectedRoute from './components/layout/ProtectedRoute'
 import AppLayout from './components/layout/AppLayout'
+import FocusLayout from './components/layout/FocusLayout'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
@@ -37,10 +38,14 @@ export default function App() {
           {/* Từ vựng v2: Chương trình học → Chủ đề → Phiên học SRS */}
           <Route path="/vocab" element={<CourseList />} />
           <Route path="/vocab/course/:courseId" element={<TopicList />} />
-          <Route path="/vocab/study/:topicId" element={<StudySession />} />
           {/* Ôn tổng hợp mọi chủ đề + trang tra cứu toàn bộ từ vựng */}
           <Route path="/vocab/review" element={<DailyReview />} />
           <Route path="/vocab/words" element={<WordList />} />
+        </Route>
+
+        {/* Phiên học chủ đề: toàn màn hình, không Navbar (cùng đường dẫn cũ) */}
+        <Route element={<FocusLayout />}>
+          <Route path="/vocab/study/:topicId" element={<StudySession />} />
         </Route>
       </Route>
 

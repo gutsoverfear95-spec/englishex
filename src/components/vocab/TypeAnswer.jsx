@@ -29,13 +29,13 @@ export default function TypeAnswer({ word, value, onChange, onSubmit }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-2xl border-2 border-violet-200 bg-white shadow-lg p-5 sm:p-6 space-y-4"
+      className="rounded-3xl border-2 border-brand-100 bg-white shadow-[0_6px_0_0_var(--color-brand-100)] p-5 sm:p-6 space-y-4"
     >
       <div className="text-center space-y-1">
-        <p className="text-xs uppercase tracking-wide text-slate-400">Viết từ tiếng Anh</p>
-        <p className="text-2xl sm:text-3xl font-bold text-slate-800">{word.meaning}</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-brand-600">Viết từ tiếng Anh</p>
+        <p className="font-display text-2xl sm:text-3xl font-bold text-ink leading-snug">{word.meaning}</p>
         {word.level && (
-          <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-violet-50 text-violet-600">
+          <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-sun-200 text-sun-800">
             {word.level}
           </span>
         )}
@@ -47,20 +47,21 @@ export default function TypeAnswer({ word, value, onChange, onSubmit }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Gõ từ tiếng Anh..."
+        aria-label="Từ tiếng Anh"
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck={false}
-        className="w-full text-center text-xl sm:text-2xl rounded-xl border-2 border-slate-200 px-4 py-3 focus:outline-none focus:border-violet-500 transition-colors"
+        className="w-full text-center text-xl sm:text-2xl rounded-2xl border-2 border-brand-200 bg-brand-50/40 px-4 py-3 text-ink focus:outline-none focus:border-brand-500 focus:bg-white transition-colors"
       />
 
       {showHint ? (
-        <p className="text-center text-lg font-mono tracking-[0.3em] text-violet-600">{pattern}</p>
+        <p className="text-center text-lg font-mono tracking-[0.3em] text-brand-700">{pattern}</p>
       ) : (
         <button
           type="button"
           onClick={() => setShowHint(true)}
-          className="mx-auto flex items-center gap-1.5 text-sm text-slate-500 hover:text-violet-600 transition-colors cursor-pointer"
+          className="mx-auto flex items-center gap-1.5 min-h-11 px-2 text-sm font-medium text-slate-600 hover:text-brand-700 transition-colors cursor-pointer"
         >
           <Lightbulb className="h-4 w-4" /> Gợi ý
         </button>
@@ -69,7 +70,7 @@ export default function TypeAnswer({ word, value, onChange, onSubmit }) {
       <button
         type="submit"
         disabled={!value.trim()}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 text-white py-3 font-medium hover:bg-violet-700 disabled:opacity-50 transition-colors cursor-pointer"
+        className="press [--press-color:var(--color-brand-800)] w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-600 text-white min-h-14 font-display text-lg font-bold hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand-500"
       >
         Kiểm tra <CornerDownLeft className="h-4 w-4" />
       </button>
